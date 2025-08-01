@@ -29,15 +29,53 @@
 					</textarea>
         </section>
         <section>
-            How to keep your secrets from not leaking
+            How to keep your secrets from leaking
         </section>
-        <section>
-					<pre><code class="scala" data-trim data-noescape>
-						class Person(name: String, email:Encrypted[String])
-                        val martin = Person("Martin", "secret".encrypted)
 
-					</code></pre>
+        <section>
+            Encryption<br>
+            Use the extension method
+            <pre class="fragment  "><code>
+val enc: Encrypted[String] = "secret".encrypted
+            </code></pre>
         </section>
+
+        <section>
+            Elliptic curve
+            <pre><code class="scala" data-trim data-noescape>
+import cryptic.{*, given}
+import cryptic.crypto.EC.given
+
+val keyPair: KeyPair = EC.keygen(256)
+given publicKey: PublicKey = keyPair.getPublic
+
+val enc = "secret".encrypted
+enc.toString // CipherText(0x04e5da5206...)
+
+            </code></pre>
+        </section>
+
+          <section>
+            Decryption
+            Use the decrypted method
+            <pre><code>
+val decrypted: Try[String] = enc.decrypted
+            </code></pre>
+        </section>
+
+        <section>
+            Elliptic curve
+            <pre><code class="scala" data-trim data-noescape>
+import cryptic.{*, given}
+import cryptic.crypto.EC.given
+
+given privateKey: PrivateKey = keyPair.getPrivate
+
+enc.decrypt // Success("secret")
+
+            </code></pre>
+        </section>
+
         <section>
             Good practices:
             <p class="fragment">only secrets, no structure</p>
