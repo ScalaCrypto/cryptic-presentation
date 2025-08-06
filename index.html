@@ -45,6 +45,7 @@ val enc: Encrypted[String] = "secret".encrypted
             <pre><code class="scala" data-trim data-noescape>
 import cryptic.{*, given}
 import cryptic.crypto.EC.given
+import java.security.*
 
 val keyPair: KeyPair = EC.keygen(256)
 given publicKey: PublicKey = keyPair.getPublic
@@ -68,6 +69,7 @@ val decrypted: Try[String] = enc.decrypted
             <pre><code class="scala" data-trim data-noescape>
 import cryptic.{*, given}
 import cryptic.crypto.EC.given
+import java.security.PrivateKey
 
 given privateKey: PrivateKey = keyPair.getPrivate
 
@@ -77,8 +79,37 @@ enc.decrypt // Success("secret")
         </section>
 
         <section>
-            Good practices:
+            Encryption/Decryption
+            <br>vs<br>
+            Encoding/Decoding
+        </section>
+        <section>
+            Encoder/decoder: default
+            <br>Manifest<br>
+            <pre>
+            <code class="scala, fragment">String, Array[Byte], Int, Long, Double</code>
+            </pre>
+        </section>
+        <section>
+            Note on encoder:
             <p class="fragment">only secrets, no structure</p>
+            <p class="fragment">encode large data</p>
+        </section>
+        <section>
+            Encryption/Decryption
+            AES, RSA, EC
+        </section>
+        <section>
+            AES description
+        </section>
+        <section>
+            RSA description
+        </section>
+        <section>
+            EC description
+        </section>
+        <section>
+            Roll your own
         </section>
     </div>
 </div>
