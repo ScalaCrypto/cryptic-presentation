@@ -29,17 +29,109 @@
 					</textarea>
         </section>
         <section>
-            How to keep your secrets from leaking
+            How to keep your secrets from leaking?
+            <p class="fragment">Use the cryptic library </p>
+            <aside class="notes">
+                Encrypt your secrets!<br>
+
+            </aside>
         </section>
 
         <section>
             Encryption<br>
-            Use the extension method
             <pre class="fragment  "><code>
 val enc: Encrypted[String] = "secret".encrypted
             </code></pre>
         </section>
 
+        <section>
+            Decryption<br>
+            <pre class="fragment"><code>
+val decrypted: Try[String] = enc.decrypted
+            </code></pre>
+        </section>
+        <section>
+            Operate in encrypted space<br>
+            <pre class="fragment"><code>
+val pending = enc.map(_.toUpperCase)
+val upper = pending.run
+val decrypted = pending.decrypted) // SECRET
+            </code></pre>
+            <aside class="notes">
+                All the expected operations are available<br>
+                But lets look in to the details
+            </aside>
+        </section>
+        <section>
+            Encryption<br>
+            <p class="fragment">PlainText => CipherText</p>
+            <pre class="scala, fragment"><code>
+trait Encrypt:
+  def apply(plainText: PlainText): CipherText
+            </code></pre>
+            <aside class="notes">
+                So, what is PlainText and CipherText?<br>
+                PlainText holds the data unencrypted.<br>
+                How to create PlainText?<br>
+            </aside>
+        </section>
+        <section>
+            Codec
+            <pre class="fragment,scala"><code>
+trait Codec[V]:
+  def encode(v: V): PlainText
+  def decode(plainText: PlainText): Try[V]
+        </code></pre>
+            <p class="fragment">Provided are<br>
+            <pre><code class="scala, fragment">String, Array[Byte], Int, Long, Double</code></pre>
+            <aside class="notes">
+                To create to and from PlainText we use a Codec<br>
+
+            </aside>
+        </section>
+        <section>
+            Note about encrypting<br>
+            <p class="fragment">Manifest</p>
+            <aside class="notes">
+                Make sure that only the secret is encrypted<br>
+                Any structure
+            </aside>
+        </section>
+        <section>
+            Encryption/Decryption
+            <br>vs<br>
+            Encoding/Decoding
+        </section>
+        <section>
+            Encoder/decoder: default
+            <br>Manifest<br>
+            <pre><code class="scala, fragment">String, Array[Byte], Int, Long, Double</code></pre>
+        </section>
+        <section>
+            Note on encoder:
+            <p class="fragment">only secrets, no structure</p>
+            <p class="fragment">encode large data</p>
+        </section>
+        <section>
+            Encryption/Decryption
+            <p class="fragment">AES, RSA, EC</p>
+            <aside class="notes">
+                Cryptic comes with three different encryption methods:
+            </aside>
+        </section>
+        <section>
+            AES description<br>
+            <p class="fragment">Symmetric</p>
+            <p class="fragment">Fast</p>
+            <p class="fragment">Smaller keys</p>
+
+        </section>
+        <section>
+            RSA description
+        </section>
+        <section>
+            EC description
+        </section>
         <section>
             Elliptic curve
             <pre><code class="scala" data-trim data-noescape>
@@ -55,15 +147,6 @@ enc.toString // CipherText(0x04e5da5206...)
 
             </code></pre>
         </section>
-
-          <section>
-            Decryption
-            Use the decrypted method
-            <pre><code>
-val decrypted: Try[String] = enc.decrypted
-            </code></pre>
-        </section>
-
         <section>
             Elliptic curve
             <pre><code class="scala" data-trim data-noescape>
@@ -79,37 +162,13 @@ enc.decrypt // Success("secret")
         </section>
 
         <section>
-            Encryption/Decryption
-            <br>vs<br>
-            Encoding/Decoding
-        </section>
-        <section>
-            Encoder/decoder: default
-            <br>Manifest<br>
-            <pre>
-            <code class="scala, fragment">String, Array[Byte], Int, Long, Double</code>
-            </pre>
-        </section>
-        <section>
-            Note on encoder:
-            <p class="fragment">only secrets, no structure</p>
-            <p class="fragment">encode large data</p>
-        </section>
-        <section>
-            Encryption/Decryption
-            AES, RSA, EC
-        </section>
-        <section>
-            AES description
-        </section>
-        <section>
-            RSA description
-        </section>
-        <section>
-            EC description
-        </section>
-        <section>
             Roll your own
+        </section>
+        <section>
+            Online course<br>
+            Stanford Cryptography 1<br>
+            <img src="images/stanford-crypto-1.png">
+            -0-0https://online.stanford.edu/courses/soe-y0001-cryptography-i
         </section>
     </div>
 </div>
