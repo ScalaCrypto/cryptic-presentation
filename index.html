@@ -33,33 +33,38 @@
             <p class="fragment">Use the cryptic library </p>
             <aside class="notes">
                 Encrypt your secrets!<br>
-
             </aside>
         </section>
 
         <section>
             Encryption<br>
-            <pre class="fragment  "><code>
+            <pre class="fragment"><code class="scala">
 val enc: Encrypted[String] = "secret".encrypted
             </code></pre>
         </section>
 
         <section>
             Decryption<br>
-            <pre class="fragment"><code>
-val decrypted: Try[String] = enc.decrypted
+            <pre class="fragment"><code class="scala">
+val dec: Try[String] = enc.decrypted // Success("secret")
             </code></pre>
         </section>
         <section>
             Operate in encrypted space<br>
-            <pre class="fragment"><code>
-val pending = enc.map(_.toUpperCase)
-val upper = pending.run
-val decrypted = pending.decrypted) // SECRET
+            <pre class="fragment"><code class="scala">
+val upper = enc.map(_.toUpperCase)
+val dec = upper.decrypted // SECRET
             </code></pre>
+
+            <pre class="fragment">
+            <code class="scala">
+map, flatMap, filter, filterNot, collect, orElse
+            </code>
+            </pre>
+
             <aside class="notes">
                 All the expected operations are available<br>
-                But lets look in to the details
+                But let's look in to the details
             </aside>
         </section>
         <section>
@@ -67,96 +72,96 @@ val decrypted = pending.decrypted) // SECRET
             <p class="fragment">PlainText => CipherText</p>
             <pre class="scala, fragment"><code>
 trait Encrypt:
-  def apply(plainText: PlainText): CipherText
+  def apply(pt: PlainText): CipherText
             </code></pre>
             <aside class="notes">
-                So, what is PlainText and CipherText?<br>
-                PlainText holds the data unencrypted.<br>
+                So, what are PlainText and CipherText?<br>
+                PlainText holds the unencrypted data.<br>
+                CipherText holds the encrypted data.<br>
                 How to create PlainText?<br>
             </aside>
         </section>
         <section>
             Codec
-            <pre class="fragment,scala"><code>
+            <pre class="fragment"><code class="scala">
 trait Codec[V]:
   def encode(v: V): PlainText
-  def decode(plainText: PlainText): Try[V]
+  def decode(pt: PlainText): Try[V]
         </code></pre>
-            <p class="fragment">Provided are<br>
-            <pre><code class="scala, fragment">String, Array[Byte], Int, Long, Double</code></pre>
+            <p class="fragment">Provided<br>
+            <pre class="fragment"><code class="scala ">String, Array[Byte], Float, Int, Long, Double, Option[V]</code></pre>
             <aside class="notes">
                 To create to and from PlainText we use a Codec<br>
-
             </aside>
         </section>
         <section>
             Note about encrypting<br>
-            <p class="fragment">Manifest</p>
+            <p class="fragment">Only encrypt the secrets</p>
+            <p class="fragment">Not anything known</p>
+            <pre class="fragment"><code class="scala">
+case class PlainText(bytes: Array[Byte], manifest: Manifest)
+            </code></pre>
             <aside class="notes">
                 Make sure that only the secret is encrypted<br>
-                Any structure
+                Any structure should not be encrypted<br>
+                No {<br>
+                Info needed for constructing V should go into the Manifest
             </aside>
         </section>
         <section>
-            Encryption/Decryption
-            <br>vs<br>
-            Encoding/Decoding
-        </section>
-        <section>
-            Encoder/decoder: default
-            <br>Manifest<br>
-            <pre><code class="scala, fragment">String, Array[Byte], Int, Long, Double</code></pre>
-        </section>
-        <section>
-            Note on encoder:
-            <p class="fragment">only secrets, no structure</p>
-            <p class="fragment">encode large data</p>
-        </section>
-        <section>
-            Encryption/Decryption
-            <p class="fragment">AES, RSA, EC</p>
+            Provided cryptos<br>
+            <p class="fragment">AES, RSA, Elliptic Curve</p>
             <aside class="notes">
                 Cryptic comes with three different encryption methods:
             </aside>
         </section>
         <section>
-            AES description<br>
+            AES<br>
             <p class="fragment">Symmetric</p>
             <p class="fragment">Fast</p>
             <p class="fragment">Smaller keys</p>
 
         </section>
         <section>
-            RSA description
+            RSA
+            <p class="fragment">Asymmetric</p>
         </section>
         <section>
-            EC description
+            Elliptic Curve
+            <p class="fragment ">Asymmetric</p>
+            <p class="fragment ">From Bouncy Castle</p>
         </section>
         <section>
-            Elliptic curve
+            Elliptic Curve
+            <pre><code class="scala data-trim data-noescape">
+given encrypt(using key: PublicKey): Encrypt
+given decrypt(using key: PrivateKey): Decrypt
+            </code></pre>
+        </section>
+        <section>
+            Elliptic Curve encryption
             <pre><code class="scala" data-trim data-noescape>
 import cryptic.{*, given}
-import cryptic.crypto.EC.given
+import cryptic.crypto.EllipticCurve.given
 import java.security.*
 
-val keyPair: KeyPair = EC.keygen(256)
+val keyPair: KeyPair = EllipticCurve.keygen(256)
 given publicKey: PublicKey = keyPair.getPublic
-
 val enc = "secret".encrypted
-enc.toString // CipherText(0x04e5da5206...)
+// ==> Encrypted(CipherText(0x04e5da5206...))
 
             </code></pre>
         </section>
         <section>
-            Elliptic curve
+            Elliptic Curve decryption
             <pre><code class="scala" data-trim data-noescape>
 import cryptic.{*, given}
 import cryptic.crypto.EC.given
 import java.security.PrivateKey
 
 given privateKey: PrivateKey = keyPair.getPrivate
-
-enc.decrypt // Success("secret")
+enc.decrypt
+// ==> Success("secret")
 
             </code></pre>
         </section>
