@@ -2,13 +2,16 @@
 <section>
     <h4>RSA (Rivest-Shamir-Adleman)<br></h4>
     <ul>
-        <li class="fragment"><strong>Key Distribution:</strong> Asymmetric nature provides strong security</li>
-        <li class="fragment"><strong>Key Strength:</strong> 2048-bit keys provide adequate security for current computing capabilities</li>
-        <li class="fragment"><strong>Limitation:</strong> RSA can only encrypt data up to (key size - padding) bytes. For 2048-bit keys, maximum
-            encryption capacity is approximately 245 bytes
-        </li>
-        <li class="fragment"><strong>Best Usage:</strong> Suitable for encrypting small amounts of data or key exchange</li>
+        <li class="fragment">Asymmetric</li>
+        <li class="fragment">Large keys needed</li>
+        <li class="fragment">Small data</li>
+        <li class="fragment">Suitable for key exchange</li>
     </ul>
+    <aside class="notes">
+        2048-bit keys provide adequate security for current computing capabilities<br>
+        Data max (key size - padding) bytes.<br>
+        2048-bit => data approximately 245 bytes
+    </aside>
 </section>
 
 <section>
@@ -22,6 +25,10 @@ given decrypt(using key: PrivateKey): Decrypt
 
 def keygen(size: Int): KeyPair
     </code></pre>
+    <aside class="notes">
+        encrypt and decrypt takes different parameters<br>
+        keygen is to simplipy keygeneration<br>
+    </aside>
 </section>
 
 <section>
@@ -36,7 +43,10 @@ given publicKey: PublicKey = keyPair.getPublic
 
 val enc = "secret".encrypted
 // ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
-    </code> </pre>
+    </code></pre>
+    <aside class="notes">
+        The private key is not needed for encryption<br>
+    </aside>
 </section>
 
 <section>
@@ -47,4 +57,7 @@ given privateKey: PrivateKey = keyPair.getPrivate
 enc.decrypted
 // ==> Success("secret")
     </code></pre>
+    <aside class="notes">
+        The public key is not needed for decryption<br>
+    </aside>
 </section>

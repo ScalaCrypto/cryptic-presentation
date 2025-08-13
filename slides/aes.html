@@ -1,36 +1,39 @@
-
-
 <section>
     Advanced Encryption Standard
     <br>
-    <section class="encryption-features">
-        <br>
-        <ul>
-            <li class="fragment">Fast in operation</li>
-            <li class="fragment">Using relatively small keys compared to asymmetric algorithms</li>
-            <li class="fragment">Secure when properly implemented</li>
-            <li class="fragment">Widely adopted as an industry standard</li>
-        </ul>
-    </section>
+    <br>
+    <ul>
+        <li class="fragment">Symmetrical</li>
+        <li class="fragment">Fast</li>
+        <li class="fragment">Small keys</li>
+        <li class="fragment">Large data</li>
+        <li class="fragment">Secure</li>
+        <li class="fragment">Industry standard</li>
+    </ul>
+    <aside class="notes">
+        Symmetrical same key for encryption/decryption<br>
+        small keys compared to asymmetric algorithms<br>
+        Secure when properly implemented
+    </aside>
 </section>
 
 <section>
     AES<br>
     <pre><code class="scala">
-given encrypt(using passphrase: AESPassphrase,
-              aesParams: AESParams): Encrypt
+given encrypt(using passphrase: AesPassphrase,
+              aesParams: AesParams): Encrypt
 
-given decrypt(using passphrase: AESPassphrase,
-             aesParams: AESParams): Decrypt
+given decrypt(using passphrase: AesPassphrase,
+             aesParams: AesParams): Decrypt
             </code></pre>
     <aside class="notes">
         As AES is a symmetrical crypto the encrypt/decrypt methods are very similar<br>
-        But the security lies in the AESParams
+        But the security lies in the AesParams
     </aside>
 </section>
 
 <section>
-    Default AES parameters use GCM mode<br>
+    AesParams use GCM <br>
     <pre><code class="scala">
   case class GcmParams(
       factoryAlgorithm: String = "PBKDF2WithHmacSHA256",
@@ -41,13 +44,9 @@ given decrypt(using passphrase: AESPassphrase,
       version: Int = 1
   ) extends AesParams</code></pre>
     <aside class="notes">
-        Key derivation function - PBKDF2 with SHA-256
-        mode: String = "GCM/NoPadding",
-        Number of iterations for key derivation (min 310000 per OWASP)
-        Key length in bits (256 for Aes-256)
-        Salt length in bytes (min 16 bytes recommended)
-        Algorithm version for future migrations
-        version: Int = 1
+        The GCM, Galois/Counter Mod
+        These are reasonably secure choices by OWASP<br>
+
         )
     </aside>
 </section>

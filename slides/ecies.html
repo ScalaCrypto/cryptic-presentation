@@ -2,27 +2,13 @@
 <section>
     Elliptic Curve Integrated Encryption Scheme<br>
     <ul>
-        <li class="fragment">
-            <strong>Key Size Advantage:</strong>
-            256-bit ECC keys provide equivalent security to 3072-bit RSA
-        </li>
-        <li class="fragment">
-            <strong>Performance:</strong>
-            Faster key generation and smaller key sizes than traditional RSA
-        </li>
-        <li class="fragment">
-            <strong>Security Features:</strong>
-            <ul class="sub-features">
-                <li>Hybrid encryption combining ECC with symmetric encryption</li>
-                <li>Built-in key agreement protocol (ECDH)</li>
-                <li>Message authentication (MAC) for integrity</li>
-            </ul>
-        </li>
-        <li class="fragment">
-            <strong>Recommended Usage:</strong>
-            Ideal for mobile and IoT applications where resources are constrained
-        </li>
+        <li class="fragment">Asymmetric</li>
+        <li class="fragment">Smaller keys </li>
+        <li class="fragment">Faster then RSA</li>
     </ul>
+    <aside class="notes">
+        256-bit ECC keys provide equivalent security to 3072-bit RSA<br>
+    </aside>
 </section>
 
 <section>
@@ -36,6 +22,9 @@ given decrypt(using key: PrivateKey): Decrypt
 
 def keygen(size: Int): KeyPair
     </code></pre>
+    <aside class="notes">
+        Like RSA encrypt and decrypt takes different parameters
+    </aside>
 </section>
 
 <section>
@@ -50,6 +39,10 @@ given publicKey: PublicKey = keyPair.getPublic
 val enc = "secret".encrypted
 // ==> Encrypted(CipherText(0x04e5da5206...))
     </code></pre>
+    <aside class="notes">
+        The code is very similar to the RSA case<br>
+        Only the import differ.
+    </aside>
 </section>
 
 <section>

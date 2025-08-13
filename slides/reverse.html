@@ -2,12 +2,16 @@
 <section>
     The Reverse Crypto
     <pre class="fragment"><code class="scala">
-object Reverse:
-  given encrypt: Encrypt = (plainText: PlainText) =>
-    CipherText(plainText.bytes.reverse)
+
+given encrypt: Encrypt = (plainText: PlainText) =>
+  CipherText(plainText.bytes.reverse)
     </code></pre>
+
     <pre class="fragment"><code class="scala">
-  given decrypt: Decrypt = (cipherText: CipherText) =>
-    Success(PlainText(cipherText.bytes.reverse))
+given decrypt: Decrypt = (cipherText: CipherText) =>
+  Success(PlainText(cipherText.bytes.reverse))
     </code></pre>
+    <aside class="notes">
+        Now let's add a parameter to encrypt/decrypt<br>
+    </aside>
 </section>

@@ -1,3 +1,0 @@
-
-##	Cryptic
-Keeps your secrets
