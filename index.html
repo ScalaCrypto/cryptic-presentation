@@ -169,12 +169,34 @@ object Encrypted:
             </code></pre>
         </section>
 
+        <section>
+            Decrypt<br>
+            <pre class="fragment"><code class="scala">
+type Decrypt = CipherText => Try[PlainText]
+            </code></pre>
+            <aside class="notes">
+                Will be Failure if decryption fails<br>
+            </aside>
+        </section>
+
+        <section>
+            The decrypted method<br>
+            <pre class="fragment"><code class="scala">
+case class Encrypted[V: Codec] extends Cryptic[V]
+  def decrypted(using decrypt: Decrypt): Try[V]
+            </code></pre>
+            <aside class="notes">
+                The decoded method is actually in Cryptic<br>
+                When a codec and Decrypt are given we can decrypt<br>
+            </aside>
+        </section>
+        
         <section data-markdown>
             #### Provided cryptos
             | Crypto | Kind | Package |
             |-------|-------------|--------|
-            | AES | Symmetrical | cryptic-javax |
-            | RSA | Asymmetrical| cryptic-javax |
+            | AES | Symmetrical | core|
+            | RSA | Asymmetrical| core |
             | EllipticCurve | Asymmetrical| cryptic-bouncycastle |
 
             Note:
@@ -213,16 +235,16 @@ given decrypt(using passphrase: AESPassphrase,
             </section>
 
             <section>
-                Default AES parameters<br>
+                Default AES parameters use GCM mode<br>
                 <pre><code class="scala">
-case class AesParams(
-  factoryAlgorithm: String = "PBKDF2WithHmacSHA256",
-  mode: String = "GCM/NoPadding",
-  keyspecIterationCount: Int = 310000,
-  keyspecLength: Int = 256,
-  saltLength: Int = 32,
-  version: Int = 1
-)</code></pre>
+  case class GcmParams(
+      factoryAlgorithm: String = "PBKDF2WithHmacSHA256",
+      mode: String = "GCM/NoPadding",
+      keyspecIterationCount: Int = 310000,
+      keyspecLength: Int = 256,
+      saltLength: Int = 32,
+      version: Int = 1
+  ) extends AesParams</code></pre>
                 <aside class="notes">
                     Key derivation function - PBKDF2 with SHA-256
                     mode: String = "GCM/NoPadding",
@@ -242,7 +264,7 @@ import cryptic.{given,*}
 import cryptic.codec.default.given
 import cryptic.crypto.Aes.{given, *}
 
-given params: AesParams = AesParams()
+given params: AesParams = GcmParams()
 given phrase: AesPassphrase = AesPassphrase("correct horse")
 
 val enc = "secret".encrypted
@@ -257,7 +279,7 @@ import cryptic.{given,*}
 import cryptic.codec.default.given
 import cryptic.crypto.Aes.{given, *}
 
-given params: AesParams = AesParams()
+given params: AesParams = GcmParams()
 given phrase: AesPassphrase = AesPassphrase("correct horse")
 
 enc.decrypted
@@ -269,22 +291,27 @@ enc.decrypted
         <section>
             <section>
                 <h4>RSA (Rivest-Shamir-Adleman)<br></h4>
-                <ul>
-                    <li class="fragment"><strong>Key Distribution:</strong> Asymmetric nature provides strong security</li>
-                    <li class="fragment"><strong>Key Strength:</strong> 2048-bit keys provide adequate security for current computing capabilities</li>
-                    <li class="fragment"><strong>Limitation:</strong> RSA can only encrypt data up to (key size - padding) bytes. For 2048-bit keys, maximum
-                        encryption capacity is approximately 245 bytes
-                    </li>
-                    <li class="fragment"><strong>Best Usage:</strong> Suitable for encrypting small amounts of data or key exchange</li>
-                </ul>
-            </section>
+                slides/
+                ├── intro/
+                │ ├── title.html
+                │ └── who-we-are.html
+                ├── encryption/
+                │ ├── aes.html
+                │ ├── rsa.html
+                │ └── ecies.html
+                └── conclusion/
+                └── summary.html</section>
 
             <section>
                 RSA
                 <pre><code class="scala">
+import java.security.*
+
 given encrypt(using key: PublicKey): Encrypt
 
 given decrypt(using key: PrivateKey): Decrypt
+
+def keygen(size: Int): KeyPair
             </code></pre>
             </section>
 
@@ -293,9 +320,9 @@ given decrypt(using key: PrivateKey): Decrypt
                 <pre><code class="scala">
 import cryptic.{given,*}
 import cryptic.codec.default.given
-import Rsa.{given, *}
+import Rsa.given
 
-val keyPair: KeyPair = keygen(2048)
+val keyPair: KeyPair = RSA.keygen(2048)
 given publicKey: PublicKey = keyPair.getPublic
 
 val enc = "secret".encrypted
@@ -375,9 +402,11 @@ enc.decrypt
             </code></pre>
             </section>
         </section>
+
         <section>
-            Roll your own
+            Implementing a crypto<br>
         </section>
+        
         <section>
             Online course<br>
             Stanford Cryptography I<br>
