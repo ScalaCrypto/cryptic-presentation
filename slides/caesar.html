@@ -1,0 +1,25 @@
+<section>
+    The Caesar Cipher
+    <pre class="fragment"><code class="scala">
+object Caesar:
+  case class Key(offset: Int):
+    require(offset != 0)
+  def keygen(offset: Int): Key = Key(offset)
+    </code>
+    </pre>
+    <pre class="fragment"><code class="scala">
+  given encrypt(using key: Key): Encrypt =
+        (plainText: PlainText) =>
+    val bytes = plainText.bytes.mutable
+        .map(b ⇒ (b + key.offset).toByte).immutable
+    CipherText(bytes)
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+  given decrypt(using key: Key): Decrypt =
+        (cipherText: CipherText) =>
+    Try[PlainText](
+      PlainText(cipherText.bytes
+        .map(b => (b - key.offset).toByte))
+    )
+  </code></pre>
+</section>

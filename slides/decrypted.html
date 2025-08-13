@@ -1,0 +1,11 @@
+<section>
+    The decrypted method<br>
+    <pre class="fragment"><code class="scala">
+case class Encrypted[V: Codec] extends Cryptic[V]
+  def decrypted(using decrypt: Decrypt): Try[V]
+            </code></pre>
+    <aside class="notes">
+        The decoded method is actually in Cryptic<br>
+        When a codec and Decrypt are given we can decrypt<br>
+    </aside>
+</section>

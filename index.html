@@ -19,400 +19,29 @@
 <div class="reveal">
     <div class="slides">
 
-        <section data-markdown>
-					<textarea data-template>
-					##	Cryptic
-					Keeps your secrets
-					---
-					## Who are we?
-					### Odd Möller
-					### Martin Zachrison
-					</textarea>
+        <section data-markdown="slides/intro/title.md"
+                 data-separator="^\n\n\n"
+                 data-separator-vertical="^\n\n"
+                 data-separator-notes="^Note:">
         </section>
+        <section data-include="slides/who-we-are.html"></section>
+        <section data-include="slides/overview.html"></section>
+        <section data-include="slides/encryption.html"></section>
+        <section data-include="slides/codec.html"></section>
+        <section data-include="slides/plaintext.html"></section>
+        <section data-include="slides/ciphertext.html"></section>
+        <section data-include="slides/encrypted.html"></section>
+        <section data-include="slides/decrypt.html"></section>
+        <section data-include="slides/decrypted.html"></section>
+        <section data-markdown="slides/provided-cryptos.md"></section>
+        <section data-include="slides/aes.html"></section>
+        <section data-include="slides/rsa.html"></section>
+        <section data-include="slides/ecies.html"></section>
+        <section data-include="slides/add-your-own.html"></section>
+        <section data-include="slides/reverse.html"></section>
+        <section data-include="slides/caesar.html"></section>
+        <section data-include="slides/course.html"></section>
 
-        <section>
-            How to keep your secrets from leaking?
-            <aside class="notes">
-                Encrypt your secrets!<br>
-            </aside>
-        </section>
-
-        <section>
-            Encrypt<br>
-            <!--            <p class="fragment">Use the cryptic library </p>-->
-            <pre class="fragment"><code class="scala">
-val enc: Encrypted[String] = "secret".encrypted
-            </code></pre>
-            <aside class="notes">
-                Cryptic make using encryption easy.<br>
-                This is all you need to do!<br>
-                But we also need to decrypt
-            </aside>
-        </section>
-
-        <section>
-            Decrypt<br>
-            <pre class="fragment"><code class="scala">
-val dec: Try[String] = enc.decrypted
-// ==> Success("secret")
-            </code></pre>
-            <aside class="notes">
-                Decryption is also easy to do!.
-            </aside>
-        </section>
-
-        <section>
-            Operate in encrypted space<br>
-            <pre class="fragment"><code class="scala">
-val upper = enc.map(_.toUpperCase)
-            </code></pre>
-            <pre class="fragment"><code class="scala">
-val dec = upper.decrypted
-// ==> SECRET
-            </code></pre>
-            <pre class="fragment">
-            <code class="scala">
-collect, flatMap, filter, filterNot, orElse
-            </code>
-            </pre>
-
-            <aside class="notes">
-                You can also operate in encrypted space.<br>
-                No need for decryption here.<br>
-                Allows for keeping sensitive information restricted.<br>
-                Not just map<br>
-                All the expected operations are available<br>
-                But let's look in to the details
-            </aside>
-        </section>
-
-        <section>
-            Encryption<br>
-            <pre class="fragment"><code class="scala">
-type Encrypt = PlainText => CipherText
-            </code></pre>
-            <aside class="notes">
-                So, what are PlainText and CipherText?<br>
-                PlainText holds the unencrypted data.<br>
-                CipherText holds the encrypted data.<br>
-                How to create PlainText?<br>
-            </aside>
-        </section>
-
-        <section>
-            Codec
-            <pre class="fragment"><code class="scala">
-trait Codec[V]:
-  def encode(v: V): PlainText
-  def decode(pt: PlainText): Try[V]
-        </code></pre>
-            <div class="fragment">Provided<br>
-                <pre><code class="scala ">
-String, Array[Byte], Float, Int, Long, Double, Option[V]
-            </code></pre>
-            </div>
-            <aside class="notes">
-                To create to and from PlainText we use a Codec<br>
-                Out of the box Cryptic provides Codecs for<br>
-            </aside>
-        </section>
-
-        <section>
-            Note about encrypting<br>
-            <p class="fragment">Only encrypt the secrets</p>
-            <pre class="fragment"><code class="scala">
-case class PlainText(bytes: Array[Byte],
-                     manifest: Manifest = Manifest.empty)
-            </code></pre>
-            <aside class="notes">
-                Make sure that only the secret is encrypted<br>
-                If an adversary knows something about what's encrypted, decryption is easier<br>
-                When creating a Codec<br>
-                use the PlainText Manifest to store structure.<br>
-                The Manifest is not to be encrypted.<br>
-            </aside>
-        </section>
-
-        <section>
-            CipherText<br>
-            <pre class="fragment"><code class="scala">
-case class CipherText(bytes: Array[Byte])
-            </code></pre>
-            <aside class="notes">
-                The result of encryption function is CipherText<br>
-            </aside>
-        </section>
-
-        <section>
-            The encrypted method<br>
-            <pre class="fragment"><code class="scala">
-extension [V: Codec](value: V)
-  def encrypted(using encrypt: Encrypt): Encrypted[V] =
-                Encrypted(value)
-            </code></pre>
-            <aside class="notes">
-                We have an extension of the Codec<br>
-                After encrypted we have CipherText wrapped in an Encrypted<br>
-            </aside>
-        </section>
-
-        <section>
-            <pre><code class="scala">
-case class Encrypted[V: Codec](cipherText: CipherText) extends
-            Cryptic[V]
-
-object Encrypted:
-  def apply[V: Codec](value: V)(using encrypt: Encrypt):
-        Encrypted[V] =
-    if value == null then empty
-    else Encrypted[V](encrypt(summon[Codec[V]].encode(value)))
-            </code></pre>
-        </section>
-
-        <section>
-            Decrypt<br>
-            <pre class="fragment"><code class="scala">
-type Decrypt = CipherText => Try[PlainText]
-            </code></pre>
-            <aside class="notes">
-                Will be Failure if decryption fails<br>
-            </aside>
-        </section>
-
-        <section>
-            The decrypted method<br>
-            <pre class="fragment"><code class="scala">
-case class Encrypted[V: Codec] extends Cryptic[V]
-  def decrypted(using decrypt: Decrypt): Try[V]
-            </code></pre>
-            <aside class="notes">
-                The decoded method is actually in Cryptic<br>
-                When a codec and Decrypt are given we can decrypt<br>
-            </aside>
-        </section>
-        
-        <section data-markdown>
-            #### Provided cryptos
-            | Crypto | Kind | Package |
-            |-------|-------------|--------|
-            | AES | Symmetrical | core|
-            | RSA | Asymmetrical| core |
-            | EllipticCurve | Asymmetrical| cryptic-bouncycastle |
-
-            Note:
-            Cryptic comes with three different cryptos
-        </section>
-
-        <section>
-
-            <section>
-                Advanced Encryption Standard
-                <br>
-                <section class="encryption-features">
-                    <br>
-                    <ul class="feature-list">
-                        <li class="feature-item">Fast in operation</li>
-                        <li class="feature-item">Using relatively small keys compared to asymmetric algorithms</li>
-                        <li class="feature-item">Secure when properly implemented</li>
-                        <li class="feature-item">Widely adopted as an industry standard</li>
-                    </ul>
-                </section>
-            </section>
-
-            <section>
-                AES<br>
-                <pre><code class="scala">
-given encrypt(using passphrase: AESPassphrase,
-              aesParams: AESParams): Encrypt
-
-given decrypt(using passphrase: AESPassphrase,
-             aesParams: AESParams): Decrypt
-            </code></pre>
-                <aside class="notes">
-                    As AES is a symmetrical crypto the encrypt/decrypt methods are very similar<br>
-                    But the security lies in the AESParams
-                </aside>
-            </section>
-
-            <section>
-                Default AES parameters use GCM mode<br>
-                <pre><code class="scala">
-  case class GcmParams(
-      factoryAlgorithm: String = "PBKDF2WithHmacSHA256",
-      mode: String = "GCM/NoPadding",
-      keyspecIterationCount: Int = 310000,
-      keyspecLength: Int = 256,
-      saltLength: Int = 32,
-      version: Int = 1
-  ) extends AesParams</code></pre>
-                <aside class="notes">
-                    Key derivation function - PBKDF2 with SHA-256
-                    mode: String = "GCM/NoPadding",
-                    Number of iterations for key derivation (min 310000 per OWASP)
-                    Key length in bits (256 for Aes-256)
-                    Salt length in bytes (min 16 bytes recommended)
-                    Algorithm version for future migrations
-                    version: Int = 1
-                    )
-                </aside>
-            </section>
-
-            <section>
-                Encrypt<br>
-                <pre><code class="scala">
-import cryptic.{given,*}
-import cryptic.codec.default.given
-import cryptic.crypto.Aes.{given, *}
-
-given params: AesParams = GcmParams()
-given phrase: AesPassphrase = AesPassphrase("correct horse")
-
-val enc = "secret".encrypted
-// ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
-                    </code></pre>
-            </section>
-
-            <section>
-                Decrypt<br>
-                <pre><code class="scala">
-import cryptic.{given,*}
-import cryptic.codec.default.given
-import cryptic.crypto.Aes.{given, *}
-
-given params: AesParams = GcmParams()
-given phrase: AesPassphrase = AesPassphrase("correct horse")
-
-enc.decrypted
-// ==> Success("secret")
-                </code></pre>
-            </section>
-
-        </section>
-        <section>
-            <section>
-                <h4>RSA (Rivest-Shamir-Adleman)<br></h4>
-                slides/
-                ├── intro/
-                │ ├── title.html
-                │ └── who-we-are.html
-                ├── encryption/
-                │ ├── aes.html
-                │ ├── rsa.html
-                │ └── ecies.html
-                └── conclusion/
-                └── summary.html</section>
-
-            <section>
-                RSA
-                <pre><code class="scala">
-import java.security.*
-
-given encrypt(using key: PublicKey): Encrypt
-
-given decrypt(using key: PrivateKey): Decrypt
-
-def keygen(size: Int): KeyPair
-            </code></pre>
-            </section>
-
-            <section>
-                Encrypt<br>
-                <pre><code class="scala">
-import cryptic.{given,*}
-import cryptic.codec.default.given
-import Rsa.given
-
-val keyPair: KeyPair = RSA.keygen(2048)
-given publicKey: PublicKey = keyPair.getPublic
-
-val enc = "secret".encrypted
-// ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
-            </code> </pre>
-            </section>
-
-            <section>
-                Decrypt<br>
-                <pre><code class="scala">
-given privateKey: PrivateKey = keyPair.getPrivate
-
-enc.decrypted
-// ==> Success("secret")
-            </code></pre>
-            </section>
-        </section>
-
-        <section>
-            <section>
-                Elliptic Curve Integrated Encryption Scheme<br>
-                <ul>
-                    <li class="fragment">
-                        <strong>Key Size Advantage:</strong>
-                        256-bit ECC keys provide equivalent security to 3072-bit RSA
-                    </li>
-                    <li class="fragment">
-                        <strong>Performance:</strong>
-                        Faster key generation and smaller key sizes than traditional RSA
-                    </li>
-                    <li class="fragment">
-                        <strong>Security Features:</strong>
-                        <ul class="sub-features">
-                            <li>Hybrid encryption combining ECC with symmetric encryption</li>
-                            <li>Built-in key agreement protocol (ECDH)</li>
-                            <li>Message authentication (MAC) for integrity</li>
-                        </ul>
-                    </li>
-                    <li class="fragment">
-                        <strong>Recommended Usage:</strong>
-                        Ideal for mobile and IoT applications where resources are constrained
-                    </li>
-                </ul>
-
-            </section>
-            <section>
-                Elliptic Curve<br>
-                <pre><code class="scala data-trim data-noescape">
-import java.security.*
-
-given encrypt(using key: PublicKey): Encrypt
-
-given decrypt(using key: PrivateKey): Decrypt
-
-def keygen(size: Int): KeyPair
-            </code></pre>
-            </section>
-            <section>
-                Encryption
-                <pre><code class="scala" data-trim data-noescape>
-import cryptic.{*, given}
-import cryptic.crypto.EllipticCurve.given
-import java.security.*
-
-val keyPair: KeyPair = EllipticCurve.keygen(256)
-given publicKey: PublicKey = keyPair.getPublic
-val enc = "secret".encrypted
-// ==> Encrypted(CipherText(0x04e5da5206...))
-            </code></pre>
-            </section>
-            <section>
-                Decryption
-                <pre><code class="scala" data-trim data-noescape>
-given privateKey: PrivateKey = keyPair.getPrivate
-enc.decrypt
-// ==> Success("secret")
-            </code></pre>
-            </section>
-        </section>
-
-        <section>
-            Implementing a crypto<br>
-        </section>
-        
-        <section>
-            Online course<br>
-            Stanford Cryptography I<br>
-            <img src="images/stanford-crypto-1.png">
-            https://online.stanford.edu/courses/soe-y0001-cryptography-i
-        </section>
     </div>
 </div>
 
@@ -421,14 +50,24 @@ enc.decrypt
 <script src="plugin/markdown/markdown.js"></script>
 <script src="plugin/highlight/highlight.js"></script>
 <script>
-    // More info about initialization & config:
-    // - https://revealjs.com/initialization/
-    // - https://revealjs.com/config/
+    // Add the HTML include plugin
+    let includes = document.querySelectorAll('[data-include]');
+    includes.forEach(include => {
+        let file = include.getAttribute('data-include');
+        fetch(file)
+            .then(response => response.text())
+            .then(text => {
+                include.innerHTML = text;
+            });
+    });
+
     Reveal.initialize({
         hash: true,
-
-        // Learn about plugins: https://revealjs.com/plugins/
-        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+        // Enable the HTML include plugin
+        dependencies: [
+            { src: 'plugin/external/external.js', condition: function() { return !!document.querySelector('[data-include]'); } }
+        ]
     });
 </script>
 </body>

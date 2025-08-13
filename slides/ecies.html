@@ -1,0 +1,62 @@
+
+<section>
+    Elliptic Curve Integrated Encryption Scheme<br>
+    <ul>
+        <li class="fragment">
+            <strong>Key Size Advantage:</strong>
+            256-bit ECC keys provide equivalent security to 3072-bit RSA
+        </li>
+        <li class="fragment">
+            <strong>Performance:</strong>
+            Faster key generation and smaller key sizes than traditional RSA
+        </li>
+        <li class="fragment">
+            <strong>Security Features:</strong>
+            <ul class="sub-features">
+                <li>Hybrid encryption combining ECC with symmetric encryption</li>
+                <li>Built-in key agreement protocol (ECDH)</li>
+                <li>Message authentication (MAC) for integrity</li>
+            </ul>
+        </li>
+        <li class="fragment">
+            <strong>Recommended Usage:</strong>
+            Ideal for mobile and IoT applications where resources are constrained
+        </li>
+    </ul>
+</section>
+
+<section>
+    Elliptic Curve<br>
+    <pre><code class="scala data-trim data-noescape">
+import java.security.*
+
+given encrypt(using key: PublicKey): Encrypt
+
+given decrypt(using key: PrivateKey): Decrypt
+
+def keygen(size: Int): KeyPair
+    </code></pre>
+</section>
+
+<section>
+    Encryption
+    <pre><code class="scala" data-trim data-noescape>
+import cryptic.{*, given}
+import cryptic.crypto.EllipticCurve.given
+import java.security.*
+
+val keyPair: KeyPair = EllipticCurve.keygen(256)
+given publicKey: PublicKey = keyPair.getPublic
+val enc = "secret".encrypted
+// ==> Encrypted(CipherText(0x04e5da5206...))
+    </code></pre>
+</section>
+
+<section>
+    Decryption
+    <pre><code class="scala" data-trim data-noescape>
+given privateKey: PrivateKey = keyPair.getPrivate
+enc.decrypt
+// ==> Success("secret")
+    </code></pre>
+</section>

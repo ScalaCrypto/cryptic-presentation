@@ -1,0 +1,50 @@
+
+<section>
+    <h4>RSA (Rivest-Shamir-Adleman)<br></h4>
+    <ul>
+        <li class="fragment"><strong>Key Distribution:</strong> Asymmetric nature provides strong security</li>
+        <li class="fragment"><strong>Key Strength:</strong> 2048-bit keys provide adequate security for current computing capabilities</li>
+        <li class="fragment"><strong>Limitation:</strong> RSA can only encrypt data up to (key size - padding) bytes. For 2048-bit keys, maximum
+            encryption capacity is approximately 245 bytes
+        </li>
+        <li class="fragment"><strong>Best Usage:</strong> Suitable for encrypting small amounts of data or key exchange</li>
+    </ul>
+</section>
+
+<section>
+    RSA
+    <pre><code class="scala">
+import java.security.*
+
+given encrypt(using key: PublicKey): Encrypt
+
+given decrypt(using key: PrivateKey): Decrypt
+
+def keygen(size: Int): KeyPair
+    </code></pre>
+</section>
+
+<section>
+    Encrypt<br>
+    <pre><code class="scala">
+import cryptic.{given,*}
+import cryptic.codec.default.given
+import Rsa.given
+
+val keyPair: KeyPair = RSA.keygen(2048)
+given publicKey: PublicKey = keyPair.getPublic
+
+val enc = "secret".encrypted
+// ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
+    </code> </pre>
+</section>
+
+<section>
+    Decrypt<br>
+    <pre><code class="scala">
+given privateKey: PrivateKey = keyPair.getPrivate
+
+enc.decrypted
+// ==> Success("secret")
+    </code></pre>
+</section>

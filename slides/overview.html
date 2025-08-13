@@ -1,0 +1,57 @@
+
+<section>
+    How to keep your secrets from leaking?
+    <aside class="notes">
+        Encrypt your secrets!<br>
+    </aside>
+</section>
+
+<section>
+    Encrypt<br>
+    <!--            <p class="fragment">Use the cryptic library </p>-->
+    <pre class="fragment"><code class="scala">
+val enc: Encrypted[String] = "secret".encrypted
+            </code></pre>
+    <aside class="notes">
+        Cryptic make using encryption easy.<br>
+        This is all you need to do!<br>
+        But we also need to decrypt
+    </aside>
+
+</section>
+
+<section>
+    Decrypt<br>
+    <pre class="fragment"><code class="scala">
+val dec: Try[String] = enc.decrypted
+// ==> Success("secret")
+            </code></pre>
+    <aside class="notes">
+        Decryption is also easy to do!.
+    </aside>
+</section>
+
+<section>
+    Operate in encrypted space<br>
+    <pre class="fragment"><code class="scala">
+val upper = enc.map(_.toUpperCase)
+            </code></pre>
+    <pre class="fragment"><code class="scala">
+val dec = upper.decrypted
+// ==> SECRET
+            </code></pre>
+    <pre class="fragment">
+            <code class="scala">
+collect, flatMap, filter, filterNot, orElse
+            </code>
+            </pre>
+
+    <aside class="notes">
+        You can also operate in encrypted space.<br>
+        No need for decryption here.<br>
+        Allows for keeping sensitive information restricted.<br>
+        Not just map<br>
+        All the expected operations are available<br>
+        But let's look in to the details
+    </aside>
+</section>
