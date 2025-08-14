@@ -1,27 +1,26 @@
-
 <section>
-    How to keep your secrets from leaking?
+    Using the Cryptic library
     <aside class="notes">
-        Encrypt your secrets!<br>
+        You need two functions
     </aside>
 </section>
 
 <section>
-    Encrypt<br>
+    Encryption<br>
     <!--            <p class="fragment">Use the cryptic library </p>-->
     <pre class="fragment"><code class="scala">
 val enc: Encrypted[String] = "secret".encrypted
             </code></pre>
     <aside class="notes">
         Cryptic make using encryption easy.<br>
-        This is all you need to do!<br>
+        Use the encrypted extension on String<br>
         But we also need to decrypt
     </aside>
 
 </section>
 
 <section>
-    Decrypt<br>
+    Decryption<br>
     <pre class="fragment"><code class="scala">
 val dec: Try[String] = enc.decrypted
 // ==> Success("secret")
@@ -34,6 +33,7 @@ val dec: Try[String] = enc.decrypted
 <section>
     Operate in encrypted space<br>
     <pre class="fragment"><code class="scala">
+val enc = "secret".encrypted
 val upper = enc.map(_.toUpperCase)
             </code></pre>
     <pre class="fragment"><code class="scala">
