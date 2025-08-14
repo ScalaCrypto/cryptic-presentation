@@ -76,12 +76,12 @@ val enc.decrypted
 <section>
     <pre><code class="scala" data-trim data-noescape>
 given decrypt(using keys: Keys): Decrypt = (cipherText: CipherText) =>
-
-  val IArray(manifest, bytes) = cipherText.split
-
-  val keyId = manifest.toKeyId
-  val offset = keys.offsets(keyId)
-  Try[PlainText](PlainText(bytes.map(b => (b - offset).toByte)))
+    Try:
+      val IArray(manifest, bytes) = cipherText.split
+      val keyId = manifest.toKeyId
+      val offset = keys.get(keyId)
+      val decoded = bytes.map(b => (b - offset).toByte)
+      PlainText(decoded, manifest)
     </code></pre>
     <aside class="notes">
         Use the CipherText.split function<br>
