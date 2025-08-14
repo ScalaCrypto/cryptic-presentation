@@ -3,7 +3,9 @@
     <pre class="fragment"><code class="scala">
 extension [V: Codec](value: V)
   def encrypted(using encrypt: Encrypt): Encrypted[V] =
-                Encrypted(value)
+    Encrypted(value, Manifest.empty)
+  def encrypted(manifest: Manifest)(using encrypt: Encrypt): Encrypted[V] =
+    Encrypted(value, manifest)
             </code></pre>
     <aside class="notes">
         We have an extension of the Codec<br>

@@ -1,0 +1,13 @@
+<section>
+    <pre><code class="scala">
+type Manifest = IArray[Byte]
+
+case class PlainText(bytes: IArray[Byte], manifest: Manifest)
+    </code></pre>
+    <aside class="notes">
+        Manifest will not be encrypted<br>
+        Put the secrets in bytes<br>
+        If an adversary knows something about what's encrypted, decryption is easier<br>
+        Codec for encoding/decoding<br>
+    </aside>
+</section>

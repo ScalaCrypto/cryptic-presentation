@@ -6,7 +6,7 @@
 </section>
 
 <section>
-    Encryption<br>
+    Encrypted<br>
     <!--            <p class="fragment">Use the cryptic library </p>-->
     <pre class="fragment"><code class="scala">
 val enc: Encrypted[String] = "secret".encrypted
@@ -20,7 +20,7 @@ val enc: Encrypted[String] = "secret".encrypted
 </section>
 
 <section>
-    Decryption<br>
+    Decrypted<br>
     <pre class="fragment"><code class="scala">
 val dec: Try[String] = enc.decrypted
 // ==> Success("secret")
@@ -40,11 +40,9 @@ val upper = enc.map(_.toUpperCase)
 val dec = upper.decrypted
 // ==> SECRET
             </code></pre>
-    <pre class="fragment">
-            <code class="scala">
+    <pre class="fragment"><code class="scala">
 collect, flatMap, filter, filterNot, orElse
-            </code>
-            </pre>
+    </code></pre>
 
     <aside class="notes">
         You can also operate in encrypted space.<br>
