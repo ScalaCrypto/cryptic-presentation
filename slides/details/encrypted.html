@@ -1,27 +1,35 @@
 <section>
-    The encrypted method<br>
-    <pre class="fragment"><code class="scala">
+    Encrypted<br>
+    <pre><code class="scala">
+case class Encrypted[V: Codec](cipherText: CipherText) extends
+    Cryptic[V]
+
+object Encrypted:
+  def apply[V: Codec](value: V)(using encrypt: Encrypt):
+      Encrypted[V] =
+    if value == null then empty
+    else Encrypted[V](encrypt(summon[Codec[V]].encode(value)))
+    </code></pre>
+</section>
+
+<section>
+    The <b>encrypted</b> method<br>
+    <pre><code class="scala">
 extension [V: Codec](value: V)
   def encrypted(using encrypt: Encrypt): Encrypted[V] =
     Encrypted(value, Manifest.empty)
   def encrypted(manifest: Manifest)(using encrypt: Encrypt): Encrypted[V] =
     Encrypted(value, manifest)
-            </code></pre>
-    <aside class="notes">
-        We have an extension of the Codec<br>
-        After encrypted we have CipherText wrapped in an Encrypted<br>
-    </aside>
-</section>
-
-<section>
-    <pre><code class="scala">
-case class Encrypted[V: Codec](cipherText: CipherText) extends
-            Cryptic[V]
-
-object Encrypted:
-  def apply[V: Codec](value: V)(using encrypt: Encrypt):
-        Encrypted[V] =
-    if value == null then empty
-    else Encrypted[V](encrypt(summon[Codec[V]].encode(value)))
     </code></pre>
+    <pre class="fragment"><code class="scala">
+"Secret".encrypted
+// ==> Encrypted[String]
+    </code></pre>
+    <aside class="notes">
+      <ul>
+        <li>Any value having a codec will have the <b>encrypted</b> extension method.</li>
+        <li>After encrypted we have CipherText wrapped in an Encrypted.</li>
+        <li>Extensions methods provides simplicity for the user.</li>
+      </ul>
+    </aside>
 </section>

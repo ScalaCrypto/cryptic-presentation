@@ -8,13 +8,16 @@
 
 <section>
     Encrypt<br>
-    <p class="fragment">Only the sensetive parts</p>
+    <p class="fragment">But only the sensitive parts</p>
     <pre class="fragment"><code class="scala">
-case class Person(id:Long, email:Encrypted[String])
+case class Person(id: Long, email: Encrypted[String])
     </code></pre>
-    <p class="fragment">and throw away the key</p>
+    <p class="fragment">and simply throw away the key <br>
+        when required to forget</p>
     <aside class="notes">
-        Cryptic allows for fine grained encryption<br>
-        GDPR - forget data
+        <ul>
+            <li>Cryptic allows for fine grained encryption.</li>
+            <li>GDPR - forget data by deleting the key</li>
+        </ul>
     </aside>
 </section>

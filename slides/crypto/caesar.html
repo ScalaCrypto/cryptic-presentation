@@ -9,22 +9,24 @@ def keygen(offset: Int): Key = Key(offset)
 
     <pre class="fragment"><code class="scala">
 given encrypt(using key: Key): Encrypt =
-    (plainText: PlainText) =>
-      val bytes = plainText.bytes.mutable
-        .map(b ⇒ (b + key.offset).toByte).immutable
-      CipherText(bytes)
+  (plainText: PlainText) =>
+    val bytes = plainText.bytes.mutable
+      .map(b ⇒ (b + key.offset).toByte).immutable
+    CipherText(bytes)
     </code></pre>
 
     <pre class="fragment"><code class="scala">
 given decrypt(using key: Key): Decrypt =
-      (cipherText: CipherText) =>
-        val bytes = cipherText.bytes
-         .map(b => (b - key.offset).toByte))
+  (cipherText: CipherText) =>
+    val bytes = cipherText.bytes
+     .map(b => (b - key.offset).toByte))
   Try[PlainText](PlainText(bytes.immutable))
   </code></pre>
 
     <aside class="notes">
-        A keygen function is nice to have<br>
-        Now look at using the Manifest
+      <ul>
+        <li>A keygen function is nice to have.</li>
+        <li>Now look at using the <b>manifest</b>.</li>
+      </ul>
     </aside>
 </section>

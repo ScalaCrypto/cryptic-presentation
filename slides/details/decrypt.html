@@ -2,8 +2,10 @@
     Decrypt<br>
     <pre class="fragment"><code class="scala">
 type Decrypt = CipherText => Try[PlainText]
-            </code></pre>
+    </code></pre>
     <aside class="notes">
-        Will be Failure if decryption fails<br>
+        <ul>
+            <li>Will return a failure if decryption fails.</li>
+        </ul>
     </aside>
 </section>

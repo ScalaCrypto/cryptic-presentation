@@ -12,9 +12,11 @@
 val enc: Encrypted[String] = "secret".encrypted
             </code></pre>
     <aside class="notes">
-        Cryptic make using encryption easy.<br>
-        Use the encrypted extension on String<br>
-        But we also need to decrypt
+        <ul>
+            <li>Cryptic makes encryption easy.</li>
+            <li>Just use the encrypted extension on <i>in this case</i> a string.</li>
+            <li>But we also need to decrypt.</li>
+        </ul>
     </aside>
 
 </section>
@@ -24,18 +26,22 @@ val enc: Encrypted[String] = "secret".encrypted
     <pre class="fragment"><code class="scala">
 val dec: Try[String] = enc.decrypted
 // ==> Success("secret")
-            </code></pre>
+    </code></pre>
     <aside class="notes">
-        Decryption is also easy to do!.
+        <ul>
+            <li>Decryption is just as easy.</li>
+            <li>Simply use the decrypted method on an encrypted value.</li>
+            <li>It returns a Try, so you can easily handle errors.</li>
+        </ul>
     </aside>
 </section>
 
 <section>
-    Operate in encrypted space<br>
+    Operations on encrypted values<br>
     <pre class="fragment"><code class="scala">
 val enc = "secret".encrypted
 val upper = enc.map(_.toUpperCase)
-            </code></pre>
+    </code></pre>
     <pre class="fragment"><code class="scala">
 val dec = upper.decrypted
 // ==> SECRET
@@ -45,11 +51,12 @@ collect, flatMap, filter, filterNot, orElse
     </code></pre>
 
     <aside class="notes">
-        You can also operate in encrypted space.<br>
-        No need for decryption here.<br>
-        Allows for keeping sensitive information restricted.<br>
-        Not just map<br>
-        All the expected operations are available<br>
-        But let's look in to the details
+        <ul>
+            <li>You can also do operations on encrypted values.</li>
+            <li>No need for decryption here.</li>
+            <li>Allows you to keep all handling of sensitive information in a separate place.</li>
+            <li>Not just map, all the expected operations are available.</li>
+            <li>But let's look in at the details.</li>
+        </ul>
     </aside>
 </section>

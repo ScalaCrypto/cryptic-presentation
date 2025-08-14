@@ -4,14 +4,17 @@
 trait Codec[V]:
   def encode(v: V): PlainText
   def decode(pt: PlainText): Try[V]
-        </code></pre>
+    </code></pre>
     <div class="fragment">Provided<br>
         <pre><code class="scala ">
-String, Array[Byte], Float, Int, Long, Double, Option[V]
-            </code></pre>
+String, Array[Byte], Int, Long, Float, Double,
+Option[? : Codec]
+        </code></pre>
     </div>
     <aside class="notes">
-        To create to and from PlainText we use a Codec<br>
-        Out of the box provides Codecs for primitive types and Option<br>
+      <ul>
+        <li>A codec is used to encode a type into bytes, and also for decoding the bytes back again</li>
+        <li>Out of the box Cryptic provides codecs for primitive types and Option</li>
+      </ul>
     </aside>
 </section>

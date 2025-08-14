@@ -5,9 +5,12 @@ type Manifest = IArray[Byte]
 case class PlainText(bytes: IArray[Byte], manifest: Manifest)
     </code></pre>
     <aside class="notes">
-        Manifest will not be encrypted<br>
-        Put the secrets in bytes<br>
-        If an adversary knows something about what's encrypted, decryption is easier<br>
-        Codec for encoding/decoding<br>
+        <ul>
+            <li>PlainText holds the unencrypted data.</li>
+            <li>It also holds a Manifest, which will not be encrypted.</li>
+            <li>Put the secrets in the bytes, anything else in the manifest.</li>
+            <li>If an adversary knows something about what is encrypted, forced decryption becomes easier.</li>
+            <li>So how do we convert a secret to bytes?</li>
+        </ul>
     </aside>
 </section>
