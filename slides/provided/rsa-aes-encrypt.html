@@ -1,0 +1,18 @@
+<section>
+    <pre><code class="scala">
+(plainText: PlainText) =>
+  val aesKey = Aes.keygen()
+  val iv = aesParams.newIv()
+  val ivSpec = aesParams.paramSpec(iv)
+  val encryptedText =
+    Aes.encrypt(plainText.bytes, aesKey, ivSpec, aesParams.mode)
+  val encryptedAesKey =
+    asymmetric.encrypt(aesKey.getEncoded.immutable, publicKey)
+  CipherText(
+    plainText.manifest,
+    iv.immutable,
+    encryptedAesKey,
+    encryptedText
+  )
+    </code> </pre>
+</section>

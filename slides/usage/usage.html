@@ -8,13 +8,13 @@
 <section>
     Encrypted<br>
     <!--            <p class="fragment">Use the cryptic library </p>-->
-    <pre class="fragment"><code class="scala">
+    <pre><code class="scala">
 val enc: Encrypted[String] = "secret".encrypted
             </code></pre>
     <aside class="notes">
         <ul>
             <li>Cryptic makes encryption easy.</li>
-            <li>Just use the encrypted extension on <i>in this case</i> a string.</li>
+            <li>Encrypted extension on <i>in this case</i> a string.</li>
             <li>But we also need to decrypt.</li>
         </ul>
     </aside>
@@ -23,14 +23,14 @@ val enc: Encrypted[String] = "secret".encrypted
 
 <section>
     Decrypted<br>
-    <pre class="fragment"><code class="scala">
+    <pre><code class="scala">
 val dec: Try[String] = enc.decrypted
 // ==> Success("secret")
     </code></pre>
     <aside class="notes">
         <ul>
             <li>Decryption is just as easy.</li>
-            <li>Simply use the decrypted method on an encrypted value.</li>
+            <li>Decrypted method on an encrypted value.</li>
             <li>It returns a Try, so you can easily handle errors.</li>
         </ul>
     </aside>
@@ -44,7 +44,7 @@ val upper = enc.map(_.toUpperCase)
     </code></pre>
     <pre class="fragment"><code class="scala">
 val dec = upper.decrypted
-// ==> SECRET
+// ==> Success("SECRET")
             </code></pre>
     <pre class="fragment"><code class="scala">
 collect, flatMap, filter, filterNot, orElse

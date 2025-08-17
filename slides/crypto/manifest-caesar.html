@@ -4,7 +4,7 @@
 case class Keys(offsets: Map[Int, Int])
 
 extension (n: Int)
-  def toManifest: IArray[Byte] =
+  def toManifest: Manifest] =
     ByteBuffer.allocate(4).putInt(n).array().immutable
 
 extension (bytes: IArray[Byte])
@@ -28,9 +28,9 @@ given encrypt(using keys: Keys): Encrypt =
     </code></pre>
     <aside class="notes">
         <ul>
-          <li>Using the keyId in Manifest to select the key.</li>
-          <li>CipherText with 2 arrays</li>
-          <li>Note, only bytes are encrypted</li>
+            <li>Using the keyId in Manifest to select the key.</li>
+            <li>Note, only bytes are encrypted</li>
+            <li>CipherText with 2 arrays</li>
         </ul>
     </aside>
 </section>
@@ -38,13 +38,14 @@ given encrypt(using keys: Keys): Encrypt =
 <section>
     <pre><code class="scala">
 object CipherText:
-  def apply(array: IArray[Byte], arrays: IArray[Byte]*): CipherText =
+  def apply(array: IArray[Byte], arrays: IArray[Byte]*) =
     CipherText(IArray.join(array, arrays*))
     </code></pre>
     <aside class="notes">
         <ul>
-          <li>IArray.join is run length encoding the parts</li>
-          <li>We will see in next slide</li>
+            <li>IArray.join extension method</li>
+            <li>Run length encoding the parts</li>
+            <li>We will see in next slide</li>
         </ul>
     </aside>
 </section>
@@ -56,7 +57,7 @@ object CipherText:
     </code></pre>
 
     <pre class="fragment"><code class="scala">
-val keys = Keys(100 -> 1, 200 -> 2)
+given keys = Keys(100 -> 1, 200 -> 2)
 
 val enc = "secret".encrypted(100.toManifest)
 // ==> IArray(0,   0,   0,   2,
@@ -65,24 +66,30 @@ val enc = "secret".encrypted(100.toManifest)
     </code></pre>
 
     <pre class="fragment"><code class="scala">
-val end = "secret".encrypted(200.toManifest)
+"secret".encrypted(200.toManifest)
 // ==> IArray(0,   0,   0,   2,
 //            0,   0,   0,   4,   0,   0,   0, 200,
-//            0,   0,   0,   6, 118, 104, 102, 117, 104, 119)
+//            0,   0,   0,   6, 117, 103, 101, 116, 103, 118)
     </code></pre>
     <aside class="notes">
-        All pieces are present
+        Manifest is encoded in the plain text.
     </aside>
 </section>
 
 <section>
     What about decryption?
     <pre class="fragment"><code class="scala" data-trim data-noescape>
+given keys = Keys(100 -> 1, 200 -> 2)
+
 val enc.decrypted
-// => "secret"
+// => Success("secret")
     </code></pre>
     <aside class="notes">
-        Much simpler
+        <ul>
+            <li>We need the Key map</li>
+            <li>No need to give the key id</li>
+            <li>Look at implementation</li>
+        </ul>
     </aside>
 </section>
 
