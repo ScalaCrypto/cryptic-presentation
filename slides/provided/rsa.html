@@ -23,11 +23,10 @@ given encrypt(using key: PublicKey): Encrypt
 
 given decrypt(using key: PrivateKey): Decrypt
 
-def keygen(size: Int): KeyPair
+def newKeyPair(size: Int): KeyPair
     </code></pre>
     <aside class="notes">
         encrypt and decrypt takes different parameters<br>
-        keygen is to simplipy keygeneration<br>
     </aside>
 </section>
 
@@ -38,7 +37,7 @@ import cryptic.{given,*}
 import cryptic.codec.default.given
 import Rsa.given
 
-val keyPair: KeyPair = RSA.keygen(2048)
+val keyPair: KeyPair = RSA.newKeyPair(2048)
 given publicKey: PublicKey = keyPair.getPublic
 
 val enc = "secret".encrypted

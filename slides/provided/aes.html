@@ -34,7 +34,7 @@ given decrypt(using passphrase: AesPassphrase,
 </section>
 
 <section>
-    AesParams use GCM <br>
+    AesParams default GCM <br>
     <pre><code class="scala">
   case class GcmParams(
       factoryAlgorithm: String = "PBKDF2WithHmacSHA256",
@@ -45,10 +45,8 @@ given decrypt(using passphrase: AesPassphrase,
       version: Int = 1
   ) extends AesParams</code></pre>
     <aside class="notes">
-        The GCM, Galois/Counter Mod
+        The GCM, Galois/Counter Mod<br>
         These are reasonably secure choices by OWASP<br>
-
-        )
     </aside>
 </section>
 

@@ -1,12 +1,16 @@
 <section>
+  Decrypt
     <pre><code class="scala">
 (cipherText: CipherText) =>
   Try:
-    val IArray(manifest, iv, keyBytes, textBytes) = cipherText.split
-    val aesKeyBytes = asymmetric.decrypt(keyBytes, privateKey)
+    val IArray(manifest, iv, keyBytes, textBytes) =
+      cipherText.split
+    val aesKeyBytes = Rsa.decrypt(keyBytes, privateKey)
     val aesKey = Aes.key(aesKeyBytes)
     val ivSpec = aesParams.paramSpec(iv.mutable)
-    val text = Aes.decrypt(textBytes, aesKey, ivSpec, aesParams.mode)
+    val text = Aes.decrypt(textBytes, aesKey, ivSpec,
+      aesParams.mode)
+
     PlainText(text, manifest)
   </code></pre>
 </section>

@@ -5,6 +5,7 @@ case class Encrypted[V: Codec](cipherText: CipherText) extends
     Cryptic[V]
 
 object Encrypted:
+
   def apply[V: Codec](value: V)(using encrypt: Encrypt):
       Encrypted[V] =
     if value == null then empty
@@ -16,8 +17,10 @@ object Encrypted:
     The <b>encrypted</b> method<br>
     <pre><code class="scala">
 extension [V: Codec](value: V)
+
   def encrypted(using encrypt: Encrypt): Encrypted[V] =
     Encrypted(value, Manifest.empty)
+
   def encrypted(manifest: Manifest)(using encrypt: Encrypt): Encrypted[V] =
     Encrypted(value, manifest)
     </code></pre>

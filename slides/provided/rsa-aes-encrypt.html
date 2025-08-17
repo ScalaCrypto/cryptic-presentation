@@ -1,18 +1,24 @@
 <section>
+  Encrypt
     <pre><code class="scala">
 (plainText: PlainText) =>
-  val aesKey = Aes.keygen()
+  val aesKey = Aes.keygen(256)
   val iv = aesParams.newIv()
   val ivSpec = aesParams.paramSpec(iv)
   val encryptedText =
     Aes.encrypt(plainText.bytes, aesKey, ivSpec, aesParams.mode)
   val encryptedAesKey =
-    asymmetric.encrypt(aesKey.getEncoded.immutable, publicKey)
+    Rsa.encrypt(aesKey.getEncoded.immutable, publicKey)
+
   CipherText(
     plainText.manifest,
     iv.immutable,
     encryptedAesKey,
-    encryptedText
-  )
-    </code> </pre>
+    encryptedText)
+
+    </code></pre>
+  <aside class="notes">
+    Focus on the CipherText parts<br>
+    Let's look at decrypt
+  </aside>
 </section>

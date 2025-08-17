@@ -4,10 +4,12 @@
     <ul>
         <li class="fragment">Asymmetric</li>
         <li class="fragment">Smaller keys </li>
-        <li class="fragment">Faster then RSA</li>
+        <li class="fragment">Faster than RSA</li>
+        <li class="fragment">Hybrid mode</li>
     </ul>
     <aside class="notes">
         256-bit ECC keys provide equivalent security to 3072-bit RSA<br>
+        Comes with hybrid mode<br>
     </aside>
 </section>
 
@@ -20,11 +22,21 @@ given encrypt(using key: PublicKey): Encrypt
 
 given decrypt(using key: PrivateKey): Decrypt
 
-def keygen(size: Int): KeyPair
+def newKeyPair(): KeyPair
     </code></pre>
-    <aside class="notes">
-        Like RSA encrypt and decrypt takes different parameters
+    <aside class="notes ">
+        Like RSA encrypt and decrypt takes different key types<br>
+        KeyPairs generated from secp256r1
     </aside>
+</section>
+
+<section>
+    Default configuration<br>
+    ECIESwithAES-CBC/NONE/PKCS7Padding<br>
+    And params...
+    <pre class="fragment"><code class="scala" data-trim data-noescape>
+
+    </code></pre>
 </section>
 
 <section>
@@ -34,14 +46,14 @@ import cryptic.{*, given}
 import cryptic.crypto.EllipticCurve.given
 import java.security.*
 
-val keyPair: KeyPair = EllipticCurve.keygen(256)
+val keyPair: KeyPair = EllipticCurve.newKeyPair()
 given publicKey: PublicKey = keyPair.getPublic
+
 val enc = "secret".encrypted
 // ==> Encrypted(CipherText(0x04e5da5206...))
     </code></pre>
     <aside class="notes">
         The code is very similar to the RSA case<br>
-        Only the import differ.
     </aside>
 </section>
 
@@ -49,6 +61,7 @@ val enc = "secret".encrypted
     Decryption
     <pre><code class="scala" data-trim data-noescape>
 given privateKey: PrivateKey = keyPair.getPrivate
+
 enc.decrypt
 // ==> Success("secret")
     </code></pre>
