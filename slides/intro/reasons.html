@@ -2,12 +2,15 @@
 <section>
     How to keep our secrets from leaking?
     <aside class="notes">
-        Encrypt secrets!<br>
+        Back to secrets<br>
+        How to keep them?<br>
+        And forget them<br>
+        Encrypt them!<br>
     </aside>
 </section>
 
 <section>
-    Encrypt<br>
+    Encryption<br>
     <p class="fragment">But only the sensitive parts</p>
     <pre class="fragment"><code class="scala">
 case class Person(id: Long, email: Encrypted[String])
@@ -15,6 +18,8 @@ case class Person(id: Long, email: Encrypted[String])
     <p class="fragment">GDPR - Throw away the key</p>
     <aside class="notes">
         <ul>
+            <li>Easier to break if we somewhat know the plaintext</li>
+            <li>Json curly braces</li>
             <li>Cryptic allows for fine grained encryption.</li>
             <li>GDPR - forget data by deleting the key</li>
         </ul>

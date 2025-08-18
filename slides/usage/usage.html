@@ -1,37 +1,35 @@
 <section>
     Using the Cryptic library
+    <pre class="fragment"><code class="scala">
+def encrypted(using encrypt: Encrypt): Encrypted[V]
+
+def decrypted(using decrypt: Decrypt): Try[V]
+
+    </code> </pre>
     <aside class="notes">
-        You need two functions
+        You use the encrypted and decrypted functions<br>
+        And imports and stuff, we will cover later<br>
+        Let's look a encrypted first<br>
     </aside>
 </section>
 
 <section>
     Encrypted<br>
-    <!--            <p class="fragment">Use the cryptic library </p>-->
     <pre><code class="scala">
 val enc: Encrypted[String] = "secret".encrypted
             </code></pre>
-    <aside class="notes">
-        <ul>
-            <li>Cryptic makes encryption easy.</li>
-            <li>Encrypted extension on <i>in this case</i> a string.</li>
-            <li>But we also need to decrypt.</li>
-        </ul>
-    </aside>
-
-</section>
-
-<section>
-    Decrypted<br>
-    <pre><code class="scala">
+    <pre class="fragment"><code class="scala">
 val dec: Try[String] = enc.decrypted
 // ==> Success("secret")
     </code></pre>
     <aside class="notes">
         <ul>
+            <li>Cryptic makes encryption easy.</li>
+            <li>Encrypted extension on <i>in this case</i> a string.</li>
             <li>Decryption is just as easy.</li>
             <li>Decrypted method on an encrypted value.</li>
-            <li>It returns a Try, so you can easily handle errors.</li>
+            <li>It returns a Try, so you can handle errors.</li>
+            <li>You can operate in encrypted space</li>
         </ul>
     </aside>
 </section>
