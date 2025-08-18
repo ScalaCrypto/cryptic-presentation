@@ -1,27 +1,40 @@
 
 <section>
-    How to keep our secrets from leaking?
+    <p>Secrets</p>
+    <p class="fragment">How keep them?</p>
+    <p class="fragment">How forget?</p>
+    <p class="fragment">Encrypt them</p>
     <aside class="notes">
         Back to secrets<br>
         How to keep them?<br>
-        And forget them<br>
+        Secrets are often sensitive<br>
+        Sometimes we need to forget them<br>
         Encrypt them!<br>
     </aside>
 </section>
 
 <section>
-    Encryption<br>
+    Encrypt<br>
     <p class="fragment">But only the sensitive parts</p>
-    <pre class="fragment"><code class="scala">
-case class Person(id: Long, email: Encrypted[String])
-    </code></pre>
     <p class="fragment">GDPR - Throw away the key</p>
     <aside class="notes">
         <ul>
             <li>Easier to break if we somewhat know the plaintext</li>
             <li>Json curly braces</li>
-            <li>Cryptic allows for fine grained encryption.</li>
             <li>GDPR - forget data by deleting the key</li>
         </ul>
+    </aside>
+</section>
+
+<section>
+    Why use Cryptic<br>
+    <p class="fragment">Java -&gt; Scala</p>
+    <pre class="fragment"><code class="scala">
+case class Person(id: Long, email: Encrypted[String])
+    </code></pre>
+    <aside class="notes">
+        We created Cryptic to<br>
+        have crypto parts away from the business code<br>
+        allows for fine grained encryption.<br>
     </aside>
 </section>
