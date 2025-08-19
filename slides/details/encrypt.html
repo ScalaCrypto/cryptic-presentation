@@ -1,14 +1,24 @@
 
 <section>
-    Encrypt<br>
+    <h3>Encrypt</h3>
     <pre><code class="scala">
 type Encrypt = PlainText => CipherText
     </code></pre>
+    <pre class="fragment"><code class="scala">
+case class CipherText(bytes: Array[Byte])
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+case class PlainText(bytes: IArray[Byte],
+                     manifest: IArray[Byte])
+    </code></pre>
     <aside class="notes">
         <ul>
-            <li>So, what are PlainText and CipherText?</li>
-            <li>PlainText holds the unencrypted data.</li>
-            <li>CipherText holds the encrypted data.</li>
+            <li>The <b>Encrypt</b> type is simply a function from <b>PlainText</b> to <b>CypherText</b></li>
+            <li>&rarr; <b>CipherText</b> simply holds the encrypted data.</li>
+            <li>&rarr; <b>PlainText</b> holds the unencrypted data along with an optional <b>Manifest</b></li>
+            <li>Put the secrets in the bytes, anything else in the manifest (which will not be encrypted).</li>
+            <li>Knowledge about the structure of what is encrypted makes forced decryption easier.</li>
+            <li>So, how do you create an instance of PlainText?</li>
         </ul>
     </aside>
 </section>

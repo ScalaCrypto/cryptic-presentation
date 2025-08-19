@@ -4,24 +4,27 @@
     <p class="fragment">Forgetting</p>
     <p class="fragment">Encrypting</p>
     <aside class="notes">
-        How do keep them, without being leaked<br>
+        How do you &rarr; keep them, without being leaked<br>
         Secrets are often sensitive<br><br>
-        Sometimes you're required to forget<br>
-        One way of solving this problem<br><br>
-        Encrypt the secrets!<br>
+        Sometimes you're required to &rarr; forgetting them<br><br>
+        One way of solving this problem<br>
+        &rarr; Encrypting the secrets!<br>
     </aside>
 </section>
 
 <section>
     <h3>Keeping</h3>
-    <p class="fragment">Top - down</p>
-    <p class="fragment">Bottom - up</p>
+    <p class="fragment">Top-Down</p>
+    <p class="fragment">Bottom-Up</p>
     <aside class="notes">
-        You can either encrypt the whole<br>
-        Database or filesystem<br><br>
-        or only the sensitive parts<br>
-        With Top-Down - few keys large data<br>
-        B-U allows for many keys limited data<br>
+        Let's start with the problem of keeping secrets<br>
+        You can either encrypt the whole database or filesystem<br>
+        This is a &rarr; Top-Down approch<br>
+        Or only encrypt the sensitive parts<br>
+        This is a &rarr; Bottom-Up approach<br>
+        With Top-Down - you have few keys, each used widely<br>
+        Bottom-Up you have many keys, each used narrowly<br>
+    </aside>
 </section>
 
 <section>
@@ -30,10 +33,11 @@
     <p class="fragment">Backups</p>
     <p class="fragment">Throw away keys</p>
     <aside class="notes">
-        Why do we need to forget?<br><br>
-        GDPR can require us to forget<br><br>
-        TOP-DOWN how to handle backups?<br><br>
-        With bottom up - throw away that specific key<br>
+        So what about forgetting?<br>
+        Why do we need to forget secrets?<br><br>
+        &rarr; GDPR can require us to forget<br><br>
+        With a Top-Down approach, how do you handle &rarr; backups?<br><br>
+        With a Bottom-Up approach - you can <br>&rarr; throw away a key, and only secrets using that key are forgotten<br>
     </aside>
 </section>
 
@@ -63,10 +67,10 @@ val domain: Encrypted[String] = person.email.map(_.domain)
 // ==> Encrypted(CipherText(
     </code></pre>
     <aside class="notes">
-        JVM cryptography is java centric<br><br>
-        We created Cryptic to<br>
-        Provide a Scala bottom - up approach<br>
-        We think this looks good<br>
-        And we can use the Encrypted type as expected<br>
+        The Java cryptography API:s are naturally very Java centric<br>
+        We want a &rarr; Scala-tailored solution<br><br>
+        So, we created <b>Cryptic</b> to provide a Scala Bottom-Up approach<br><br>
+        &rarr; We think this looks much better<br><br>
+        &rarr; And we can use operations on the <b>Encrypted</b> type as expected of course<br>
     </aside>
 </section>

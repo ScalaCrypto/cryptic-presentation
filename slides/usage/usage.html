@@ -1,48 +1,54 @@
 <section>
-    Using the Cryptic library
+    <h3>Using the Cryptic library</h3>
     <pre class="fragment"><code class="scala">
 def encrypted(using encrypt: Encrypt): Encrypted[V]
-
+    </code> </pre>
+    <pre class="fragment"><code class="scala">
 def decrypted(using decrypt: Decrypt): Try[V]
-
     </code> </pre>
     <aside class="notes">
-        To encrypt and decrypt<br>
-        You use the encrypted and decrypted extensions<br>
-        Let's look a encrypted first<br>
+        <p>The basic usage of the Cryptic library is based on two extension methods:</p>
+        <p>To encrypt you use &rarr; <b>encrypted</b><br>
+        To decrypt you use &rarr; <b>decrypted</b></p>
+        Let's look a <b>encrypted</b> first &rarr;<br>
     </aside>
 </section>
 
 <section>
-    Encrypted<br>
-    <pre><code class="scala">
+    <h3>Encrypted</h3>
+    <pre class="fragment"><code class="scala">
 val enc: Encrypted[String] = "secret".encrypted
-            </code></pre>
+    </code></pre>
     <pre class="fragment"><code class="scala">
 val dec: Try[String] = enc.decrypted
 // ==> Success("secret")
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>Cryptic makes encryption easy.</li>
-            <li>Encrypted extension on <i>in this case</i> a string.</li>
-            <li>Decryption is just as easy.</li>
-            <li>Decrypted method on an encrypted value.</li>
-            <li>It returns a Try, so you can handle errors.</li>
-            <li>You can operate in encrypted space</li>
+            <li>Cryptic makes encryption easy:<br>
+                &rarr; Just call <b>encrypted</b> on <i>(in this case)</i> a string.</li>
+            <li>&rarr; Decryption is just as easy:<br>
+                Call <b>decrypted</b> on an encrypted value and you will get the decrypted value back</li>
+            <li>It returns a <b>Try</b>, so you can handle errors.</li>
+            <li>You can also operate in encrypted space &rarr;</li>
         </ul>
     </aside>
 </section>
 
 <section>
-    Operations on encrypted values<br>
+    <h3>Operations</h3>
     <pre class="fragment"><code class="scala">
-val enc = "secret".encrypted
+val enc = "secret sauce".encrypted
+    </code></pre>
+    <pre class="fragment"><code class="scala">
 val upper = enc.map(_.toUpperCase)
     </code></pre>
     <pre class="fragment"><code class="scala">
-val dec = upper.decrypted
-// ==> Success("SECRET")
+val snaked = enc.map(_.replace(' ', '_'))
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+val dec = snaked.decrypted
+// ==> Success("SECRET_SAUCE")
             </code></pre>
     <pre class="fragment"><code class="scala">
 collect, flatMap, filter, filterNot, orElse
@@ -50,11 +56,32 @@ collect, flatMap, filter, filterNot, orElse
 
     <aside class="notes">
         <ul>
-            <li>You can also do operations on encrypted values.</li>
-            <li>No need for decryption here.</li>
-            <li>Allows you to keep all handling of sensitive information in a separate place.</li>
-            <li>Not just map, all the expected operations are available.</li>
-            <li>But let's look in at the details.</li>
+            <li>&rarr; Say you want to tranform the secret:</li>
+            <li>No need to decrypt anything.</li>
+            <li>&rarr; Just call <b>map</b> on the encrypted value</li>
+            <li>You get another encrypted value back.</li>
+            <li>&rarr; And you can continue to operate.</li>
+            <li>&rarr; The operations are staged until you call <b>decrypted</b>.</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <h3>Operations continued</h3>
+    <pre class="fragment"><code class="scala">
+def map[W: Codec](f: V => W)
+def flatMap[W: Codec](f: V => Cryptic[W])
+def flatten[W : Codec](using ev: V <:< Cryptic[W])
+def filter(p: V => Boolean)
+def filterNot(p: V => Boolean)
+def collect[W: Codec](pf: PartialFunction[V, W])
+def orElse[W >: V: Codec](alt: => Cryptic[W])
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>Not just <b>map</b> is supported, &rarr; all the expected operations are available.</li>
+            <li>This allows you to keep all handling of sensitive information in a separate place in the code or confined to a separate node in your cluster</li>
+            <li>Now, let's take a look at the details:</li>
         </ul>
     </aside>
 </section>
