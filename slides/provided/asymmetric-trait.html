@@ -1,0 +1,32 @@
+<section>
+    <h3>Asymmetric trait</h3>
+    <pre class="fragment"><code class="scala">
+def newCipher(mode: Int, key: Key): Cipher
+    </code></pre>
+    <aside class="notes">
+        The asymmetric trait is similar to the symmetric<br>
+        and provides more<br>
+        Just like the Symmetric trait we need a cipher<br>
+        so the newCipher must be implemented&rAarr; <br>
+    </aside>
+</section>
+
+<section>
+    Asymmetric encryption
+    <pre class="fragment"><code class="scala">
+given encrypt(using key: PublicKey): Encrypt =
+    (plainText: PlainText) =>
+      val encrypted = encrypt(plainText.bytes, key)
+      CipherText(plainText.manifest, encrypted)
+
+def encrypt(bytes: IArray[Byte], key: PublicKey): IArray[Byte] =
+    val cipher: Cipher = newCipher(Cipher.ENCRYPT_MODE, key)
+    cipher.doFinal(bytes.mutable).immutable
+    </code></pre>
+
+    <aside class="notes">
+    We provide the Encrypt function directly &rArr;<br>
+    Let's look at an RSA implementation &rAarr;<br>
+    </aside>
+
+</section>

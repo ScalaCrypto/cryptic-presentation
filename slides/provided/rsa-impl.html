@@ -1,0 +1,81 @@
+
+<section>
+    RSA
+    <pre><code class="scala">
+def newCipher(mode: Int, key: Key): Cipher =
+    val oaepParams: OAEPParameterSpec = new OAEPParameterSpec(
+      "SHA-256",
+      "MGF1",
+      MGF1ParameterSpec.SHA256,
+      PSource.PSpecified.DEFAULT
+    )
+    val cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding")
+    cipher.init(mode, key, oaepParams)
+    cipher
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+
+    </code></pre>
+    <aside class="notes">
+        As before we need to setup the cipher securely<br>
+        Here we use OAEP, Optimal Asymmetric Encryption Padding".<br>
+        We also provide a newKeyPair function &rArr;<br>
+        And that is all we need<br>
+        Using it could look like this &rArr;<br>
+    </aside>
+</section>
+
+<section>
+    Encrypt<br>
+    <pre><code class="scala">
+import cryptic.{given,*}
+import cryptic.codec.default.given
+import Rsa.given
+
+val keyPair: KeyPair = RSA.newKeyPair(2048)
+given publicKey: PublicKey = keyPair.getPublic
+
+val enc = "secret".encrypted
+// ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
+    </code></pre>
+    <aside class="notes">
+        The private key is not needed for encryption<br>
+    </aside>
+</section>
+
+<section>
+    Asymmetric decryption<br>
+    <pre class="fragment"><code class="scala">
+given decrypt(using key: PrivateKey): Decrypt =
+    (cipherText: CipherText) =>
+      Try:
+        val IArray(manifest, bytes) = cipherText.split
+
+        val text = decrypt(bytes, key)
+
+        PlainText(text, manifest)
+    </code> </pre>
+    <pre class="fragment"><code class="scala">
+def decrypt(bytes: IArray[Byte], key: PrivateKey): IArray[Byte] =
+    val cipher: Cipher = newCipher(Cipher.DECRYPT_MODE, key)
+    cipher.doFinal(bytes.mutable).immutable
+    </code> </pre>
+    <aside class="notes">
+        The asymmetric trait also provides decryption &rArr;<br>
+        We split the ciphertext into two parts<br>
+        and decrypt &rArr;<br>
+
+    </aside>
+</section>
+<section>
+    Decrypt<br>
+    <pre><code class="scala">
+given privateKey: PrivateKey = keyPair.getPrivate
+
+enc.decrypted
+// ==> Success("secret")
+    </code></pre>
+    <aside class="notes">
+        The public key is not needed for decryption<br>
+    </aside>
+</section>
