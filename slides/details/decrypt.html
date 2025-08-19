@@ -1,10 +1,12 @@
 <section>
-    Decrypt<br>
-    <pre class="fragment"><code class="scala">
+    <h3>Decrypt</h3>
+    <pre><code class="scala">
 type Decrypt = CipherText => Try[PlainText]
     </code></pre>
     <aside class="notes">
         <ul>
+            <li>The <b>Decrypt</b> type is the reverse of <b>Encrypt</b>,
+                a function from <b>CypherText</b> back to <b>PlainText</b></li>
             <li>Will return a failure if decryption fails.</li>
         </ul>
     </aside>

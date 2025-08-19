@@ -1,5 +1,5 @@
 <section>
-    <h3>Using the Cryptic library</h3>
+    <h3>The Cryptic library</h3>
     <pre class="fragment"><code class="scala">
 def encrypted(using encrypt: Encrypt): Encrypted[V]
     </code> </pre>
@@ -7,15 +7,15 @@ def encrypted(using encrypt: Encrypt): Encrypted[V]
 def decrypted(using decrypt: Decrypt): Try[V]
     </code> </pre>
     <aside class="notes">
-        <p>The basic usage of the Cryptic library is based on two extension methods:</p>
+        <p>The usage of the <b>Cryptic</b> library is based on two extension methods:</p>
         <p>To encrypt you use &rarr; <b>encrypted</b><br>
         To decrypt you use &rarr; <b>decrypted</b></p>
-        Let's look a <b>encrypted</b> first &rarr;<br>
+        Let's take a look at <b>encrypted</b> first &rarr;<br>
     </aside>
 </section>
 
 <section>
-    <h3>Encrypted</h3>
+    <h3>Usage</h3>
     <pre class="fragment"><code class="scala">
 val enc: Encrypted[String] = "secret".encrypted
     </code></pre>
@@ -30,7 +30,7 @@ val dec: Try[String] = enc.decrypted
             <li>&rarr; Decryption is just as easy:<br>
                 Call <b>decrypted</b> on an encrypted value and you will get the decrypted value back</li>
             <li>It returns a <b>Try</b>, so you can handle errors.</li>
-            <li>You can also operate in encrypted space &rarr;</li>
+            <li>You can also do operations in encrypted space &rarr;</li>
         </ul>
     </aside>
 </section>
@@ -49,25 +49,21 @@ val snaked = enc.map(_.replace(' ', '_'))
     <pre class="fragment"><code class="scala">
 val dec = snaked.decrypted
 // ==> Success("SECRET_SAUCE")
-            </code></pre>
-    <pre class="fragment"><code class="scala">
-collect, flatMap, filter, filterNot, orElse
     </code></pre>
-
     <aside class="notes">
         <ul>
-            <li>&rarr; Say you want to tranform the secret:</li>
+            <li>&rarr; Say you want to tranform a secret:</li>
             <li>No need to decrypt anything.</li>
             <li>&rarr; Just call <b>map</b> on the encrypted value</li>
             <li>You get another encrypted value back.</li>
-            <li>&rarr; And you can continue to operate.</li>
-            <li>&rarr; The operations are staged until you call <b>decrypted</b>.</li>
+            <li>&rarr; And you can continue to operate on that value</li>
+            <li>&rarr; The operations are staged and only run once you call <b>decrypted</b>.</li>
         </ul>
     </aside>
 </section>
 
 <section>
-    <h3>Operations continued</h3>
+    <h3>Operations <span style="text-transform:lowercase">(continued)</span></h3>
     <pre class="fragment"><code class="scala">
 def map[W: Codec](f: V => W)
 def flatMap[W: Codec](f: V => Cryptic[W])

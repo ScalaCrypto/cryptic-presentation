@@ -4,11 +4,14 @@
     <p class="fragment">Forgetting</p>
     <p class="fragment">Encrypting</p>
     <aside class="notes">
-        How do you &rarr; keep them, without being leaked<br>
-        Secrets are often sensitive<br><br>
-        Sometimes you're required to &rarr; forgetting them<br><br>
-        One way of solving this problem<br>
-        &rarr; Encrypting the secrets!<br>
+        <ul>
+            <li>Let's start with the problem of secrets:</li>
+            <li>How do you &rarr; keep them from being leaked</li>
+            <li>Secrets are often sensitive</li>
+            <li>Sometimes you're required to &rarr; forgetting them</li>
+            <li>One way of solving this problem</li>
+            <li>&rarr; Encrypting the secrets!</li>
+        </ul>
     </aside>
 </section>
 
@@ -17,13 +20,15 @@
     <p class="fragment">Top-Down</p>
     <p class="fragment">Bottom-Up</p>
     <aside class="notes">
-        Let's start with the problem of keeping secrets<br>
-        You can either encrypt the whole database or filesystem<br>
-        This is a &rarr; Top-Down approch<br>
-        Or only encrypt the sensitive parts<br>
-        This is a &rarr; Bottom-Up approach<br>
-        With Top-Down - you have few keys, each used widely<br>
-        Bottom-Up you have many keys, each used narrowly<br>
+        <ul>
+            <li>There are different approaches you can use to keep secrets</li>
+            <li>You can either encrypt the whole database or filesystem</li>
+            <li>This is a &rarr; Top-Down approch</li>
+            <li>Or only encrypt the sensitive parts</li>
+            <li>This is a &rarr; Bottom-Up approach</li>
+            <li>With Top-Down - you have few keys, each used widely</li>
+            <li>With Bottom-Up - you have many keys, each used narrowly</li>
+        </ul>
     </aside>
 </section>
 
@@ -33,11 +38,13 @@
     <p class="fragment">Backups</p>
     <p class="fragment">Throw away keys</p>
     <aside class="notes">
-        So what about forgetting?<br>
-        Why do we need to forget secrets?<br><br>
-        &rarr; GDPR can require us to forget<br><br>
-        With a Top-Down approach, how do you handle &rarr; backups?<br><br>
-        With a Bottom-Up approach - you can <br>&rarr; throw away a key, and only secrets using that key are forgotten<br>
+        <ul>
+            <li>So, what about forgetting?</li>
+            <li>Why do we need to forget secrets?</li>
+            <li>&rarr; GDPR can require us to forget</li>
+            <li>With a Top-Down approach you have the problem of how to handle &rarr; backups containing a wide set of data using only a few keys</li>
+            <li>With a Bottom-Up approach - you can instead &rarr; throw away the specific key used for the narrow set of data to be forgotten</li>
+        </ul>
     </aside>
 </section>
 
@@ -56,6 +63,9 @@
 
 <section>
     <h3>Why Cryptic?</h3>
+    <pre class="fragment"><code class="scala">
+Java mess
+    </code></pre>
     <p class="fragment">Java &rAarr; Scala</p>
     <pre class="fragment"><code class="scala">
 case class Person(id: Long, email: Encrypted[String])
@@ -67,10 +77,13 @@ val domain: Encrypted[String] = person.email.map(_.domain)
 // ==> Encrypted(CipherText(
     </code></pre>
     <aside class="notes">
-        The Java cryptography API:s are naturally very Java centric<br>
-        We want a &rarr; Scala-tailored solution<br><br>
-        So, we created <b>Cryptic</b> to provide a Scala Bottom-Up approach<br><br>
-        &rarr; We think this looks much better<br><br>
-        &rarr; And we can use operations on the <b>Encrypted</b> type as expected of course<br>
+        <ul>
+            <li>Now we come to why <b>you</b> should use <b>Cryptic</b></li>
+            <li>The Java cryptography API:s are naturally very Java centric &rarr;</li>
+            <li>We want a &rarr; Scala-tailored solution</li>
+            <li>We created <b>Cryptic</b> to provide Bottom-Up approach taylored for Scala</li>
+            <li>&rarr; We think this looks much better</li>
+            <li>&rarr; And we can use operations on the <b>Encrypted</b> type, as expected</li>
+        </ul>
     </aside>
 </section>

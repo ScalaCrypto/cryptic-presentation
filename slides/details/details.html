@@ -1,8 +1,105 @@
 <section>
-    <h3>Under the hood</h3>
-    <aside class="notes">
-        <ul>
-            <li>Lets start by looking at the details of the <b>Encrypt</b> type</li>
-        </ul>
-    </aside>
+  <h3>Under the hood</h3>
+  <aside class="notes">
+    <ul>
+      <li>Lets start by looking at the types involved</li>
+    </ul>
+  </aside>
+</section>
+
+<section>
+    <h3>Cryptic</h3>
+    <pre><code class="scala">
+sealed abstract class Cryptic[V: Codec]:
+  def decrypted(using decrypt: Decrypt): Try[V]
+  def decryptedOrElse[W >: V](default: => W)(using
+      decrypt: Decrypt): W
+  def map[W: Codec](f: V => W)
+  def flatMap[W: Codec](f: V => Cryptic[W])
+  def flatten[W : Codec](using ev: V <:< Cryptic[W])
+  def filter(p: V => Boolean)
+  def filterNot(p: V => Boolean)
+  def collect[W: Codec](pf: PartialFunction[V, W])
+  def orElse[W >: V: Codec](alt: => Cryptic[W])
+    </code></pre>
+  <aside class="notes">
+    <ul>
+      <li>The <b>Cryptic</b> class is the base class for all encrypted values</li>
+      <li>It defines the set of supported operations (as seen previously)</li>
+      <li>It also offers the <b>decrypted</b> method that can be used for getting the plain text value (provided there is a given <b>Decrypt</b> function in scope)</li>
+    </ul>
+  </aside>
+</section>
+
+<section>
+    <h3>Encrypted</h3>
+    <pre><code class="scala">
+case class Encrypted[V: Codec](cipherText: CipherText) extends
+    Cryptic[V]
+
+object Encrypted:
+  def apply[V: Codec](value: V)(using encrypt: Encrypt):
+      Encrypted[V] =
+    if value == null then empty
+    else Encrypted[V](encrypt(summon[Codec[V]].encode(value)))
+    </code></pre>
+  <pre class="fragment"><code class="scala">
+extension [V: Codec](value: V)
+
+  def encrypted(using encrypt: Encrypt): Encrypted[V] =
+    Encrypted(value, Manifest.empty)
+
+  def encrypted(manifest: Manifest)(using encrypt: Encrypt): Encrypted[V] =
+    Encrypted(value, manifest)
+    </code></pre>
+  <pre class="fragment"><code class="scala">
+"Secret".encrypted
+// ==> Encrypted[String]
+    </code></pre>
+  <aside class="notes">
+    <ul>
+      <li>The <b>Encrypted</b> class represents a fully reduced encrypted value</li>
+      <li>It directly holds the <b>CipherText</b></li>
+      <li>&rarr; Any value type having a <b>Codec</b> will also have the <b>encrypted</b> extension method</li>
+      <li>&rarr; The extension methods provides a simple and convenient API for the user</li>
+    </ul>
+  </aside>
+</section>
+
+<section>
+    <h3>Operation</h3>
+    <pre><code class="scala">
+sealed abstract class Operation[V: Codec] extends Cryptic[V]:
+  def run(using encrypt: Encrypt, decrypt: Decrypt):
+      Try[Encrypted[V]]
+    </code></pre>
+    <pre><code class="scala">
+sealed abstract class BinaryOperation[V: Codec, W: Codec]
+    extends Operation[W]:
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+final case class Mapped[V: Codec, W: Codec](
+    src: Cryptic[V],
+    f: V => W)
+  extends BinaryOperation[V, W]:
+
+final case class FlatMapped[V: Codec, W: Codec](
+    src: Cryptic[V],
+    f: V => Cryptic[W])
+  extends BinaryOperation[V, W]:
+
+final case class Filtered[V: Codec](
+    src: Cryptic[V],
+    pred: V => Boolean)
+  extends Operation[V]
+    </code></pre>
+  <aside class="notes">
+    <ul>
+      <li>The <b>Operation</b> class, and its binary buddy, represents a staged operation on an encrypted value</li>
+      <li>Each specific operation, such as <b>map</b>, <b>flatMap</b> or <b>filter</b> is
+        represented by its own subclass of <b>Operation</b> &rarr;</li>
+      <li>When <b>run</b> is called on the operation the staged operation is executed on the decrypted value</li>
+      <li>Now, let's look at the <b>Encrypt</b> type &rarr;</li>
+    </ul>
+  </aside>
 </section>
