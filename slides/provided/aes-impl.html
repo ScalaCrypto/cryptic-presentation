@@ -1,29 +1,32 @@
 <section>
     AES<br>
-    <pre><code class="scala">
+    <pre class="fragment"><code class="scala">
 override val factoryAlgorithm: String = "PBKDF2WithHmacSHA256"
 override val keyAlgorithm = "AES"
 override val keyspecIterationCount: Int = 310000
 override val keyspecLength: Int = 256
-
-override def newCipher(mode: Int,
-      key: SecretKey,
-      spec: AlgorithmParameterSpec
-  ): Cipher =
-    val cipher = Cipher
-        .getInstance("PBKDF2WithHmacSHA256/GCM/NoPadding")
-    cipher.init(mode, key, spec)
-    cipher
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+override def newCipher(
+     mode: Int,
+     key: SecretKey,
+     spec: AlgorithmParameterSpec): Cipher =
+  val cipher = Cipher
+   .getInstance("PBKDF2WithHmacSHA256/GCM/NoPadding")
+  cipher.init(mode, key, spec)
+  cipher
     </code></pre>
     <aside class="notes">
-        This sets up the AES cipher reasonable secure<br>
+        First we need some parameters &rarr;<br>
+        The newCipher sets up AES in  reasonable secure manner<br>
+        Now let's look at the implementation of encrypt method &rarr;<br>
     </aside>
 </section>
 
 <section>
     AES encrypt<br>
     <pre><code class="scala">
-  given encrypt(using passphrase: Passphrase): Encrypt =
+given encrypt(using passphrase: Passphrase): Encrypt =
         (plainText: PlainText) =>
     val salt = Salt(saltLength)
     val key = keygen(passphrase, salt)
@@ -39,12 +42,13 @@ override def newCipher(mode: Int,
     )
             </code></pre>
     <aside class="notes">
-        The usage of a Passphrase needs key stretching to be secure<br>
-        Which requires a Salt<br>
-        AES it self requires an Initial Vector, iv
-        Both the salt and iv need to be in cipher text for decrypt<br>
+        We use a passphrase<br>
+        To make that secure we need key stretching<br>
+        Which in turn needs a salt<br>
+        AES it self requires an Initial Vector, iv<br>
+        Both the salt and iv need to be present cipher text to enable decryption<br>
         Key stretching is implemented like this &rarr;<br>
-   </aside>
+    </aside>
 </section>
 
 <section>
@@ -66,19 +70,16 @@ override def newCipher(mode: Int,
     </code> </pre>
     <aside class="notes">
         This is a straightforward usage of the Java API<br>
-        Here is an example of how it can be used. &rarr;<br>
+        Using the Password Based Encryption Spec<br>
+        Note the usage of the keyspec parameters defined earlier<br>
+        Here is an example of using AES. &rarr;<br>
     </aside>
 </section>
 
 <section>
     Example encrypt<br>
     <pre><code class="scala">
-import cryptic.{given,*}
-import cryptic.codec.default.given
-import cryptic.crypto.Aes.{given, *}
-
 given phrase: Passphrase = Passphrase("correct horse")
-
 val enc = "secret".encrypted
 // ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
     </code></pre>
@@ -103,25 +104,21 @@ given decrypt(using passphrase: Passphrase): Decrypt =
       PlainText(decrypted, manifest)
     </code></pre>
     <aside class="notes">
-        Decrypt splits the cipher text into parts.<br>
-        We need to do the same key stretching to get the secret key<br>
-        and call Symmetric.decrypt<br>
-        in usages it's very simple &rAarr;<br>
+        the decryption first splits the cipher text into parts.<br>
+        We need to do the same key stretching as we did in encrypt<br>
+        and then call Symmetric.decrypt<br>
+        Using in code could look like&rarr;<br>
     </aside>
 </section>
 <section>
     Example decrypt<br>
     <pre><code class="scala">
-import cryptic.{given,*}
-import cryptic.codec.default.given
-import cryptic.crypto.Aes.{given, *}
-
 given phrase: Passphrase = Passphrase("correct horse")
-
 enc.decrypted
 // ==> Success("secret")
    </code></pre>
     <aside class="notes">
-        Next we look at the Asymmetric trait<br>
+        Also very simple<br>
+        Next we look at the Asymmetric trait&rarr;<br>
     </aside>
 </section>

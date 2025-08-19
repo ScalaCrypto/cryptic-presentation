@@ -5,9 +5,9 @@ def newCipher(mode: Int, key: Key): Cipher
     </code></pre>
     <aside class="notes">
         The asymmetric trait is similar to the symmetric<br>
-        and provides more<br>
-        Just like the Symmetric trait we need a cipher<br>
-        so the newCipher must be implemented&rAarr; <br>
+        In addition it provides encrypt/decrypt for PlainText<br>
+        Just like the Symmetric trait we need a cipher &rarr;<br>
+        so a newCipher must be implemented&rAarr<br>
     </aside>
 </section>
 
@@ -25,7 +25,8 @@ def encrypt(bytes: IArray[Byte], key: PublicKey): IArray[Byte] =
     </code></pre>
 
     <aside class="notes">
-    We provide the Encrypt function directly &rArr;<br>
+    We provide the encrypt function directly &rArr;<br>
+    Using the PublicKey for encryption<br>
     Let's look at an RSA implementation &rAarr;<br>
     </aside>
 

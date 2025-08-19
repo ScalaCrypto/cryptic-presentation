@@ -14,11 +14,15 @@ def newCipher(mode: Int, key: Key): Cipher =
     cipher
     </code></pre>
     <pre class="fragment"><code class="scala">
+def newKeyPair(size: Int): KeyPair =
+    val generator = KeyPairGenerator.getInstance("RSA")
+    generator.initialize(size)
+    generator.generateKeyPair()
 
     </code></pre>
     <aside class="notes">
         As before we need to setup the cipher securely<br>
-        Here we use OAEP, Optimal Asymmetric Encryption Padding".<br>
+        Here we use Optimal Asymmetric Encryption Padding<br>
         We also provide a newKeyPair function &rArr;<br>
         And that is all we need<br>
         Using it could look like this &rArr;<br>
@@ -28,10 +32,6 @@ def newCipher(mode: Int, key: Key): Cipher =
 <section>
     Encrypt<br>
     <pre><code class="scala">
-import cryptic.{given,*}
-import cryptic.codec.default.given
-import Rsa.given
-
 val keyPair: KeyPair = RSA.newKeyPair(2048)
 given publicKey: PublicKey = keyPair.getPublic
 
@@ -39,20 +39,19 @@ val enc = "secret".encrypted
 // ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
     </code></pre>
     <aside class="notes">
-        The private key is not needed for encryption<br>
+        We create a key pair but only the Public Key is needed for encryption<br>
+        Next we look into asymmetric decryption&rarr;<br>
     </aside>
 </section>
 
 <section>
     Asymmetric decryption<br>
-    <pre class="fragment"><code class="scala">
+    <pre><code class="scala">
 given decrypt(using key: PrivateKey): Decrypt =
     (cipherText: CipherText) =>
       Try:
         val IArray(manifest, bytes) = cipherText.split
-
         val text = decrypt(bytes, key)
-
         PlainText(text, manifest)
     </code> </pre>
     <pre class="fragment"><code class="scala">
@@ -61,10 +60,10 @@ def decrypt(bytes: IArray[Byte], key: PrivateKey): IArray[Byte] =
     cipher.doFinal(bytes.mutable).immutable
     </code> </pre>
     <aside class="notes">
-        The asymmetric trait also provides decryption &rArr;<br>
         We split the ciphertext into two parts<br>
         and decrypt &rArr;<br>
-
+        the actual decryption method is simple<br>
+        Usage in code is straightforward&rarr;<br>
     </aside>
 </section>
 <section>
@@ -76,6 +75,8 @@ enc.decrypted
 // ==> Success("secret")
     </code></pre>
     <aside class="notes">
+        Note that only the private key is needed<br>
         The public key is not needed for decryption<br>
+        Remember the that RSA only can encrypt limited data?<br>
     </aside>
 </section>

@@ -9,34 +9,63 @@
         <li class="fragment">Hybrid mode</li>
     </ul>
     <aside class="notes">
+        We also provide Bouncy Castles Elliptic Curve encryption&rarr;<br>
         256-bit ECC keys provide equivalent security to 3072-bit RSA<br>
+        Fast<br>
         Comes with hybrid mode<br>
+        We define an object to hold the parameters&rarr;<br>
     </aside>
 </section>
 
 <section>
-    Elliptic Curve<br>
+    <pre><code class="scala">
+object EllipticCurve extends Asymmetric:
+    </code></pre>
     <pre><code class="scala data-trim data-noescape">
-import java.security.*
+override def newCipher(mode: Int, key: Key): Cipher =
+    val derivation = Hex.decode("00112233445566778899AABBCCDDEEFF")
+    val encoding = Hex.decode("112233445566778899AABBCCDDEEFF00")
+    val macKeySize = 128
+    val cipherKeySize = 128
+    val nonce = new Array[Byte](16)
+    secureRandom.nextBytes(nonce)
+    val iesParams =
+      new IESParameterSpec(
+        derivation,
+        encoding,
+        macKeySize,
+        cipherKeySize,
+        nonce)
 
-given encrypt(using key: PublicKey): Encrypt
-
-given decrypt(using key: PrivateKey): Decrypt
-
-def newKeyPair(): KeyPair
+    val cipher = Cipher.getInstance("ECIES", "BC")
+    cipher.init(mode, key, iesParams)
+    cipher
     </code></pre>
     <aside class="notes ">
-        Like RSA encrypt and decrypt takes different key types<br>
-        KeyPairs generated from secp256r1
+       This are our parameters<br>
+       Make your own object if you want others&rarr;<br>
+       Next we look at the newKeyPair method<br>
+    </aside>
+</section>
+
+<section>
+    <pre><code class="scala">
+private val generator: KeyPairGenerator = KeyPairGenerator.getInstance("EC")
+generator.initialize(new ECGenParameterSpec("secp256r1"))
+def newKeyPair(): KeyPair = generator.generateKeyPair()
+    </code>
+    </pre>
+    <aside class="notes">
+        The newKeyPair method uses secp256r1 to generate a key pair.<br>
+        secp256r1 is defined by NIST P-256<br>
+        These two methods is all we need!<br>
+        Using it should look very familiar by now<br>
     </aside>
 </section>
 
 <section>
     Encryption
-    <pre><code class="scala" data-trim data-noescape>
-import cryptic.{*, given}
-import cryptic.crypto.EllipticCurve.given
-import java.security.*
+    <pre><code class="scala">
 
 val keyPair: KeyPair = EllipticCurve.newKeyPair()
 given publicKey: PublicKey = keyPair.getPublic
@@ -45,6 +74,8 @@ val enc = "secret".encrypted
 // ==> Encrypted(CipherText(0x04e5da5206...))
     </code></pre>
     <aside class="notes">
+        Create a key pair and give the public key to
+        the encryption method.<br>
         The code is very similar to the RSA case<br>
     </aside>
 </section>
@@ -57,4 +88,9 @@ given privateKey: PrivateKey = keyPair.getPrivate
 enc.decrypt
 // ==> Success("secret")
     </code></pre>
+    <aside class="notes">
+        Decryption is also very simple<br>
+        We need a given private key<br>
+        That's all we have to say about Cryptic&rarr;<br>
+    </aside>
 </section>

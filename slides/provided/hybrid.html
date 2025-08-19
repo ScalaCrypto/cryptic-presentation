@@ -1,11 +1,14 @@
 <section>
-    Hybrid Cryptography<br>
-    <p class="fragment">Encrypt symmetric key</p>
-    <p class="fragment">Overhead</p>
-    <p class="fragment">RSA AES</p>
+    <h3>Hybrid Cryptography</h3>
+    <p class="fragment">Create symmetric key</p>
+    <p class="fragment">Encrypt data with symmetric key</p>
+    <p class="fragment">Encrypt symmetric key with asymmetric key</p>
+    <p class="fragment">Put all in cipher text</p>
     <aside class="notes">
-        Adding the encrypted symmetric key to the cipher text
-        creates overhead<br>
-        Let's look on an implementation<br>
+        To overcome the data limit of RSA use hybrid encryption&rarr;<br>
+        Create a symmetric key and encrypt the data&rarr;<br>
+        Encrypt the sym key with asymmetric key&rarr;<br>
+        Store all in the ciphertext<br>
+        Let's look on how to implement this&rarr;<br>
     </aside>
 </section>

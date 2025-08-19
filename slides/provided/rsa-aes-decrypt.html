@@ -7,10 +7,16 @@
       cipherText.split
     val aesKeyBytes = Rsa.decrypt(keyBytes, privateKey)
     val aesKey = Aes.key(aesKeyBytes)
-    val ivSpec = aesParams.paramSpec(iv.mutable)
+    val ivSpec = Aes.paramSpec(iv.mutable)
     val text = Aes.decrypt(textBytes, aesKey, ivSpec,
       aesParams.mode)
 
     PlainText(text, manifest)
   </code></pre>
+  <aside class="notes">
+    Here we also split the ciphertext into parts.<br>
+    The decrypting the aes key bytes<br>
+    Then recreating the aes key from the decrypted bytes and the given private key<br>
+    Finally using the aes key to decrypt the encrypted text bytes.<br>
+  </aside>
 </section>

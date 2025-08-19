@@ -1,5 +1,5 @@
 <section>
-    <h3>Symmetric trait</h3>
+    <h3>Symmetric trait needs</h3>
     <pre class="fragment"><code class="scala">
 def factoryAlgorithm: String
 def keyAlgorithm: String
@@ -11,11 +11,23 @@ def newCipher(
         mode: Int,
         key: SecretKey,
         spec: AlgorithmParameterSpec): Cipher
-    </code></pre>   <pre class="fragment"><code class="scala">
+    </code></pre>
+    <aside class="notes">
+        The symmetric trait needs<br>
+        &rarr; Parameters for key generation<br>
+        &rarr; and a cipher<br>
+        The trait provides&rarr;<br>
+    </aside>
+</section>
+
+<section>
+    <h3>Symmetric trait provides</h3>
+    <pre><code class="scala">
 def encrypt(bytes: IArray[Byte],
         key: SecretKey,
         spec: AlgorithmParameterSpec): IArray[Byte]
-    </code></pre>   <pre class="fragment"><code class="scala">
+    </code></pre>
+    <pre class="fragment"><code class="scala">
 def decrypt(
       bytes: IArray[Byte],
       key: SecretKey,
@@ -23,11 +35,8 @@ def decrypt(
      ): IArray[Byte]
     </code></pre>
     <aside class="notes">
-        Symmetric trait helps implementing symmetric cryptos<br>
-        &rarr; we need some parameters for key generation<br>
-        &rarr; and the newCipher must be implemented<br>
-        &rarr; provides encrypt that will call newCipher<br>
-        &rarr; and does decrypt<br>
-        Let's look at who an AES can be setup &rarr;<br>
+        method encrypt that will in turn call newCipher<br>
+        &rarr; and so does decrypt<br>
+        Let's look at how an AES encryption can be setup &rarr;<br>
     </aside>
 </section>
