@@ -1,0 +1,39 @@
+<section>
+    Helper traits<br>
+    <pre class="fragment"><code>
+Symmetric
+
+Asymmetric
+    </code></pre>
+   <aside class="notes">
+    To help with implementing proper cryptos<br>
+    Use the helper traits<br>
+   </aside>
+</section>
+
+<section>
+    <h3>Symmetric</h3>
+    <pre class="fragment"><code class="scala">
+def newCipher(
+        mode: Int,
+        key: SecretKey,
+        spec: AlgorithmParameterSpec): Cipher
+    </code></pre>   <pre class="fragment"><code class="scala">
+def encrypt(bytes: IArray[Byte],
+        key: SecretKey,
+        spec: AlgorithmParameterSpec): IArray[Byte]
+    </code></pre>   <pre class="fragment"><code class="scala">
+def decrypt(
+      bytes: IArray[Byte],
+      key: SecretKey,
+      spec: AlgorithmParameterSpec
+  ): IArray[Byte]
+    </code></pre>
+    <aside class="notes">
+        Symmetric have the following<br>
+        &rarr; must implement this<br>
+        &rarr; the encrypt is provided<br>
+        &rarr; and so is decrypt<br>
+        Let's look at who an AES can be setup &rarr;<br>
+    </aside>
+</section>

@@ -1,40 +1,72 @@
-
 <section>
-    <p>Secrets</p>
-    <p class="fragment">How keep them?</p>
-    <p class="fragment">How forget?</p>
-    <p class="fragment">Encrypt them</p>
+    <h3>Secrets</h3>
+    <p class="fragment">Keeping</p>
+    <p class="fragment">Forgetting</p>
+    <p class="fragment">Encrypting</p>
     <aside class="notes">
-        Back to secrets<br>
-        How to keep them?<br>
-        Secrets are often sensitive<br>
-        Sometimes we need to forget them<br>
-        Encrypt them!<br>
+        How do keep them, without being leaked<br>
+        Secrets are often sensitive<br><br>
+        Sometimes you're required to forget<br>
+        One way of solving this problem<br><br>
+        Encrypt the secrets!<br>
     </aside>
 </section>
 
 <section>
-    Encrypt<br>
-    <p class="fragment">But only the sensitive parts</p>
-    <p class="fragment">GDPR - Throw away the key</p>
+    <h3>Keeping</h3>
+    <p class="fragment">Top - down</p>
+    <p class="fragment">Bottom - up</p>
     <aside class="notes">
-        <ul>
-            <li>Easier to break if we somewhat know the plaintext</li>
-            <li>Json curly braces</li>
-            <li>GDPR - forget data by deleting the key</li>
-        </ul>
-    </aside>
+        You can either encrypt the whole<br>
+        Database or filesystem<br><br>
+        or only the sensitive parts<br>
+        With Top-Down - few keys large data<br>
+        B-U allows for many keys limited data<br>
 </section>
 
 <section>
-    Why use Cryptic<br>
-    <p class="fragment">Java -&gt; Scala</p>
+    <h3>Forgetting</h3>
+    <p class="fragment">GDPR</p>
+    <p class="fragment">Backups</p>
+    <p class="fragment">Throw away keys</p>
+    <aside class="notes">
+        Why do we need to forget?<br><br>
+        GDPR can require us to forget<br><br>
+        TOP-DOWN how to handle backups?<br><br>
+        With bottom up - throw away that specific key<br>
+    </aside>
+</section>
+
+<!--<section>-->
+<!--    Encrypt<br>-->
+<!--    <p class="fragment">But only the sensitive parts</p>-->
+<!--    <p class="fragment">GDPR - Throw away the key</p>-->
+<!--    <aside class="notes">-->
+<!--        <ul>-->
+<!--            <li>Easier to break if we somewhat know the plaintext</li>-->
+<!--            <li>Json curly braces</li>-->
+<!--            <li>GDPR - forget data by deleting the key</li>-->
+<!--        </ul>-->
+<!--    </aside>-->
+<!--</section>-->
+
+<section>
+    <h3>Why Cryptic?</h3>
+    <p class="fragment">Java &rAarr; Scala</p>
     <pre class="fragment"><code class="scala">
 case class Person(id: Long, email: Encrypted[String])
     </code></pre>
+    <pre class="fragment"><code class="scala">
+val person = Person(17, "alan@bletchlypark.uk".encrypted)
+
+val domain: Encrypted[String] = person.email.map(_.domain)
+// ==> Encrypted(CipherText(
+    </code></pre>
     <aside class="notes">
+        JVM cryptography is java centric<br><br>
         We created Cryptic to<br>
-        have crypto parts away from the business code<br>
-        allows for fine grained encryption.<br>
+        Provide a Scala bottom - up approach<br>
+        We think this looks good<br>
+        And we can use the Encrypted type as expected<br>
     </aside>
 </section>
