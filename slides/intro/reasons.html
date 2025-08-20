@@ -1,30 +1,32 @@
 <section>
     <h3>Secrets</h3>
-    <p class="fragment">Keeping</p>
-    <p class="fragment">Forgetting</p>
-    <p class="fragment">Encrypting</p>
+    <p class="fragment">Anything sensitive</p>
+    <p class="fragment">How to keep them?</p>
+    <p class="fragment">How to forget them?</p>
+    <p class="fragment">Let's encrypt them!</p>
     <aside class="notes">
         <ul>
-            <li>Let's start with the problem of secrets:</li>
-            <li>How do you &rarr; keep them from being leaked</li>
-            <li>Secrets are often sensitive</li>
-            <li>Sometimes you're required to &rarr; forgetting them</li>
-            <li>One way of solving this problem</li>
-            <li>&rarr; Encrypting the secrets!</li>
+            <li>Let's start by looking at secrets:</li>
+            <li>What are secrets?</li>
+            <li>&rarr; Any data that's deemed sensitive</li>
+            <li>&rarr; How do you keep them from being leaked</li>
+            <li>&rarr; What if you need to forget them?</li>
+            <li>One way of solving this problem:</li>
+            <li>&rarr; Let's encrypt them!</li>
         </ul>
     </aside>
 </section>
 
 <section>
-    <h3>Keeping</h3>
+    <h3>Encryption Approaches</h3>
     <p class="fragment">Top-Down</p>
     <p class="fragment">Bottom-Up</p>
     <aside class="notes">
         <ul>
-            <li>There are different approaches you can use to keep secrets</li>
-            <li>You can either encrypt the whole database or filesystem</li>
+            <li>There are basically two different approaches you can use when encrypting your data</li>
+            <li>You can either encrypt an entire database table or even the entire filesystem</li>
             <li>This is a &rarr; Top-Down approch</li>
-            <li>Or only encrypt the sensitive parts</li>
+            <li>Or you can encrypt only the sensitive parts of the data</li>
             <li>This is a &rarr; Bottom-Up approach</li>
             <li>With Top-Down - you have few keys, each used widely</li>
             <li>With Bottom-Up - you have many keys, each used narrowly</li>
@@ -42,8 +44,8 @@
             <li>So, what about forgetting?</li>
             <li>Why do we need to forget secrets?</li>
             <li>&rarr; GDPR can require us to forget</li>
-            <li>With a Top-Down approach you have the problem of how to handle &rarr; backups containing a wide set of data using only a few keys</li>
-            <li>With a Bottom-Up approach - you can instead &rarr; throw away the specific key used for the narrow set of data to be forgotten</li>
+            <li>With a Top-Down approach you have the problem with backups; how do you forget a specific user?</li>
+            <li>With a Bottom-Up approach - you can instead &rarr; throw away that users key</li>
         </ul>
     </aside>
 </section>
@@ -64,14 +66,10 @@
 <section>
     <h3>Why Cryptic?</h3>
     <pre class="fragment"><code class="scala">
-Java mess
-    </code></pre>
-    <p class="fragment">Java &rAarr; Scala</p>
-    <pre class="fragment"><code class="scala">
-case class Person(id: Long, email: Encrypted[String])
+case class Person(id: Long, email: Encrypted[Email])
     </code></pre>
     <pre class="fragment"><code class="scala">
-val person = Person(17, "alan@bletchlypark.uk".encrypted)
+val person = Person(17, Email("alan@bletchlypark.uk").encrypted)
 
 val domain: Encrypted[String] = person.email.map(_.domain)
 // ==> Encrypted(CipherText(
@@ -79,11 +77,10 @@ val domain: Encrypted[String] = person.email.map(_.domain)
     <aside class="notes">
         <ul>
             <li>Now we come to why <b>you</b> should use <b>Cryptic</b></li>
-            <li>The Java cryptography API:s are naturally very Java centric &rarr;</li>
-            <li>We want a &rarr; Scala-tailored solution</li>
-            <li>We created <b>Cryptic</b> to provide Bottom-Up approach taylored for Scala</li>
-            <li>&rarr; We think this looks much better</li>
-            <li>&rarr; And we can use operations on the <b>Encrypted</b> type, as expected</li>
+            <li>The Java cryptography API:s are naturally very Java centric</li>
+            <li>We created <b>Cryptic</b> to provide a Bottom-Up approach in a Scala-friendly way</li>
+            <li>&rarr; You can now write code like this:</li>
+            <li>&rarr; And you can use operations on the <b>Encrypted</b> values</li>
         </ul>
     </aside>
 </section>

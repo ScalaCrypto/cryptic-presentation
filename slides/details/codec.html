@@ -1,6 +1,6 @@
 <section>
     <h3>Codec</h3>
-    <pre class="fragment"><code class="scala">
+    <pre><code class="scala">
 trait Codec[V]:
   def encode(v: V): PlainText
   def decode(pt: PlainText): Try[V]
@@ -13,7 +13,6 @@ Option[? : Codec]
     </div>
     <aside class="notes">
       <ul>
-        <li>For that you need a &rarr; <b>Codec</b></li>
         <li>A codec is used to encode a type into bytes, and also for decoding the bytes back into a value again</li>
         <li>&rarr; Out of the box Cryptic provides codecs for primitive types and Option</li>
       </ul>

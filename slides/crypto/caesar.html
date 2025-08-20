@@ -1,6 +1,6 @@
 <section>
-    The Caesar Cipher
-    <pre class="fragment"><code class="scala">
+    <h3>The Caesar Cipher</h3>
+    <pre><code class="scala">
 case class Key(offset: Int):
   require(offset != 0)
 
@@ -10,8 +10,8 @@ def keygen(offset: Int): Key = Key(offset)
     <pre class="fragment"><code class="scala">
 given encrypt(using key: Key): Encrypt =
   (plainText: PlainText) =>
-    val bytes = plainText.bytes.mutable
-      .map(b ⇒ (b + key.offset).toByte).immutable
+    val bytes = plainText.bytes
+      .map(b ⇒ (b + key.offset).toByte)
     CipherText(bytes)
     </code></pre>
 
@@ -20,13 +20,34 @@ given decrypt(using key: Key): Decrypt =
   (cipherText: CipherText) =>
     val bytes = cipherText.bytes
      .map(b => (b - key.offset).toByte))
-  Try[PlainText](PlainText(bytes.immutable))
-  </code></pre>
+    Try:
+      PlainText(bytes.immutable)
+    </code></pre>
 
     <aside class="notes">
       <ul>
-        <li>A keygen function is nice to have.</li>
+        <li>The Caesar cipher uses a key for the offset</li>
+        <li>We define a <b>Key</b> type that holds the offset, and a <b>keygen</b> function that creates the key.</li>
         <li>Now look at using the <b>manifest</b>.</li>
       </ul>
     </aside>
+</section>
+
+<section>
+    <h3>Caesar Usage</h3>
+    <pre class="fragment"><code class="scala">
+"secret".getBytes
+// ==> Array(115, 101, 99, 114, 101, 116)
+
+given key = keygen(3)
+
+"secret".encrypted
+// ==> Encrypted(CipherText(Array(118, 104, 102, 117, 104, 119)),
+    </code></pre>
+  <aside class="notes">
+    <ul>
+      <li>As you can see, the bytes are offset in accordance with the given key</li>
+      <li>We can also use the <b>manifest</b> to support multiple keys &rarr;</li>
+    </ul>
+  </aside>
 </section>

@@ -14,10 +14,22 @@ case class CipherText(bytes: Array[Byte])
     <aside class="notes">
         <ul>
             <li>The <b>Encrypt</b> type is simply function from <b>PlainText</b> to <b>CypherText</b></li>
-            <li>&rarr; <b>PlainText</b> holds unenc data (along with an optional <b>Manifest</b>)<br>
-                &rarr; <b>CipherText</b> holds res encrypted data
-            <li>Put the secret into <b>bytes</b>, anything else, you put into <b>manifest</b> (not encrypted)</li>
-            <li>Pls note t any knowlge about t struct of t enc data mks forced decry easier</li>
+            <li>&rarr; <b>PlainText</b> holds unenc data (along with an <b>Manifest</b> which can be empty)<br>
+                &rarr; <b>CipherText</b> holds the encrypted bytes</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <h3>Manifest</h3>
+    <pre><code class="scala">
+type Manifest = IArray[Byte]
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>It is important that the encrypted bytes does not contain any data that is known,
+                since such information makes it easier to break the encryption</li>
+            <li>Instead, such information should be put into the manifest which is not encrypted</li>
         </ul>
     </aside>
 </section>

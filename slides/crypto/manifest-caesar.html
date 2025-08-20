@@ -1,17 +1,17 @@
 <section>
-    Using the Manifest to select a key with an id<br>
-    <pre class="fragment"><code class="scala" data-trim data-noescape>
-case class Keys(offsets: Map[Int, Int])
-
-extension (n: Int)
-  def toManifest: Manifest] =
-    ByteBuffer.allocate(4).putInt(n).array().immutable
+    <h3>Encoding into Manifest</h3>
+    <pre><code class="scala" data-trim data-noescape>
+type KeyId = Int
+case class Keys(offsets: Map[KeyId, Int])
 
 extension (bytes: IArray[Byte])
-  def toKeyId: Int = ByteBuffer.wrap(bytes.mutable).getInt
+  def toKeyId: KeyId = ByteBuffer.wrap(bytes.mutable).getInt
     </code></pre>
     <aside class="notes">
-        Some definitions
+        <ul>
+          <li>Keys is a map from key id to offset</li>
+          <li>We provide an extension method for converting a <b>Manifest</b> to a KeyId</li>
+        </ul>
     </aside>
 </section>
 
@@ -21,16 +21,17 @@ given encrypt(using keys: Keys): Encrypt =
   (plainText: PlainText) =>
     val keyId = plainText.manifest.toKeyId
     val offset = keys.offsets.get(keyId)
-    val bytes = plainText.bytes.mutable
-      .map(b => (b + offset).toByte).immutable
+    val bytes = plainText.bytes
+      .map(b => (b + offset).toByte)
 
     CipherText(plainText.manifest, bytes)
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>Using the keyId in Manifest to select the key.</li>
-            <li>Note, only bytes are encrypted</li>
-            <li>CipherText with 2 arrays</li>
+            <li>Extracting the keyId from the Manifest, we use the keyId to get the offset from the Keys map</li>
+            <li>We then encrypt the bytes using that offset</li>
+            <li>Finally, we create a <b>CipherText</b> with the manifest and the encrypted bytes</li>
+            <li>Note that the CipherText is created with two arrays</li>
         </ul>
     </aside>
 </section>
@@ -43,9 +44,10 @@ object CipherText:
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>IArray.join extension method</li>
-            <li>Run length encoding the parts</li>
-            <li>We will see in next slide</li>
+            <li>CipherText has an apply method that takes multiple byte arrays
+              and the IArray.join extension method is used to merge them into a single array</li>
+            <li>The join-method uses run-length encoding to join the parts</li>
+            <li>Let's look at an example &rarr;</li>
         </ul>
     </aside>
 </section>
@@ -54,9 +56,7 @@ object CipherText:
     <pre><code class="scala" data-trim data-noescape>
 "secret".getBytes
 // ==> Array(115, 101, 99, 114, 101, 116)
-    </code></pre>
 
-    <pre class="fragment"><code class="scala">
 given keys = Keys(100 -> 1, 200 -> 2)
 
 val enc = "secret".encrypted(100.toManifest)
@@ -72,23 +72,31 @@ val enc = "secret".encrypted(100.toManifest)
 //            0,   0,   0,   6, 117, 103, 101, 116, 103, 118)
     </code></pre>
     <aside class="notes">
-        Manifest is encoded in the plain text.
+        <ul>
+            <li>We can see that first four bytes are the number of arrays</li>
+            <li>Next four bytes are the length of the first array containing the key id</li>
+            <li>Next four bytes are the key id (100)</li>
+            <li>Next four bytes are the length of the encrypted bytes</li>
+            <li>Finally, we have the encrypted bytes themselves</li>
+            <li>Using key id 200 the encrypted bytes are shifted 2 steps instead of 1</li>
+        </ul>
     </aside>
 </section>
 
 <section>
     What about decryption?
-    <pre class="fragment"><code class="scala" data-trim data-noescape>
+    <pre class="fragment"><code class="scala">
 given keys = Keys(100 -> 1, 200 -> 2)
-
+    </code></pre>
+  <pre class="fragment"><code class="scala">
 val enc.decrypted
 // => Success("secret")
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>We need the Key map</li>
-            <li>No need to give the key id</li>
-            <li>Look at implementation</li>
+            <li>We only need the Key map &rarr;</li>
+            <li>No need to give the key id since it is stored in the CipherText &rarr;</li>
+            <li>Let's look at the implementation</li>
         </ul>
     </aside>
 </section>
@@ -105,10 +113,12 @@ given decrypt(using keys: Keys): Decrypt =
       PlainText(decoded, manifest)
     </code></pre>
     <aside class="notes">
-        Use the CipherText.split function<br>
-        Inverse of IArray.join<br>
-        Must match the encode usage<br>
-        The key id is available unencrypted in the CipherText
+      <ul>
+        <li>We use the CipherText.split function, which is the inverse of IArray.join</li>
+        <li>It must match the encode usage of join</li>
+        <li>The key id is available unencrypted in the CipherText</li>
+        <li>Now let's take a look at some different cryptos &rarr;</li>
+      </ul>
     </aside>
 </section>
 

@@ -7,7 +7,7 @@ def encrypted(using encrypt: Encrypt): Encrypted[V]
 def decrypted(using decrypt: Decrypt): Try[V]
     </code> </pre>
     <aside class="notes">
-        <p>The usage of the <b>Cryptic</b> library is based on two extension methods:</p>
+        <p>The usage of the <b>Cryptic</b> library is based on two methods:</p>
         <p>To encrypt you use &rarr; <b>encrypted</b><br>
         To decrypt you use &rarr; <b>decrypted</b></p>
         Let's take a look at <b>encrypted</b> first &rarr;<br>
@@ -15,7 +15,7 @@ def decrypted(using decrypt: Decrypt): Try[V]
 </section>
 
 <section>
-    <h3>Usage</h3>
+    <h3>Encrypted</h3>
     <pre class="fragment"><code class="scala">
 val enc: Encrypted[String] = "secret".encrypted
     </code></pre>
@@ -26,9 +26,9 @@ val dec: Try[String] = enc.decrypted
     <aside class="notes">
         <ul>
             <li>Cryptic makes encryption easy:<br>
-                &rarr; Just call <b>encrypted</b> on <i>(in this case)</i> a string.</li>
+                &rarr; Just call <b>encrypted</b> on a value</li>
             <li>&rarr; Decryption is just as easy:<br>
-                Call <b>decrypted</b> on an encrypted value and you will get the decrypted value back</li>
+                Call <b>decrypted</b> on an encrypted value and you will get the original value back</li>
             <li>It returns a <b>Try</b>, so you can handle errors.</li>
             <li>You can also do operations in encrypted space &rarr;</li>
         </ul>
@@ -53,8 +53,8 @@ val dec = snaked.decrypted
     <aside class="notes">
         <ul>
             <li>&rarr; Say you want to tranform a secret:</li>
-            <li>No need to decrypt anything.</li>
-            <li>&rarr; Just call <b>map</b> on the encrypted value</li>
+            <li>There is no need to decrypt anything here.</li>
+            <li>&rarr; Call <b>map</b> on the encrypted value</li>
             <li>You get another encrypted value back.</li>
             <li>&rarr; And you can continue to operate on that value</li>
             <li>&rarr; The operations are staged and only run once you call <b>decrypted</b>.</li>
@@ -63,7 +63,7 @@ val dec = snaked.decrypted
 </section>
 
 <section>
-    <h3>Operations <span style="text-transform:lowercase">(continued)</span></h3>
+    <h3>More Operations</h3>
     <pre class="fragment"><code class="scala">
 def map[W: Codec](f: V => W)
 def flatMap[W: Codec](f: V => Cryptic[W])
@@ -75,7 +75,7 @@ def orElse[W >: V: Codec](alt: => Cryptic[W])
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>Not just <b>map</b> is supported, &rarr; all the expected operations are available.</li>
+            <li>Not only <b>map</b> is supported, &rarr; all the expected operations are available.</li>
             <li>This allows you to keep all handling of sensitive information in a separate place in the code or confined to a separate node in your cluster</li>
             <li>Now, let's take a look at the details:</li>
         </ul>

@@ -1,17 +1,19 @@
 
 <section>
-    The Reverse Crypto
+    <h3>The Reverse Crypto</h3>
     <pre class="fragment"><code class="scala">
-
 given encrypt: Encrypt = (plainText: PlainText) =>
   CipherText(plainText.bytes.reverse)
     </code></pre>
-
     <pre class="fragment"><code class="scala">
 given decrypt: Decrypt = (cipherText: CipherText) =>
   Success(PlainText(cipherText.bytes.reverse))
     </code></pre>
     <aside class="notes">
-        Now let's add a parameter to encrypt/decrypt<br>
+      <ul>
+        <li>As shown, the reverse crypto's <b>Encrypt</b> function simply reverses the bytes in the <b>PlainText</b></li>
+        <li>&rarr; The <b>Decrypt</b> function does the same thing, but to the <b>CipherText</b></li>
+        <li>Now let's look at a crypto with a parameter &rarr;</li>
+      </ul>
     </aside>
 </section>
