@@ -1,5 +1,8 @@
 <section>
     <h3>AES</h3>
+    <pre><code class="scala">
+        object Aes extends Symmetric:</code>
+    </pre>
     <pre class="fragment"><code class="scala">
 override val factoryAlgorithm: String = "PBKDF2WithHmacSHA256"
 override val keyAlgorithm = "AES"
@@ -17,8 +20,9 @@ override def newCipher(
   cipher
     </code></pre>
     <aside class="notes">
+        We have an Aes object for setting up the crypto<br>
         First we need some parameters &rarr;<br>
-        The newCipher sets up AES in  reasonable secure manner<br>
+        The newCipher method sets up AES in  reasonable secure manner<br>
         Now let's look at the implementation of encrypt method &rarr;<br>
     </aside>
 </section>
