@@ -1,18 +1,6 @@
-
 <section>
     Elliptic Curve Integrated Encryption Scheme<br>
-    <ul>
-        <li class="fragment">Asymmetric</li>
-        <li class="fragment">From Bouncy Castle</li>
-        <li class="fragment">Smaller keys </li>
-        <li class="fragment">Faster than RSA</li>
-        <li class="fragment">Hybrid mode</li>
-    </ul>
     <aside class="notes">
-        We also provide Bouncy Castles Elliptic Curve encryption&rarr;<br>
-        256-bit ECC keys provide equivalent security to 3072-bit RSA<br>
-        Fast<br>
-        Comes with hybrid mode<br>
         We define an object to hold the parameters&rarr;<br>
     </aside>
 </section>
@@ -42,9 +30,9 @@ override def newCipher(mode: Int, key: Key): Cipher =
     cipher
     </code></pre>
     <aside class="notes ">
-       This are our parameters<br>
-       Make your own object if you want others&rarr;<br>
-       Next we look at the newKeyPair method<br>
+        This are our parameters<br>
+        Make your own object if you want others&rarr;<br>
+        Next we look at the newKeyPair method<br>
     </aside>
 </section>
 
