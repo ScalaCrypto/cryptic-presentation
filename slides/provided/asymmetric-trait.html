@@ -6,14 +6,14 @@ def newCipher(mode: Int, key: Key): Cipher
     <aside class="notes">
         The asymmetric trait is similar to the symmetric<br>
         In addition it provides encrypt/decrypt for PlainText<br>
-        Just like the Symmetric trait we need a cipher &rarr;<br>
-        so a newCipher must be implemented&rAarr<br>
+        Like the Symmetric trait we need a cipher &rarr;<br>
+        The Encrypt method is simple &rarr;<br>
     </aside>
 </section>
 
 <section>
-    Asymmetric encryption
-    <pre class="fragment"><code class="scala">
+    <h3>Asymmetric encryption</h3>
+    <pre><code class="scala">
 given encrypt(using key: PublicKey): Encrypt =
     (plainText: PlainText) =>
       val encrypted = encrypt(plainText.bytes, key)
@@ -25,9 +25,9 @@ def encrypt(bytes: IArray[Byte], key: PublicKey): IArray[Byte] =
     </code></pre>
 
     <aside class="notes">
-    We provide the encrypt function directly &rArr;<br>
-    Using the PublicKey for encryption<br>
-    Let's look at an RSA implementation &rAarr;<br>
+    We encrypt using the public key<br>
+    And put the result in the CipherText<br>
+    Let's look at how to use this trait when implementing RSA &rarr;<br>
     </aside>
 
 </section>

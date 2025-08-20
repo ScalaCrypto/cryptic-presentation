@@ -1,29 +1,29 @@
 <section>
     <h3>AES</h3>
     <pre><code class="scala">
-        object Aes extends Symmetric:</code>
+object Aes extends Symmetric:</code>
     </pre>
     <pre class="fragment"><code class="scala">
-override val factoryAlgorithm: String = "PBKDF2WithHmacSHA256"
-override val keyAlgorithm = "AES"
-override val keyspecIterationCount: Int = 310000
-override val keyspecLength: Int = 256
+  override val factoryAlgorithm: String = "PBKDF2WithHmacSHA256"
+  override val keyAlgorithm = "AES"
+  override val keyspecIterationCount: Int = 310000
+  override val keyspecLength: Int = 256
     </code></pre>
     <pre class="fragment"><code class="scala">
-override def newCipher(
+  override def newCipher(
      mode: Int,
      key: SecretKey,
      spec: AlgorithmParameterSpec): Cipher =
-  val cipher = Cipher
-   .getInstance("PBKDF2WithHmacSHA256/GCM/NoPadding")
-  cipher.init(mode, key, spec)
-  cipher
+    val cipher = Cipher
+     .getInstance("PBKDF2WithHmacSHA256/GCM/NoPadding")
+    cipher.init(mode, key, spec)
+    cipher
     </code></pre>
     <aside class="notes">
-        We have an Aes object for setting up the crypto<br>
+        We use an Aes object for setting up<br>
         First we need some parameters &rarr;<br>
-        The newCipher method sets up AES in  reasonable secure manner<br>
-        Now let's look at the implementation of encrypt method &rarr;<br>
+        The newCipher method sets up AES in reasonable secure manner<br>
+        Now let's look at the implementation of the given Encrypt method &rarr;<br>
     </aside>
 </section>
 
@@ -47,38 +47,38 @@ given encrypt(using passphrase: Passphrase): Encrypt =
             </code></pre>
     <aside class="notes">
         We use a passphrase<br>
-        To make that secure we need key stretching<br>
-        Which in turn needs a salt<br>
-        AES it self requires an Initial Vector, iv<br>
+        that we perform key stretching on with a salt<br>
+        AES itself requires an Initial Vector, iv<br>
         Both the salt and iv need to be present cipher text to enable decryption<br>
-        Key stretching is implemented like this &rarr;<br>
+        We use the encrypt method in the Symmetric trait and put all arrays into the CipherText<br>
+        Using AES in code could look like this &rarr;<br>
     </aside>
 </section>
 
-<section>
-    Key stretching<br>
-    <pre><code class="scala">
- def keygen(passphrase: Passphrase, salt: Salt): SecretKey =
-    val factory = SecretKeyFactory.getInstance(factoryAlgorithm)
-    val keySpec =
-      new PBEKeySpec(
-        passphrase.chars.mutable,
-        salt.bytes.mutable,
-        keyspecIterationCount,
-        keyspecLength
-      )
-    new SecretKeySpec(
-      factory.generateSecret(keySpec).getEncoded,
-      keyAlgorithm
-    )
-    </code> </pre>
-    <aside class="notes">
-        This is a straightforward usage of the Java API<br>
-        Using the Password Based Encryption Spec<br>
-        Note the usage of the keyspec parameters defined earlier<br>
-        Here is an example of using AES. &rarr;<br>
-    </aside>
-</section>
+<!--<section>-->
+<!--    Key stretching<br>-->
+<!--    <pre><code class="scala">-->
+<!-- def keygen(passphrase: Passphrase, salt: Salt): SecretKey =-->
+<!--    val factory = SecretKeyFactory.getInstance(factoryAlgorithm)-->
+<!--    val keySpec =-->
+<!--      new PBEKeySpec(-->
+<!--        passphrase.chars.mutable,-->
+<!--        salt.bytes.mutable,-->
+<!--        keyspecIterationCount,-->
+<!--        keyspecLength-->
+<!--      )-->
+<!--    new SecretKeySpec(-->
+<!--      factory.generateSecret(keySpec).getEncoded,-->
+<!--      keyAlgorithm-->
+<!--    )-->
+<!--    </code> </pre>-->
+<!--    <aside class="notes">-->
+<!--        This is a straightforward usage of the Java API<br>-->
+<!--        Using the Password Based Encryption Spec<br>-->
+<!--        Note the usage of the keyspec parameters defined earlier<br>-->
+<!--        Here is an example of using AES. &rarr;<br>-->
+<!--    </aside>-->
+<!--</section>-->
 
 <section>
     Example encrypt<br>
@@ -122,7 +122,7 @@ enc.decrypted
 // ==> Success("secret")
    </code></pre>
     <aside class="notes">
-        Also very simple<br>
+        Here we must use the same passphrase as we encrypted with<br>
         Next we look at the Asymmetric trait&rarr;<br>
     </aside>
 </section>

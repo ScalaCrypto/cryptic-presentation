@@ -7,12 +7,11 @@
  | RSA-AES       | Hybrid     | cryptic-core         |
 
 Note:
-We support AES and RSA as a symmetric and asymmetric
-crypto
+We support AES and RSA
 
-The EllipticCurve is asymmetric but have a hybrid mode.
+The EllipticCurve is asymmetric but has a hybrid mode.
 EC adds a dependency on Bouncy Castle
 
-The last RSA-AES is how we make RSA a hybrid crypto.
+The last RSA-AES is how we can make RSA a into hybrid crypto.
 
 Let's talk about them in more detail &rarr;

@@ -1,0 +1,29 @@
+<section>
+    <h3>Summary</h3>
+
+    <pre class="fragment"><code class="scala">
+import cryptic.default.{given, *}
+   </code></pre>
+
+    <pre class="fragment"><code class="scala">
+given publicKey: PublicKey = ...
+
+val enc = "secret".encrypted
+// ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
+   </code></pre>
+
+    <pre class="fragment"><code class="scala">
+given privateKey: PrivateKey = ...
+enc.decrypted
+// ==> Success("secret")
+    </code></pre>
+    <aside class="notes">
+        In short<br>
+        To use the default hybrid crypto<br>
+        &rarr; import cryptic.default<br><br>
+        &rarr;give a public key and encrypt<br>
+        to decrypt<br>
+        &rarr;give the private key<br>
+        To learn more about Cryptography &rarr;<br>
+    </aside>
+</section>

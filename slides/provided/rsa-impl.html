@@ -2,7 +2,9 @@
 <section>
     RSA
     <pre><code class="scala">
-def newCipher(mode: Int, key: Key): Cipher =
+object Rsa extends Asymmetric:
+
+  def newCipher(mode: Int, key: Key): Cipher =
     val oaepParams: OAEPParameterSpec = new OAEPParameterSpec(
       "SHA-256",
       "MGF1",
@@ -13,8 +15,9 @@ def newCipher(mode: Int, key: Key): Cipher =
     cipher.init(mode, key, oaepParams)
     cipher
     </code></pre>
+
     <pre class="fragment"><code class="scala">
-def newKeyPair(size: Int): KeyPair =
+  def newKeyPair(size: Int): KeyPair =
     val generator = KeyPairGenerator.getInstance("RSA")
     generator.initialize(size)
     generator.generateKeyPair()
@@ -22,7 +25,7 @@ def newKeyPair(size: Int): KeyPair =
     </code></pre>
     <aside class="notes">
         As before we need to setup the cipher securely<br>
-        Here we use Optimal Asymmetric Encryption Padding<br>
+        using the newCipher method.<br>
         We also provide a newKeyPair function &rArr;<br>
         And that is all we need<br>
         Using it could look like this &rArr;<br>
@@ -61,9 +64,8 @@ def decrypt(bytes: IArray[Byte], key: PrivateKey): IArray[Byte] =
     </code> </pre>
     <aside class="notes">
         We split the ciphertext into two parts<br>
-        and decrypt &rArr;<br>
-        the actual decryption method is simple<br>
-        Usage in code is straightforward&rarr;<br>
+        and use the private key for decryption<br>
+        Usage in code is straightforward &rarr;<br>
     </aside>
 </section>
 <section>
@@ -77,6 +79,8 @@ enc.decrypted
     <aside class="notes">
         Note that only the private key is needed<br>
         The public key is not needed for decryption<br>
+        <br>
         Remember the that RSA only can encrypt limited data?<br>
+        We can use hybrid encryption to fix this&rarr; <br>
     </aside>
 </section>

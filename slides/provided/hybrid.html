@@ -1,14 +1,12 @@
 <section>
-    <h3>Hybrid Cryptography</h3>
-    <p class="fragment">Create symmetric key</p>
-    <p class="fragment">Encrypt data with symmetric key</p>
-    <p class="fragment">Encrypt symmetric key with asymmetric key</p>
-    <p class="fragment">Put all in cipher text</p>
+    <h3>RSA Hybrid Cryptography</h3>
+    <pre><code class="scala">
+object RsaAes:
+  given encrypt(using publicKey: PublicKey): Encrypt = ...
+  given decrypt(using privateKey: PrivateKey): Decrypt = ...
+    </code></pre>
     <aside class="notes">
         To overcome the data limit of RSA use hybrid encryption&rarr;<br>
-        Create a symmetric key and encrypt the data&rarr;<br>
-        Encrypt the sym key with asymmetric key&rarr;<br>
-        Store all in the ciphertext<br>
         Let's look on how to implement this&rarr;<br>
     </aside>
 </section>

@@ -1,7 +1,7 @@
 <section>
     Elliptic Curve Integrated Encryption Scheme<br>
     <aside class="notes">
-        We define an object to hold the parameters&rarr;<br>
+        We define an object to implement the Asymmetric trait&rarr;<br>
     </aside>
 </section>
 
@@ -9,7 +9,7 @@
     <pre><code class="scala">
 object EllipticCurve extends Asymmetric:
     </code></pre>
-    <pre><code class="scala data-trim data-noescape">
+    <pre class="fragment"><code class="scala data-trim data-noescape">
 override def newCipher(mode: Int, key: Key): Cipher =
     val derivation = Hex.decode("00112233445566778899AABBCCDDEEFF")
     val encoding = Hex.decode("112233445566778899AABBCCDDEEFF00")
@@ -29,27 +29,33 @@ override def newCipher(mode: Int, key: Key): Cipher =
     cipher.init(mode, key, iesParams)
     cipher
     </code></pre>
+
+    <pre class="fragment"><code class="scala">
+  def newKeyPair(): KeyPair = ...
+    </code></pre>
     <aside class="notes ">
-        This are our parameters<br>
-        Make your own object if you want others&rarr;<br>
-        Next we look at the newKeyPair method<br>
+        Implementing newCipher to create a secure cipher &rarr;<br>
+        We also implement a newKeyPair method<br>
+        Nothing else is needed<br>
+        Using Elliptic Curve could be like &rarr; <br>
     </aside>
 </section>
 
-<section>
-    <pre><code class="scala">
-private val generator: KeyPairGenerator = KeyPairGenerator.getInstance("EC")
-generator.initialize(new ECGenParameterSpec("secp256r1"))
-def newKeyPair(): KeyPair = generator.generateKeyPair()
-    </code>
-    </pre>
-    <aside class="notes">
-        The newKeyPair method uses secp256r1 to generate a key pair.<br>
-        secp256r1 is defined by NIST P-256<br>
-        These two methods is all we need!<br>
-        Using it should look very familiar by now<br>
-    </aside>
-</section>
+
+<!--<section>-->
+<!--    <pre><code class="scala">-->
+<!--private val generator: KeyPairGenerator = KeyPairGenerator.getInstance("EC")-->
+<!--generator.initialize(new ECGenParameterSpec("secp256r1"))-->
+<!--def newKeyPair(): KeyPair = generator.generateKeyPair()-->
+<!--    </code>-->
+<!--    </pre>-->
+<!--    <aside class="notes">-->
+<!--        The newKeyPair method uses secp256r1 to generate a key pair.<br>-->
+<!--        secp256r1 is defined by NIST P-256<br>-->
+<!--        These two methods is all we need!<br>-->
+<!--        Using it should look very familiar by now<br>-->
+<!--    </aside>-->
+<!--</section>-->
 
 <section>
     Encryption
@@ -79,6 +85,6 @@ enc.decrypt
     <aside class="notes">
         Decryption is also very simple<br>
         We need a given private key<br>
-        That's all we have to say about Cryptic&rarr;<br>
+        To summaries&rarr;<br>
     </aside>
 </section>

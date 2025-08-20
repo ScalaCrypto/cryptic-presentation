@@ -14,7 +14,7 @@ def newCipher(
     </code></pre>
     <aside class="notes">
         The symmetric trait needs<br>
-        &rarr; Parameters for key generation<br>
+        &rarr; some parameters<br>
         &rarr; and a cipher<br>
         The trait provides&rarr;<br>
     </aside>
@@ -23,20 +23,26 @@ def newCipher(
 <section>
     <h3>Symmetric trait provides</h3>
     <pre><code class="scala">
-def encrypt(bytes: IArray[Byte],
-        key: SecretKey,
-        spec: AlgorithmParameterSpec): IArray[Byte]
+def encrypt(
+  bytes: IArray[Byte],
+  key: SecretKey,
+  spec: AlgorithmParameterSpec
+  ): IArray[Byte] =
+    val cipher = newCipher(Cipher.ENCRYPT_MODE, key, spec)
+    cipher.doFinal(bytes.mutable).immutable
     </code></pre>
     <pre class="fragment"><code class="scala">
 def decrypt(
       bytes: IArray[Byte],
       key: SecretKey,
       spec: AlgorithmParameterSpec
-     ): IArray[Byte]
+     ): IArray[Byte] =
+       val cipher = newCipher(Cipher.DECRYPT_MODE, key, spec)
+       cipher.doFinal(bytes.mutable).immutable
     </code></pre>
     <aside class="notes">
-        method encrypt that will in turn call newCipher<br>
-        &rarr; and so does decrypt<br>
-        Let's look at how an AES encryption can be setup &rarr;<br>
+        an encrypt method<br>
+        &rarr; and a decrypt<br>
+        Let's look at how use this for implementing AES &rarr;<br>
     </aside>
 </section>
