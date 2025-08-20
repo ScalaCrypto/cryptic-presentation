@@ -1,5 +1,5 @@
 <section>
-    <h3>The Encrypted Method</h3>
+  <h3>The Encrypted Method</h3>
   <pre><code class="scala">
 extension [V: Codec](value: V)
 
@@ -15,14 +15,15 @@ val enc = "secret".encrypted
     </code></pre>
   <aside class="notes">
     <ul>
-      <li>Any value type having a <b>Codec</b> will also have the <b>encrypted</b> extension method</li>
+      <li>Any type having a <b>Codec</b> will also have the <b>encrypted</b> extension method</li>
       <li>&rarr; The extension methods provides a simple and convenient API for the user</li>
+      <li>Now, let's look at its counterpart: the <b>decrypted</b> method &rarr;</li>
     </ul>
   </aside>
 </section>
 
 <section>
-  <h3>The decrypted method</h3>
+  <h3>The Decrypted Method</h3>
   <pre><code class="scala">
 case class Encrypted[V: Codec] extends Cryptic[V]
   def decrypted(using decrypt: Decrypt): Try[V]
@@ -33,6 +34,7 @@ enc.decrypted
     </code></pre>
   <aside class="notes">
     All encrypted values have a <b>decrypted</b> method<br>
-    &rarr; When a <b>Codec</b> and <b>Decrypt</b> are given we can use <b>decrypted</b><br>
+    &rarr; Given a suitable <b>Codec</b> and a <b>Decrypt</b>-function, <br>
+    we can use the <b>decrypted</b> method to get the unencrypted value back (wrapped in a try)<br>
   </aside>
 </section>

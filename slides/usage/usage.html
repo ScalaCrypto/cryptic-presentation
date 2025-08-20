@@ -1,5 +1,5 @@
 <section>
-    <h3>The Cryptic library</h3>
+    <h3>Using Cryptic</h3>
     <pre class="fragment"><code class="scala">
 def encrypted(using encrypt: Encrypt): Encrypted[V]
     </code> </pre>
@@ -75,8 +75,10 @@ def orElse[W >: V: Codec](alt: => Cryptic[W])
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>Not only <b>map</b> is supported, &rarr; all the expected operations are available.</li>
-            <li>This allows you to keep all handling of sensitive information in a separate place in the code or confined to a separate node in your cluster</li>
+            <li>Not only <b>map</b> is supported, &rarr; the usual operations are also available.</li>
+            <li>This allows you to keep all handling of sensitive information<br>
+                in a separate place in the code or <br>
+                confined to a separate node in your cluster</li>
             <li>Now, let's take a look at the details:</li>
         </ul>
     </aside>

@@ -7,7 +7,7 @@ type Decrypt = CipherText => Try[PlainText]
         <ul>
             <li>The <b>Decrypt</b> type is the reverse of <b>Encrypt</b>,
                 a function from <b>CypherText</b> back to <b>PlainText</b></li>
-            <li>Will return a failure if decryption fails.</li>
+            <li>It will return a failure if decryption fails</li>
             <li>But how do you get a <b>PlainText</b> from a value to start with?</li>
             <li>For that you need a &rarr; <b>Codec</b></li>
         </ul>

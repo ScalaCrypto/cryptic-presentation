@@ -1,5 +1,5 @@
 <section>
-    <h3>Encoding into Manifest</h3>
+    <h3>Using the Manifest</h3>
     <pre><code class="scala" data-trim data-noescape>
 type KeyId = Int
 case class Keys(offsets: Map[KeyId, Int])
@@ -84,7 +84,7 @@ val enc = "secret".encrypted(100.toManifest)
 </section>
 
 <section>
-    What about decryption?
+    <h3>Decrypting with a Manifest</h3>
     <pre class="fragment"><code class="scala">
 given keys = Keys(100 -> 1, 200 -> 2)
     </code></pre>
@@ -94,9 +94,9 @@ val enc.decrypted
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>We only need the Key map &rarr;</li>
-            <li>No need to give the key id since it is stored in the CipherText &rarr;</li>
-            <li>Let's look at the implementation</li>
+            <li>We only need the <b>Key</b> map &rarr;</li>
+            <li>No need to give the key id since it is stored in the <b>CipherText</b> &rarr;</li>
+            <li>Let's look at the implementation!</li>
         </ul>
     </aside>
 </section>
@@ -114,9 +114,9 @@ given decrypt(using keys: Keys): Decrypt =
     </code></pre>
     <aside class="notes">
       <ul>
-        <li>We use the CipherText.split function, which is the inverse of IArray.join</li>
+        <li>We use the <b>CipherText.split</b> function, which is the inverse of <b>IArray.join</b></li>
         <li>It must match the encode usage of join</li>
-        <li>The key id is available unencrypted in the CipherText</li>
+        <li>The key id is available unencrypted in the <b>CipherText</b></li>
         <li>Now let's take a look at some different cryptos &rarr;</li>
       </ul>
     </aside>

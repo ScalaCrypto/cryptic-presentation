@@ -14,7 +14,6 @@ given encrypt(using key: Key): Encrypt =
       .map(b ⇒ (b + key.offset).toByte)
     CipherText(bytes)
     </code></pre>
-
     <pre class="fragment"><code class="scala">
 given decrypt(using key: Key): Decrypt =
   (cipherText: CipherText) =>
@@ -23,7 +22,6 @@ given decrypt(using key: Key): Decrypt =
     Try:
       PlainText(bytes.immutable)
     </code></pre>
-
     <aside class="notes">
       <ul>
         <li>The Caesar cipher uses a key for the offset</li>
