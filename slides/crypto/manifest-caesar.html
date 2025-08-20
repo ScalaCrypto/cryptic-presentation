@@ -1,16 +1,17 @@
 <section>
     <h3>Using the Manifest</h3>
-    <pre><code class="scala" data-trim data-noescape>
+    <pre class="fragment"><code class="scala" data-trim data-noescape>
 type KeyId = Int
 case class Keys(offsets: Map[KeyId, Int])
 
-extension (bytes: IArray[Byte])
-  def toKeyId: KeyId = ByteBuffer.wrap(bytes.mutable).getInt
+extension (manifest: Manifest)
+  def toKeyId: KeyId = ByteBuffer.wrap(manifest.mutable).getInt
     </code></pre>
     <aside class="notes">
         <ul>
-          <li>Keys is a map from key id to offset</li>
-          <li>We provide an extension method for converting a <b>Manifest</b> to a KeyId</li>
+          <li>Let's see how you can use the <b>Manifest</b> to store metadata for a crypto &rarr;</li>
+          <li>We define a <b>Keys</b> class that acts as a mapping from key ids to offsets</li>
+          <li>We also provide an extension method on <b>Manifest</b> for converting to a <b>KeyId</b></li>
         </ul>
     </aside>
 </section>
@@ -28,10 +29,10 @@ given encrypt(using keys: Keys): Encrypt =
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>Extracting the keyId from the Manifest, we use the keyId to get the offset from the Keys map</li>
+            <li>To encrypt we extract the keyId from the <b>Manifest</b>, we use the key id to get the offset from the keys instance</li>
             <li>We then encrypt the bytes using that offset</li>
             <li>Finally, we create a <b>CipherText</b> with the manifest and the encrypted bytes</li>
-            <li>Note that the CipherText is created with two arrays</li>
+            <li>Note that the <b>CipherText</b> is created with two arrays</li>
         </ul>
     </aside>
 </section>
@@ -44,7 +45,7 @@ object CipherText:
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>CipherText has an apply method that takes multiple byte arrays
+            <li><b>CipherText has an apply method that takes multiple byte arrays
               and the IArray.join extension method is used to merge them into a single array</li>
             <li>The join-method uses run-length encoding to join the parts</li>
             <li>Let's look at an example &rarr;</li>

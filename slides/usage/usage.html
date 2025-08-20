@@ -1,21 +1,5 @@
 <section>
-    <h3>Using Cryptic</h3>
-    <pre class="fragment"><code class="scala">
-def encrypted(using encrypt: Encrypt): Encrypted[V]
-    </code> </pre>
-    <pre class="fragment"><code class="scala">
-def decrypted(using decrypt: Decrypt): Try[V]
-    </code> </pre>
-    <aside class="notes">
-        <p>The usage of the <b>Cryptic</b> library is based on two methods:</p>
-        <p>To encrypt you use &rarr; <b>encrypted</b><br>
-        To decrypt you use &rarr; <b>decrypted</b></p>
-        Let's take a look at <b>encrypted</b> first &rarr;<br>
-    </aside>
-</section>
-
-<section>
-    <h3>Encrypted</h3>
+    <h3>Basic Usage</h3>
     <pre class="fragment"><code class="scala">
 val enc: Encrypted[String] = "secret".encrypted
     </code></pre>
@@ -25,7 +9,7 @@ val dec: Try[String] = enc.decrypted
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>Cryptic makes encryption easy:<br>
+            <li>Encryption is easy:<br>
                 &rarr; Just call <b>encrypted</b> on a value</li>
             <li>&rarr; Decryption is just as easy:<br>
                 Call <b>decrypted</b> on an encrypted value and you will get the original value back</li>
@@ -53,7 +37,6 @@ val dec = snaked.decrypted
     <aside class="notes">
         <ul>
             <li>&rarr; Say you want to tranform a secret:</li>
-            <li>There is no need to decrypt anything here.</li>
             <li>&rarr; Call <b>map</b> on the encrypted value</li>
             <li>You get another encrypted value back.</li>
             <li>&rarr; And you can continue to operate on that value</li>
@@ -79,7 +62,26 @@ def orElse[W >: V: Codec](alt: => Cryptic[W])
             <li>This allows you to keep all handling of sensitive information<br>
                 in a separate place in the code or <br>
                 confined to a separate node in your cluster</li>
-            <li>Now, let's take a look at the details:</li>
+            <li>Now, let's take a look at some of the details, will start with <b>Codec</b>: &rarr;</li>
         </ul>
     </aside>
 </section>
+
+<!--<section>
+    <h3>Encrypt/Decrypt</h3>
+    <pre class="fragment"><code class="scala">
+def encrypted(using encrypt: Encrypt): Encrypted[V]
+    </code> </pre>
+    <pre class="fragment"><code class="scala">
+def decrypted(using decrypt: Decrypt): Try[V]
+    </code> </pre>
+    <aside class="notes">
+        <p>As shown in the examples, usage of <b>Cryptic</b> is centered around two methods:</p>
+        <p>To encrypt you use &rarr; <b>encrypted</b><br>
+            It use a given <b>Encrypt</b> inst to perf act enc.</p>
+        <p>To decrypt you use &rarr; <b>decrypted</b><br>
+            It use a given <b>Decrypt</b> inst to perf act dec.</p>
+        Let's dive a little deeper by taking a look at how to use the <b>encrypted</b> method &rarr;<br>
+    </aside>
+</section>
+-->

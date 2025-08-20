@@ -13,9 +13,10 @@ case class CipherText(bytes: Array[Byte])
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>The <b>Encrypt</b> type is simply function from <b>PlainText</b> to <b>CypherText</b></li>
-            <li>&rarr; <b>PlainText</b> holds unenc data along with an <b>Manifest</b> (which can be empty)<br>
+            <li>The <b>Encrypt</b> type used by the <b>encrypted</b> method is simply a function from <b>PlainText</b> to <b>CypherText</b></li>
+            <li>&rarr; <b>PlainText</b> holds unenc data along with a <b>Manifest</b> (which can be empty)<br>
                 &rarr; <b>CipherText</b> holds the encrypted bytes</li>
+            <li>We will look at <b>Manifest</b> next &rarr;</li>
         </ul>
     </aside>
 </section>
@@ -25,11 +26,15 @@ case class CipherText(bytes: Array[Byte])
     <pre><code class="scala">
 type Manifest = IArray[Byte]
     </code></pre>
+    <p class="fragment">For non-secret metadata</p>
+    <p class="fragment">Not encrypted</p>
     <aside class="notes">
         <ul>
             <li>It is important that the encrypted bytes does not contain any data that is known,
                 since such information makes it easier to break the encryption</li>
-            <li>Instead, such information should be put into the manifest (which is not encrypted)</li>
+            <li>Instead, such information should be put into the <b>Manifest</b> &rarr; (which is not encrypted &rarr;)</li>
+            <li>This is in line with the Bottom-Up approach of only encrypting sensitive data</li>
+            <li>Back to <b>Decrypt</b> &rarr;</li>
         </ul>
     </aside>
 </section>

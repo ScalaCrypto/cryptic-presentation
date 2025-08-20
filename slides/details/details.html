@@ -16,8 +16,9 @@ val enc = "secret".encrypted
   <aside class="notes">
     <ul>
       <li>Any type having a <b>Codec</b> will also have the <b>encrypted</b> extension method</li>
-      <li>&rarr; The extension methods provides a simple and convenient API for the user</li>
-      <li>Now, let's look at its counterpart: the <b>decrypted</b> method &rarr;</li>
+      <li>The method uses a given <b>Encrypt</b> instance (which we will look at later)</li>
+      <li>&rarr; The extension methods provides for a simple and convenient API for the end user</li>
+      <li>Let's look at its counterpart: the <b>decrypted</b> method &rarr;</li>
     </ul>
   </aside>
 </section>
@@ -34,7 +35,7 @@ enc.decrypted
     </code></pre>
   <aside class="notes">
     All encrypted values have a <b>decrypted</b> method<br>
-    &rarr; Given a suitable <b>Codec</b> and a <b>Decrypt</b>-function, <br>
+    &rarr; Given a suitable <b>Codec</b> and a <b>Decrypt</b> instance, <br>
     we can use the <b>decrypted</b> method to get the unencrypted value back (wrapped in a try)<br>
   </aside>
 </section>
