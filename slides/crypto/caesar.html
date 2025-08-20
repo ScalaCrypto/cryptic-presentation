@@ -21,7 +21,7 @@ given decrypt(using key: Key): Decrypt =
     <aside class="notes">
       <ul>
         <li>The Caesar cipher uses a key for the offset</li>
-        <li>We define a <b>Key</b> class that holds the offset</li>
+        <li>We define a <b>Key</b> class that holds that offset</li>
         <li>&rarr; The <b>Encrypt</b> function adds the offset to each byte in the <b>PlainText</b></li>
         <li>&rarr; The <b>Decrypt</b> function does the inverse for each byte in the <b>CipherText</b></li>
       </ul>
@@ -36,8 +36,11 @@ given decrypt(using key: Key): Decrypt =
 
 given key = Key(3)
 
-"secret".encrypted
+val enc = "secret".encrypted
 // ==> Encrypted(CipherText(Array(118, 104, 102, 117, 104, 119)),
+
+enc.decrypted
+// ==> Success("secret")
     </code></pre>
   <aside class="notes">
     <ul>

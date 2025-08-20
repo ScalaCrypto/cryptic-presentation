@@ -50,7 +50,7 @@ val dec = snaked.decrypted
     <pre class="fragment"><code class="scala">
 def map[W: Codec](f: V => W)
 def flatMap[W: Codec](f: V => Cryptic[W])
-def flatten[W : Codec](using ev: V <:< Cryptic[W])
+def flatten[W : Codec](using ev: V &lt;:&lt; Cryptic[W])
 def filter(p: V => Boolean)
 def filterNot(p: V => Boolean)
 def collect[W: Codec](pf: PartialFunction[V, W])
@@ -59,9 +59,10 @@ def orElse[W >: V: Codec](alt: => Cryptic[W])
     <aside class="notes">
         <ul>
             <li>Not only <b>map</b> is supported, &rarr; the usual operations are also available.</li>
-            <li>This allows you to keep all handling of sensitive information<br>
-                in a separate place in the code or <br>
-                confined to a separate node in your cluster</li>
+            <li>All these operations are staged, so they will not run until you call <b>decrypted</b>.</li>
+            <li>This allows you to keep all keys and other handling of sensitive information<br>
+                in a separate place in your code, <br>
+                or confined to a separate node in your cluster</li>
             <li>Now, let's take a look at some of the details, will start with <b>Codec</b>: &rarr;</li>
         </ul>
     </aside>
