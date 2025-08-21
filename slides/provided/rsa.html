@@ -1,19 +1,20 @@
-
 <section>
     <h3>RSA (Rivest-Shamir-Adleman)</h3>
-    <p class="fragment">Large keys needed</p>
+    <p class="fragment">Large keys</p>
     <p class="fragment">Small data</p>
     <p class="fragment">Suitable for key exchange</p>
     <aside class="notes">
-        Invented in 1977 by Ron Rivest, Adi Shamir and
-        Leonard Adleman<br>
-        &rarr; It needs large keys, minimum 2048-bit<br>
-        to provide adequate security for current computing capabilities<br>
-        &rarr; Max data size is (key size - padding)<br>
-        2048-bit handles approximately 245 bytes<br>
-        &rarr; It's suitable to use for key exchange<br>
-        <br>
-        A newer asymmetric crypto is based on Elliptic Curve&rarr; <br>
+        RSA was invented in 1977 by Ron Rivest, Adi Shamir and Leonard Adleman
+        <ul>
+            <li>&rarr; It needs large keys, minimum 2048-bit,
+                to be considered secure, at least for todays computers
+            </li>
+            <li>&rarr; It can only handle small data<br>max data size is (key size - padding)<br>
+                For example, a 2048-bit key handles approximately 245 bytes of data
+            </li>
+            <li>&rarr; It's suitable to use for key exchange</li>
+        </ul>
+        A newer asymmetric crypto is the Elliptic Curve Cyptography&rarr;
     </aside>
 </section>
 

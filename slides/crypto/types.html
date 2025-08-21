@@ -18,21 +18,26 @@
             <li>Symmetric cryptos use the same key for both encryption and decryption &rarr;</li>
             <li>They are fast and efficient &rarr;</li>
             <li>But they have a key distribution problem &rarr;</li>
-            <li>How do you securely share a key with the other party?</li>
-            <li>You can use an asymmetric crypto &rarr;</li>
+            <li>How do we securely share the key with the other party?</li>
+            <li>For that we use an asymmetric crypto &rarr;</li>
         </ul>
     </aside>
 </section>
 <section>
     <h3>Asymmetric</h3>
-    <p class="fragment">Private - public keys pair</p>
+    <p class="fragment">Private - public key pair</p>
+    <p class="fragment">Public key encrypts</p>
+    <p class="fragment">Private key decrypts</p>
     <p class="fragment">Limited data</p>
     <aside class="notes">
         <ul>
-            <li>Solves the key distribution problem by having a private - public key pair &rarr;</li>
-            <li>The public key is used for encryption, the private for decryption</li>
+            <li>The asymmetric crypto solves the key distribution problem
+                by having a<br>
+                private - public key pair &rarr;</li>
+            <li>The public key is used for encryption &rarr;</li>
+            <li>And the private key for decryption &rarr;</li>
             <li>A drawback is that you can only encrypt limited amount of data (a few hundred bytes) &rarr;</li>
-            <li>To solve this problem, you can use a hybrid scheme &rarr;</li>
+            <li>To solve this problem, we can use a hybrid scheme &rarr;</li>
         </ul>
     </aside>
 </section>

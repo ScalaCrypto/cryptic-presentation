@@ -20,10 +20,12 @@ object Aes extends Symmetric:</code>
     cipher
     </code></pre>
     <aside class="notes">
-        We use an Aes object for setting up<br>
-        First we need some parameters &rarr;<br>
-        The newCipher method sets up AES in reasonable secure manner<br>
-        Now let's look at the implementation of the given Encrypt method &rarr;<br>
+        <ul>
+            <li>We start by using an object to extend the trait</li>
+            <li>First we define the parameters &rarr;</li>
+            <li>Then we implement the newCipher method to set up AES in a secure manner</li>
+            <li>Now let's look of how encrypt the PlainText &rarr;</li>
+        </ul>
     </aside>
 </section>
 
@@ -46,12 +48,14 @@ given encrypt(using passphrase: Passphrase): Encrypt =
     )
             </code></pre>
     <aside class="notes">
-        We use a passphrase<br>
-        that we perform key stretching on with a salt<br>
-        AES itself requires an Initial Vector, iv<br>
-        Both the salt and iv need to be present cipher text to enable decryption<br>
-        We use the encrypt method in the Symmetric trait and put all arrays into the CipherText<br>
-        Using AES in code could look like this &rarr;<br>
+        <ul>
+            <li>when encrypting we use a passphrase<br>
+                that we perform key stretching on with a salt
+            </li>
+            <li>AES itself requires an Initial Vector, an iv</li>
+            <li>Both the salt and iv need to be present cipher text to enable decryption</li>
+            <li>In code this could look like this &rarr;</li>
+        </ul>
     </aside>
 </section>
 
@@ -84,6 +88,7 @@ given encrypt(using passphrase: Passphrase): Encrypt =
     Example encrypt<br>
     <pre><code class="scala">
 given phrase: Passphrase = Passphrase("correct horse")
+
 val enc = "secret".encrypted
 // ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
     </code></pre>
@@ -108,21 +113,26 @@ given decrypt(using passphrase: Passphrase): Decrypt =
       PlainText(decrypted, manifest)
     </code></pre>
     <aside class="notes">
-        the decryption first splits the cipher text into parts.<br>
-        We need to do the same key stretching as we did in encrypt<br>
-        and then call Symmetric.decrypt<br>
-        Using in code could look like&rarr;<br>
+        <ul>
+            <li>the decryption first splits the cipher text into parts.</li>
+            <li>We need to do the same key stretching as we did in encrypt</li>
+            <li>and then call decrypt provided by the Symmetric trait</li>
+            <li>Using in code could look like&rarr;</li>
+        </ul>
     </aside>
 </section>
 <section>
     Example decrypt<br>
     <pre><code class="scala">
 given phrase: Passphrase = Passphrase("correct horse")
+        
 enc.decrypted
 // ==> Success("secret")
    </code></pre>
     <aside class="notes">
-        Here we must use the same passphrase as we encrypted with<br>
-        Next we look at the Asymmetric trait&rarr;<br>
+        <ul>
+            <li>Here we must use the same passphrase as we encrypted with</li>
+            <li>Next we look at the Asymmetric trait&rarr;</li>
+        </ul>
     </aside>
 </section>

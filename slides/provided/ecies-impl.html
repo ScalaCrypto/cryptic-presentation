@@ -34,10 +34,12 @@ override def newCipher(mode: Int, key: Key): Cipher =
   def newKeyPair(): KeyPair = ...
     </code></pre>
     <aside class="notes ">
-        Implementing newCipher to create a secure cipher &rarr;<br>
-        We also implement a newKeyPair method<br>
-        Nothing else is needed<br>
-        Using Elliptic Curve could be like &rarr; <br>
+        <ul>
+            <li>Implementing newCipher to create a secure cipher &rarr;</li>
+            <li>We also implement a newKeyPair method</li>
+            <li>Nothing else is needed</li>
+            <li>Using Elliptic Curve could be like &rarr;</li>
+        </ul>
     </aside>
 </section>
 
@@ -68,9 +70,12 @@ val enc = "secret".encrypted
 // ==> Encrypted(CipherText(0x04e5da5206...))
     </code></pre>
     <aside class="notes">
-        Create a key pair and give the public key to
-        the encryption method.<br>
-        The code is very similar to the RSA case<br>
+        <ul>
+            <li>Create a key pair and give the public key to
+                the encryption method
+            </li>
+            <li>The code is very similar to the RSA case</li>
+        </ul>
     </aside>
 </section>
 
@@ -83,8 +88,10 @@ enc.decrypt
 // ==> Success("secret")
     </code></pre>
     <aside class="notes">
-        Decryption is also very simple<br>
-        We need a given private key<br>
-        To summaries&rarr;<br>
+        <ul>
+            <li>Decryption is also very simple</li>
+            <li>We need a given private key</li>
+            <li>To summaries&rarr;</li>
+        </ul>
     </aside>
 </section>

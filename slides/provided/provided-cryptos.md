@@ -12,6 +12,7 @@ We support AES and RSA
 The EllipticCurve is asymmetric but has a hybrid mode.
 EC adds a dependency on Bouncy Castle
 
-The last RSA-AES is how we can make RSA a into hybrid crypto.
+The last crypto, RSA-AES, will show use RSA as a hybrid crypto.
+It is also the default crypto in the cryptic library.
 
 Let's talk about them in more detail &rarr;

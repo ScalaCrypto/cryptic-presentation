@@ -18,11 +18,13 @@
 
     </code></pre>
   <aside class="notes">
-    First we create a new AES key and IV<br>
-    No need for key stretching since the AES key is random<br>
-    We use the AES key to encrypt the plain text<br>
-    Then we encrypt the AES key using RSA public key<br>
-    Last we put all in the ciphertext<br>
-    Let's look at decrypt &rarr;<br>
+    <ul>
+      <li>First we create a new AES key and IV</li>
+      <li>No need for key stretching since the AES key is random</li>
+      <li>We use the AES key to encrypt the plain text</li>
+      <li>Then we encrypt the AES key itself using RSA public key</li>
+      <li>Last we put all in the ciphertext</li>
+      <li>Let's look at decrypt &rarr;</li>
+    </ul>
   </aside>
 </section>
