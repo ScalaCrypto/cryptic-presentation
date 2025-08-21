@@ -6,25 +6,32 @@ trait Codec[V]:
   def decode(pt: PlainText): Try[V]
     </code></pre>
     <div class="fragment">
-      <h5>Provided</h5>
-      <pre><code class="scala ">
+        <h5>Provided</h5>
+        <pre><code class="scala ">
 String, Array[Byte], Int, Long, Float, Double
 Option[? : Codec]
         </code></pre>
     </div>
-    <div class="fragment">
-      <h5>Integrations</h5>
-      <p class="fragment">uPickle</p>
-      <p class="fragment">Chill</p>
-      <p class="fragment">FST</p>
-    </div>
     <aside class="notes">
-      <ul>
-        <li>A codec is used to encode a type into bytes, and also for decoding the bytes back into a value again</li>
-        <li>&rarr; By default Cryptic provides codecs for primitive types and <b>Option</b></li>
-        <li>&rarr; Integrations exist for the following libraries: &rarr; &rarr; &rarr;</li>
-        <li>But you can always integrate another library by implementing <b>Codec</b> yourself</li>
-        <li>Now that we know about codecs, how do we encrypt a value? &rarr;</li>
-      </ul>
+        <ul>
+            <li>A codec is used to encode a type into bytes, and also for decoding the bytes back into a value again</li>
+            <li>&rarr; By default Cryptic provides codecs for primitive types and <b>Option</b></li>
+        </ul>
+    </aside>
+</section>
+<section>
+    <h3>Codec</h3>
+    <h5>Integrations</h5>
+    <p class="fragment">uPickle</p>
+    <p class="fragment">Chill</p>
+    <p class="fragment">FST</p>
+    <aside class="notes">
+        <ul>
+            <li>A codec is used to encode a type into bytes, and also for decoding the bytes back into a value again</li>
+            <li>&rarr; By default Cryptic provides codecs for primitive types and <b>Option</b></li>
+            <li>&rarr; Integrations exist for the following libraries: &rarr; &rarr; &rarr;</li>
+            <li>But you can always integrate another library by implementing <b>Codec</b> yourself</li>
+            <li>Now that we know about codecs, how do we encrypt a value? &rarr;</li>
+        </ul>
     </aside>
 </section>

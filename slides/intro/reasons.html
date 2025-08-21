@@ -72,7 +72,7 @@
 case class Person(id: Long, email: Encrypted[Email])
     </code></pre>
     <pre class="fragment"><code class="scala">
-val person = Person(17, Email("alan@bletchlypark.uk").encrypted)
+val person = Person(3, Email("alan@bletchlypark.uk").encrypted)
 
 val domain: Encrypted[String] = person.email.map(_.domain)
 // ==> Encrypted(CipherText(
