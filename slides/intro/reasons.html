@@ -9,46 +9,48 @@
             <li>Let's start by looking at secrets:</li>
             <li>What are secrets?</li>
             <li>&rarr; Any data that's deemed sensitive</li>
-            <li>&rarr; How do you keep them from being leaked</li>
-            <li>&rarr; What if you need to forget them?</li>
-            <li>One way of solving this problem:</li>
+            <li>What can we say more about them?</li>
+            <li>&rarr; How do we keep them from being exposed?</li>
+            <li>&rarr; What if we need to forget them?</li>
+            <li>One way of tackling these problems:</li>
             <li>&rarr; Let's encrypt them!</li>
         </ul>
     </aside>
 </section>
 
 <section>
-    <h3>Encryption Approaches</h3>
+    <h3>Keeping secrets</h3>
     <p>&nbsp</p>
     <p class="fragment">Top-Down</p>
-    <p class="fragment">Few keys, wide dataset</p>
+    <p class="fragment">Few keys, wide set of data</p>
     <p>&nbsp</p>
     <p class="fragment">Bottom-Up</p>
-    <p class="fragment">Many keys, narrow dataset</p>
+    <p class="fragment">Many keys, narrow set of data</p>
     <aside class="notes">
         <ul>
             <li>There are basic 2 different appr you can use when encrypting your data</li>
-            <li>You can either enc on the level of an entire db-table or even an entire fs</li>
-            <li>This can be called a &rarr; Top-Down appr: using this appr likely leads to few keys, each used on wide datasets &rarr;</li>
-            <li>Or u can enc only the sensi parts of u data</li>
+            <li>You can either enc on the level of a table, file or even an entire db or fs</li>
+            <li>This can be called a &rarr; Top-Down appr: using this appr likely leads to few keys, each used on wide set of data &rarr;</li>
+            <li>Or u can enc only t sensi parts of u data</li>
             <li>This can be called a &rarr; Bottom-Up appr</li>
-            <li>Here u can have many ks, e used on narrow dataset &rarr;</li>
+            <li>Here u can hav many ks, each us on narr data &rarr;</li>
         </ul>
     </aside>
 </section>
 
 <section>
-    <h3>Forgetting</h3>
+    <h3>Forgetting Secrets</h3>
     <p class="fragment">GDPR</p>
-    <p class="fragment">Backups</p>
+    <p class="fragment">Backups?</p>
     <p class="fragment">Throw away keys</p>
     <aside class="notes">
         <ul>
             <li>So, what about forgetting?</li>
             <li>Why do we need to forget secrets?</li>
-            <li>&rarr; Well, GDPR can require us to forget</li>
-            <li>With a Top-Down approach you have the problem with backups &rarr; how do you forget a specific user?</li>
-            <li>With a Bottom-Up approach - you can instead &rarr; throw away that users key</li>
+            <li>&rarr; GDPR, fo ins, can req us to forget</li>
+            <li>Backups can be problematic, how do we delete a user from already backed-up data?</li>
+            <li>With a Top-Down approach, many users might share the same key,<br>
+            but using a Bottom-Up approach &rarr; you can throw away the key specific to that user</li>
         </ul>
     </aside>
 </section>
@@ -81,8 +83,9 @@ val domain: Encrypted[String] = person.email.map(_.domain)
         <ul>
             <li>Now we come to why <b>you</b> should use <b>Cryptic</b></li>
             <li>The Java cryptography API:s are naturally very Java centric</li>
-            <li>We created <b>Cryptic</b> to provide a Bottom-Up approach in a Scala-friendly way</li>
+            <li>We created <b>Cryptic</b> to provide a Bottom-Up app in Scala-friendly way</li>
             <li>&rarr; With it you can write code like this:</li>
+            <li>Put your secrets into an <b>Encrypted</b> wrapper</li>
             <li>&rarr; And you can use operations on the <b>Encrypted</b> values</li>
         </ul>
     </aside>

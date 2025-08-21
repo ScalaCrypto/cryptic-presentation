@@ -1,7 +1,7 @@
 <section>
     <h3>The Caesar Cipher</h3>
     <pre><code class="scala">
-case class Key(offset: Int):
+case class Key(offset: Int)
     </code></pre>
     <pre class="fragment"><code class="scala">
 given encrypt(using key: Key): Encrypt =
@@ -20,8 +20,7 @@ given decrypt(using key: Key): Decrypt =
     </code></pre>
     <aside class="notes">
       <ul>
-        <li>The Caesar cipher uses a key for the offset</li>
-        <li>We define a <b>Key</b> class that holds that offset</li>
+        <li>The Caesar cipher uses a key for the offset so we define a <b>Key</b> class that holds that offset</li>
         <li>&rarr; The <b>Encrypt</b> function adds the offset to each byte in the <b>PlainText</b></li>
         <li>&rarr; The <b>Decrypt</b> function does the inverse for each byte in the <b>CipherText</b></li>
       </ul>

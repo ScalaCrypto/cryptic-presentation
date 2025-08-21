@@ -13,7 +13,7 @@ case class CipherText(bytes: Array[Byte])
     </code></pre>
     <aside class="notes">
         <ul>
-            <li>The <b>Encrypt</b> type used by the <b>encrypted</b> method is simply a function from <b>PlainText</b> to <b>CypherText</b></li>
+            <li>The <b>Encrypt</b> type used by the <b>encrypted</b> method, is simply a function from <b>PlainText</b> to <b>CypherText</b></li>
             <li>&rarr; <b>PlainText</b> holds unenc data along with a <b>Manifest</b> (which can be empty)<br>
                 &rarr; <b>CipherText</b> holds the encrypted bytes</li>
             <li>We will look at <b>Manifest</b> next &rarr;</li>
@@ -32,7 +32,7 @@ type Manifest = IArray[Byte]
         <ul>
             <li>It is important that the encrypted bytes does not contain any data that is known,
                 since such information makes it easier to break the encryption</li>
-            <li>Instead, such information should be put into the <b>Manifest</b> &rarr; (which is not encrypted &rarr;)</li>
+            <li>Instead, put any non-secret metadata into the <b>Manifest</b> &rarr; (which is not encrypted &rarr;)</li>
             <li>This is in line with the Bottom-Up approach of only encrypting sensitive data</li>
             <li>Back to <b>Decrypt</b> &rarr;</li>
         </ul>

@@ -80,7 +80,7 @@ val enc = "secret".encrypted(100.toManifest)
             <li>Then four bytes with the key id (100)</li>
             <li>Then four bytes with the length of the encrypted bytes (6)</li>
             <li>Finally, we have the encrypted bytes themselves</li>
-            <li>&rarr; Using key id 200 the encrypted bytes are shifted 2 steps instead of 1</li>
+            <li>&rarr; Using key id 200, the encrypted bytes are shifted 2 steps instead of 1</li>
         </ul>
     </aside>
 </section>
@@ -97,7 +97,7 @@ val enc.decrypted
     <aside class="notes">
         <ul>
             <li>We only need to give the <b>KeyMap</b> &rarr;</li>
-            <li>No need to give the key id since it is stored in <b>CipherText</b> &rarr;</li>
+            <li>&rarr; When calling <b>decrypted</b> there is no need to give the key id since it is stored within <b>CipherText</b></li>
             <li>Let's look at the implementation!</li>
         </ul>
     </aside>

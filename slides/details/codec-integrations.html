@@ -1,0 +1,31 @@
+<section>
+    <h3>Codec Integrations</h3>
+    <div class="fragment">
+        <p>uPickle</p>
+        <pre><code class="scala">
+import cryptic.codec.Upickle.{*, given}
+        </code></pre>
+    </div>
+    <div class="fragment">
+        <p>Chill</p>
+        <pre><code class="scala">
+import cryptic.codec.Chill.{*, given}
+        </code></pre>
+    </div>
+    <div class="fragment">
+        <p>FST</p>
+        <pre><code class="scala">
+import cryptic.codec.Fst.{*, given}
+        </code></pre>
+    </div>
+    <aside class="notes">
+        <ul>
+            <li>Integrations exist for the following libraries:<br>
+                &rarr; uPickle <br>
+                &rarr; Chill <br>
+                &rarr; FST</li>
+            <li>But you can always integrate another library by implementing <b>Codec</b> yourself</li>
+            <li>Now that we know about codecs, how do we encrypt a value? &rarr;</li>
+        </ul>
+    </aside>
+</section>
