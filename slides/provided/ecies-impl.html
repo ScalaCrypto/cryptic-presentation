@@ -1,0 +1,97 @@
+<section>
+    Elliptic Curve Integrated Encryption Scheme<br>
+    <aside class="notes">
+        We define an object to implement the Asymmetric trait&rarr;<br>
+    </aside>
+</section>
+
+<section>
+    <pre><code class="scala">
+object EllipticCurve extends Asymmetric:
+    </code></pre>
+    <pre class="fragment"><code class="scala data-trim data-noescape">
+override def newCipher(mode: Int, key: Key): Cipher =
+    val derivation = Hex.decode("00112233445566778899AABBCCDDEEFF")
+    val encoding = Hex.decode("112233445566778899AABBCCDDEEFF00")
+    val macKeySize = 128
+    val cipherKeySize = 128
+    val nonce = new Array[Byte](16)
+    secureRandom.nextBytes(nonce)
+    val iesParams =
+      new IESParameterSpec(
+        derivation,
+        encoding,
+        macKeySize,
+        cipherKeySize,
+        nonce)
+
+    val cipher = Cipher.getInstance("ECIES", "BC")
+    cipher.init(mode, key, iesParams)
+    cipher
+    </code></pre>
+
+    <pre class="fragment"><code class="scala">
+  def newKeyPair(): KeyPair = ...
+    </code></pre>
+    <aside class="notes ">
+        <ul>
+            <li>Implementing newCipher to create a secure cipher &rarr;</li>
+            <li>We also implement a newKeyPair method</li>
+            <li>Nothing else is needed</li>
+            <li>Using Elliptic Curve could be like &rarr;</li>
+        </ul>
+    </aside>
+</section>
+
+
+<!--<section>-->
+<!--    <pre><code class="scala">-->
+<!--private val generator: KeyPairGenerator = KeyPairGenerator.getInstance("EC")-->
+<!--generator.initialize(new ECGenParameterSpec("secp256r1"))-->
+<!--def newKeyPair(): KeyPair = generator.generateKeyPair()-->
+<!--    </code>-->
+<!--    </pre>-->
+<!--    <aside class="notes">-->
+<!--        The newKeyPair method uses secp256r1 to generate a key pair.<br>-->
+<!--        secp256r1 is defined by NIST P-256<br>-->
+<!--        These two methods is all we need!<br>-->
+<!--        Using it should look very familiar by now<br>-->
+<!--    </aside>-->
+<!--</section>-->
+
+<section>
+    Encryption
+    <pre><code class="scala">
+
+val keyPair: KeyPair = EllipticCurve.newKeyPair()
+given publicKey: PublicKey = keyPair.getPublic
+
+val enc = "secret".encrypted
+// ==> Encrypted(CipherText(0x04e5da5206...))
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>Create a key pair and give the public key to
+                the encryption method
+            </li>
+            <li>The code is very similar to the RSA case</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    Decryption
+    <pre><code class="scala" data-trim data-noescape>
+given privateKey: PrivateKey = keyPair.getPrivate
+
+enc.decrypt
+// ==> Success("secret")
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>Decryption is also very simple</li>
+            <li>We need a given private key</li>
+            <li>To summaries&rarr;</li>
+        </ul>
+    </aside>
+</section>

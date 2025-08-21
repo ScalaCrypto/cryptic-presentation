@@ -1,0 +1,51 @@
+<section>
+    <h3>Symmetric trait needs</h3>
+    <pre class="fragment"><code class="scala">
+def factoryAlgorithm: String
+def keyAlgorithm: String
+def keyspecIterationCount: Int
+def keyspecLength: Int
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+def newCipher(
+        mode: Int,
+        key: SecretKey,
+        spec: AlgorithmParameterSpec): Cipher
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            The symmetric trait needs
+            <li>&rarr; some parameters</li>
+            <li>&rarr; and a cipher</li>
+            <li>these must be implemented</li>
+            <li>The trait provides&rarr;</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <h3>Symmetric trait provides</h3>
+    <pre><code class="scala">
+def encrypt(
+  bytes: IArray[Byte],
+  key: SecretKey,
+  spec: AlgorithmParameterSpec
+  ): IArray[Byte] =
+    val cipher = newCipher(Cipher.ENCRYPT_MODE, key, spec)
+    cipher.doFinal(bytes.mutable).immutable
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+def decrypt(
+      bytes: IArray[Byte],
+      key: SecretKey,
+      spec: AlgorithmParameterSpec
+     ): IArray[Byte] =
+       val cipher = newCipher(Cipher.DECRYPT_MODE, key, spec)
+       cipher.doFinal(bytes.mutable).immutable
+    </code></pre>
+    <aside class="notes">
+        an encrypt method<br>
+        &rarr; and a decrypt<br>
+        Let's look at how use the Symmetric trait when implementing AES &rarr;<br>
+    </aside>
+</section>

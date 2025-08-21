@@ -1,0 +1,137 @@
+<section>
+    <h3>Using the Manifest</h3>
+    <pre class="fragment"><code class="scala" data-trim data-noescape>
+type KeyId = Int
+case class KeyMap(offsets: Map[KeyId, Int])
+
+extension (manifest: Manifest)
+  def toKeyId: KeyId = ByteBuffer.wrap(manifest.mutable).getInt
+    </code></pre>
+    <aside class="notes">
+        <ul>
+          <li>Let's see how you can use the <b>Manifest</b> to store metadata for a crypto by extending our
+            <b>Caesar</b> crypto with support for multiple keys &rarr;</li>
+          <li>We define a <b>KeyMap</b> class that acts as a mapping from key ids to offsets</li>
+          <li>We also provide an extension method on <b>Manifest</b> for converting to a <b>KeyId</b></li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <pre><code class="scala" data-trim data-noescape>
+given encrypt(using keys: KeyMap): Encrypt =
+  (plainText: PlainText) =>
+    val keyId = plainText.manifest.toKeyId
+    val offset = keys.offsets.get(keyId)
+    val bytes = plainText.bytes
+      .map(b => (b + offset).toByte)
+
+    CipherText(plainText.manifest, bytes)
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>To encrypt we extract the keyId from the <b>Manifest</b>, we use the key id to get the offset from the keys map</li>
+            <li>We then encrypt the bytes using that offset</li>
+            <li>Finally, we create a <b>CipherText</b> with the manifest and the encrypted bytes</li>
+            <li>Note that the <b>CipherText</b> is created with two arrays</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <pre><code class="scala">
+object CipherText:
+  def apply(array: IArray[Byte], arrays: IArray[Byte]*) =
+    CipherText(IArray.join(array, arrays*))
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li><b>CipherText</b> has an apply method that takes multiple byte arrays
+              and the <b>IArray.join</b> extension method is used to merge them into a single array</li>
+            <li>The join-method uses run-length encoding to join the parts</li>
+            <li>Let's look at an example &rarr;</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <pre><code class="scala" data-trim data-noescape>
+"secret".getBytes
+// ==> Array(115, 101, 99, 114, 101, 116)
+
+given keys = Keys(100 -> 1, 200 -> 2)
+
+val enc = "secret".encrypted(100.toManifest)
+// ==> IArray(0,   0,   0,   2,
+//            0,   0,   0,   4,   0,   0,   0, 100,
+//            0,   0,   0,   6, 116, 102, 100, 115, 102, 117)
+    </code></pre>
+
+    <pre class="fragment"><code class="scala">
+"secret".encrypted(200.toManifest)
+// ==> IArray(0,   0,   0,   2,
+//            0,   0,   0,   4,   0,   0,   0, 200,
+//            0,   0,   0,   6, 117, 103, 101, 116, 103, 118)
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>We can see that first four bytes are the number of arrays (2)</li>
+            <li>Then four bytes with the length of the first array containing the key id (4)</li>
+            <li>Then four bytes with the key id (100)</li>
+            <li>Then four bytes with the length of the encrypted bytes (6)</li>
+            <li>Finally, we have the encrypted bytes themselves</li>
+            <li>&rarr; Using key id 200, the encrypted bytes are shifted 2 steps instead of 1</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <h3>Decrypting with a Manifest</h3>
+    <pre class="fragment"><code class="scala">
+given keys = KeyMap(100 -> 1, 200 -> 2)
+    </code></pre>
+  <pre class="fragment"><code class="scala">
+val enc.decrypted
+// => Success("secret")
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>We only need to give the <b>KeyMap</b> &rarr;</li>
+            <li>&rarr; When calling <b>decrypted</b> there is no need to give the key id since it is stored within <b>CipherText</b></li>
+            <li>Let's look at the implementation!</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <pre><code class="scala" data-trim data-noescape>
+given decrypt(using keys: Keys): Decrypt =
+  (cipherText: CipherText) =>
+    Try:
+      val IArray(manifest, bytes) = cipherText.split
+      val keyId = manifest.toKeyId
+      val offset = keys.get(keyId)
+      val decoded = bytes.map(b => (b - offset).toByte)
+      PlainText(decoded, manifest)
+    </code></pre>
+    <aside class="notes">
+      <ul>
+        <li>We use the <b>CipherText.split</b> function, which is the inverse of <b>IArray.join</b></li>
+        <li>It must match the usage of <b>IArray.join</b> in the <b>Encode</b> function</li>
+        <li>As you can see, the key id is available unencrypted from the <b>CipherText</b></li>
+        <li>&rarr;</li>
+      </ul>
+    </aside>
+</section>
+<section>
+  <h3>A Friendly Warning</h3>
+  <p class="fragment">The Reverse cipher is not secure</p>
+  <p class="fragment">The Caesar cipher is not secure</p>
+  <p class="fragment">They are only toy examples,<br>never to be used in the wild!</p>
+  <aside class="notes">
+    <ul>
+        <li>To talk about some real ciphers, I'll give the word back to Martin! &rarr;</li>
+    </ul>
+  </aside>
+</section>
+

@@ -1,0 +1,30 @@
+<section>
+  <h3>RSA-AES Encrypt</h3>
+    <pre><code class="scala">
+(plainText: PlainText) =>
+  val aesKey = Aes.keygen(256)
+  val iv = Aes.newIv()
+  val ivSpec = Aes.paramSpec(iv)
+  val encryptedText =
+    Aes.encrypt(plainText.bytes, aesKey, ivSpec)
+  val encryptedAesKey =
+    Rsa.encrypt(aesKey.getEncoded.immutable, publicKey)
+
+  CipherText(
+    plainText.manifest,
+    iv.immutable,
+    encryptedAesKey,
+    encryptedText)
+
+    </code></pre>
+  <aside class="notes">
+    <ul>
+      <li>First we create a new AES key and IV</li>
+      <li>No need for key stretching since the AES key is random</li>
+      <li>We use the AES key to encrypt the plain text</li>
+      <li>Then we encrypt the AES key itself using RSA public key</li>
+      <li>Last we put all in the ciphertext</li>
+      <li>Let's look at decrypt &rarr;</li>
+    </ul>
+  </aside>
+</section>

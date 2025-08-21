@@ -1,0 +1,14 @@
+<section>
+    <h3>Decrypt</h3>
+    <pre><code class="scala">
+type Decrypt = CipherText => Try[PlainText]
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>The <b>Decrypt</b> type is the inverse of <b>Encrypt</b>,
+                a function from <b>CipherText</b> back to <b>PlainText</b></li>
+            <li>It will return a failure if decryption fails</li>
+            <li><b>Next</b>, we will look at <b>implementing</b> a crypto &rarr;</li>
+        </ul>
+    </aside>
+</section>

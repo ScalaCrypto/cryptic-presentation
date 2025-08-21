@@ -1,0 +1,92 @@
+<section>
+    RSA
+    <pre><code class="scala">
+object Rsa extends Asymmetric:
+
+  def newCipher(mode: Int, key: Key): Cipher =
+    val oaepParams: OAEPParameterSpec = new OAEPParameterSpec(
+      "SHA-256",
+      "MGF1",
+      MGF1ParameterSpec.SHA256,
+      PSource.PSpecified.DEFAULT
+    )
+    val cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding")
+    cipher.init(mode, key, oaepParams)
+    cipher
+    </code></pre>
+
+    <pre class="fragment"><code class="scala">
+  def newKeyPair(size: Int): KeyPair =
+    val generator = KeyPairGenerator.getInstance("RSA")
+    generator.initialize(size)
+    generator.generateKeyPair()
+
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>As before we need to setup the cipher securely<br>
+                using the newCipher method.
+            </li>
+            <li>We also provide a newKeyPair function &rarr;</li>
+            <li>And that is all we need</li>
+            <li>Using it could look like this &rarr;</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    Encrypt<br>
+    <pre><code class="scala">
+val keyPair: KeyPair = RSA.newKeyPair(2048)
+given publicKey: PublicKey = keyPair.getPublic
+
+val enc = "secret".encrypted
+// ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
+    </code></pre>
+    <aside class="notes">
+        We create a key pair but only the Public Key is needed for encryption<br>
+        Next we look into asymmetric decryption&rarr;<br>
+    </aside>
+</section>
+
+<section>
+    Asymmetric decryption<br>
+    <pre><code class="scala">
+given decrypt(using key: PrivateKey): Decrypt =
+    (cipherText: CipherText) =>
+      Try:
+        val IArray(manifest, bytes) = cipherText.split
+        val text = decrypt(bytes, key)
+        PlainText(text, manifest)
+    </code> </pre>
+    <pre class="fragment"><code class="scala">
+def decrypt(bytes: IArray[Byte], key: PrivateKey): IArray[Byte] =
+    val cipher: Cipher = newCipher(Cipher.DECRYPT_MODE, key)
+    cipher.doFinal(bytes.mutable).immutable
+    </code> </pre>
+    <aside class="notes">
+        <ul>
+            <li>We split the ciphertext into two parts</li>
+            <li>and use the private key for decryption &rarr;</li>
+            <li>Usage in code is straightforward &rarr;</li>
+        </ul>
+    </aside>
+</section>
+<section>
+    Decrypt<br>
+    <pre><code class="scala">
+given privateKey: PrivateKey = keyPair.getPrivate
+
+enc.decrypted
+// ==> Success("secret")
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>Note that only the private key is needed</li>
+            <li>The public key is not needed for decryption</li>
+            <li>Remember the that RSA only can encrypt limited data?</li>
+            <li>We can use hybrid encryption to fix this&rarr;</li>
+        </ul>
+    </aside>
+    </aside>
+</section>

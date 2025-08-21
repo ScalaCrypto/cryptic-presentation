@@ -11,37 +11,64 @@
     <link rel="stylesheet" href="dist/reveal.css">
     <!--		<link rel="stylesheet" href="dist/theme/beige.css">-->
     <link rel="stylesheet" href="dist/theme/black.css">
+<!--    <link rel="stylesheet" href="dist/theme/night.css">-->
 
     <!-- Theme used for syntax highlighted code -->
     <link rel="stylesheet" href="plugin/highlight/monokai.css">
+<!--    <link rel="stylesheet" href="plugin/highlight/github.css">-->
+<!--    <link rel="stylesheet" href="plugin/highlight/zenburn.css">-->
+<!--    <link rel="stylesheet" href="plugin/highlight/higlight.css">-->
+
 </head>
 <body>
 <div class="reveal">
     <div class="slides">
-        <section data-markdown>
-					<textarea data-template>
-					##	Cryptic
-					Keeps your secrets
-					---
-					## Who are we?
-					### Odd Möller
-					### Martin Zachrison
-					</textarea>
-        </section>
-        <section>
-            How to keep your secrets from not leaking
-        </section>
-        <section>
-					<pre><code class="scala" data-trim data-noescape>
-						class Person(name: String, email:Encrypted[String])
-                        val martin = Person("Martin", "secret".encrypted)
 
-					</code></pre>
-        </section>
-        <section>
-            Good practices:
-            <p class="fragment">only secrets, no structure</p>
-        </section>
+<!--        <section data-markdown="slides/intro/title.md"-->
+<!--                 data-separator="^\n\n\n"-->
+<!--                 data-separator-vertical="^\n\n"-->
+<!--                 data-separator-notes="^Note:">-->
+<!--        </section>-->
+
+        <section data-include="slides/intro/title.html"></section>
+        <section data-include="slides/intro/not-bitcoin.html"></section>
+        <section data-include="slides/intro/cryptography.html"></section>
+        <section data-include="slides/intro/who-we-are.html"></section>
+        <section data-include="slides/intro/reasons.html"></section>
+
+        <section data-include="slides/intro/usage.html"></section>
+
+        <section data-include="slides/details/codec.html"></section>
+        <section data-include="slides/details/codec-integrations.html"></section>
+        <section data-include="slides/details/details.html"></section>
+        <section data-include="slides/details/encrypt.html"></section>
+        <section data-include="slides/details/decrypt.html"></section>
+
+        <section data-include="slides/crypto/implementing-crypto.html"></section>
+        <section data-include="slides/crypto/reverse.html"></section>
+        <section data-include="slides/crypto/caesar.html"></section>
+        <section data-include="slides/crypto/manifest-caesar.html"></section>
+
+        <section data-include="slides/crypto/types.html"></section>
+        <section data-markdown="slides/provided/provided-cryptos.md"></section>
+        <section data-include="slides/provided/aes.html"></section>
+        <section data-include="slides/provided/rsa.html"></section>
+        <section data-include="slides/provided/ecies.html"></section>
+        <section data-include="slides/provided/implementations.html"></section>
+        <section data-include="slides/provided/symmetric-trait.html"></section>
+        <section data-include="slides/provided/aes-impl.html"></section>
+        <section data-include="slides/provided/asymmetric-trait.html"></section>
+        <section data-include="slides/provided/rsa-impl.html"></section>
+        <section data-include="slides/provided/hybrid.html"></section>
+        <section data-include="slides/provided/rsa-aes-encrypt.html"></section>
+        <section data-include="slides/provided/rsa-aes-decrypt.html"></section>
+        <section data-include="slides/provided/ecies-impl.html"></section>
+
+        <section data-include="slides/outro/summary.html"></section>
+        <section data-include="slides/outro/stanford-course.html"></section>
+        <section data-include="slides/outro/scalacrypto.html"></section>
+        <section data-include="slides/outro/last.html"></section>
+
     </div>
 </div>
 
@@ -50,14 +77,25 @@
 <script src="plugin/markdown/markdown.js"></script>
 <script src="plugin/highlight/highlight.js"></script>
 <script>
-    // More info about initialization & config:
-    // - https://revealjs.com/initialization/
-    // - https://revealjs.com/config/
+    // Add the HTML include plugin
+    let includes = document.querySelectorAll('[data-include]');
+    includes.forEach(include => {
+        let file = include.getAttribute('data-include');
+        fetch(file)
+            .then(response => response.text())
+            .then(text => {
+                include.innerHTML = text;
+            });
+    });
+
     Reveal.initialize({
         hash: true,
-
-        // Learn about plugins: https://revealjs.com/plugins/
-        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+        // Enable the HTML include plugin
+        dependencies: [
+            { src: 'plugin/external/external.js', condition: function() { return !!document.querySelector('[data-include]'); } }
+        ],
+        slideNumber: true
     });
 </script>
 </body>

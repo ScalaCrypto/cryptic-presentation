@@ -1,0 +1,51 @@
+<section>
+    <h3>The Caesar Cipher</h3>
+    <pre><code class="scala">
+case class Key(offset: Int)
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+given encrypt(using key: Key): Encrypt =
+  (plainText: PlainText) =>
+    val bytes = plainText.bytes
+      .map(b ⇒ (b + key.offset).toByte)
+    CipherText(bytes)
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+given decrypt(using key: Key): Decrypt =
+  (cipherText: CipherText) =>
+    val bytes = cipherText.bytes
+     .map(b => (b - key.offset).toByte))
+    Try:
+      PlainText(bytes.immutable)
+    </code></pre>
+    <aside class="notes">
+      <ul>
+        <li>The Caesar cipher uses a key for the offset so we define a <b>Key</b> class that holds that offset</li>
+        <li>&rarr; The <b>Encrypt</b> function adds the offset to each byte in the <b>PlainText</b></li>
+        <li>&rarr; The <b>Decrypt</b> function does the inverse for each byte in the <b>CipherText</b></li>
+      </ul>
+    </aside>
+</section>
+
+<section>
+    <h3>Caesar Usage</h3>
+    <pre><code class="scala">
+"secret".getBytes
+// ==> Array(115, 101, 99, 114, 101, 116)
+
+given key = Key(3)
+
+val enc = "secret".encrypted
+// ==> Encrypted(CipherText(Array(118, 104, 102, 117, 104, 119)),
+
+enc.decrypted
+// ==> Success("secret")
+    </code></pre>
+  <aside class="notes">
+    <ul>
+      <li>Here we see how you use the <b>Caesar</b> crypto</li>
+      <li>It looks almost identical to the <b>Reverse</b> crypto but this one requires a given <b>Key</b></li>
+      <li>As you can see, the encrypted bytes are offset in accordance with the given key (in this case 3)</li>
+    </ul>
+  </aside>
+</section>

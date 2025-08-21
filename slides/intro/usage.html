@@ -1,0 +1,88 @@
+<section>
+    <h3>Basic Usage</h3>
+    <pre class="fragment"><code class="scala">
+val enc: Encrypted[String] = "secret".encrypted
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+val dec: Try[String] = enc.decrypted
+// ==> Success("secret")
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>Encryption is easy:<br>
+                &rarr; Just call <b>encrypted</b> on a value</li>
+            <li>&rarr; Decryption is just as easy:<br>
+                Call <b>decrypted</b> on an encrypted value and you will get the original value back</li>
+            <li>It returns a <b>Try</b>, so you can handle errors.</li>
+            <li>You can also do operations in encrypted space &rarr;</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <h3>Operations</h3>
+    <pre class="fragment"><code class="scala">
+val enc = "secret sauce".encrypted
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+val upper = enc.map(_.toUpperCase)
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+val snaked = enc.map(_.replace(' ', '_'))
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+val dec = snaked.decrypted
+// ==> Success("SECRET_SAUCE")
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>&rarr; Say you want to tranform a secret:</li>
+            <li>&rarr; Call <b>map</b> on the encrypted value</li>
+            <li>You get another encrypted value back.</li>
+            <li>&rarr; And you can continue to operate on that value</li>
+            <li>&rarr; The operations are staged and only run once you call <b>decrypted</b>.</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <h3>More Operations</h3>
+    <pre class="fragment"><code class="scala">
+def map[W: Codec](f: V => W)
+def flatMap[W: Codec](f: V => Cryptic[W])
+def flatten[W : Codec](using ev: V &lt;:&lt; Cryptic[W])
+def filter(p: V => Boolean)
+def filterNot(p: V => Boolean)
+def collect[W: Codec](pf: PartialFunction[V, W])
+def orElse[W >: V: Codec](alt: => Cryptic[W])
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>Not only <b>map</b> is supported, &rarr; the usual operations are also available.</li>
+            <li>All these operations are staged, so they will not run until you call <b>decrypted</b>.</li>
+            <li>This allows you to keep all keys and other handling of sensitive information<br>
+                in a separate place in your code, <br>
+                or confined to a separate node in your cluster</li>
+            <li>Now, let's take a look at some of the details, will start with <b>Codec</b>: &rarr;</li>
+        </ul>
+    </aside>
+</section>
+
+<!--<section>
+    <h3>Encrypt/Decrypt</h3>
+    <pre class="fragment"><code class="scala">
+def encrypted(using encrypt: Encrypt): Encrypted[V]
+    </code> </pre>
+    <pre class="fragment"><code class="scala">
+def decrypted(using decrypt: Decrypt): Try[V]
+    </code> </pre>
+    <aside class="notes">
+        <p>As shown in the examples, usage of <b>Cryptic</b> is centered around two methods:</p>
+        <p>To encrypt you use &rarr; <b>encrypted</b><br>
+            It use a given <b>Encrypt</b> inst to perf act enc.</p>
+        <p>To decrypt you use &rarr; <b>decrypted</b><br>
+            It use a given <b>Decrypt</b> inst to perf act dec.</p>
+        Let's dive a little deeper by taking a look at how to use the <b>encrypted</b> method &rarr;<br>
+    </aside>
+</section>
+-->

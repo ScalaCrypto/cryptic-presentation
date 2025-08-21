@@ -1,0 +1,138 @@
+<section>
+    <h3>AES</h3>
+    <pre><code class="scala">
+object Aes extends Symmetric:</code>
+    </pre>
+    <pre class="fragment"><code class="scala">
+  override val factoryAlgorithm: String = "PBKDF2WithHmacSHA256"
+  override val keyAlgorithm = "AES"
+  override val keyspecIterationCount: Int = 310000
+  override val keyspecLength: Int = 256
+    </code></pre>
+    <pre class="fragment"><code class="scala">
+  override def newCipher(
+     mode: Int,
+     key: SecretKey,
+     spec: AlgorithmParameterSpec): Cipher =
+    val cipher = Cipher
+     .getInstance("PBKDF2WithHmacSHA256/GCM/NoPadding")
+    cipher.init(mode, key, spec)
+    cipher
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>We start by using an object to extend the trait</li>
+            <li>First we define the parameters &rarr;</li>
+            <li>Then we implement the newCipher method to set up AES in a secure manner</li>
+            <li>Now let's look of how encrypt the PlainText &rarr;</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    AES encrypt<br>
+    <pre><code class="scala">
+given encrypt(using passphrase: Passphrase): Encrypt =
+        (plainText: PlainText) =>
+    val salt = Salt(saltLength)
+    val key = keygen(passphrase, salt)
+    val iv = newIv()
+    val ivSpec = paramSpec(iv)
+    val cipherText = encrypt(plainText.bytes, key, ivSpec)
+
+    CipherText(
+      plainText.manifest,
+      salt.bytes,
+      iv.immutable,
+      cipherText
+    )
+            </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>when encrypting we use a passphrase<br>
+                that we perform key stretching on with a salt
+            </li>
+            <li>AES itself requires an Initial Vector, an iv</li>
+            <li>Both the salt and iv need to be present cipher text to enable decryption</li>
+            <li>In code this could look like this &rarr;</li>
+        </ul>
+    </aside>
+</section>
+
+<!--<section>-->
+<!--    Key stretching<br>-->
+<!--    <pre><code class="scala">-->
+<!-- def keygen(passphrase: Passphrase, salt: Salt): SecretKey =-->
+<!--    val factory = SecretKeyFactory.getInstance(factoryAlgorithm)-->
+<!--    val keySpec =-->
+<!--      new PBEKeySpec(-->
+<!--        passphrase.chars.mutable,-->
+<!--        salt.bytes.mutable,-->
+<!--        keyspecIterationCount,-->
+<!--        keyspecLength-->
+<!--      )-->
+<!--    new SecretKeySpec(-->
+<!--      factory.generateSecret(keySpec).getEncoded,-->
+<!--      keyAlgorithm-->
+<!--    )-->
+<!--    </code> </pre>-->
+<!--    <aside class="notes">-->
+<!--        This is a straightforward usage of the Java API<br>-->
+<!--        Using the Password Based Encryption Spec<br>-->
+<!--        Note the usage of the keyspec parameters defined earlier<br>-->
+<!--        Here is an example of using AES. &rarr;<br>-->
+<!--    </aside>-->
+<!--</section>-->
+
+<section>
+    Example encrypt<br>
+    <pre><code class="scala">
+given phrase: Passphrase = Passphrase("correct horse")
+
+val enc = "secret".encrypted
+// ==> Encrypted(Encrypted(CipherText(0x0000000400 ... ))
+    </code></pre>
+    <aside class="notes">
+        As we see only the passphrase is needed<br>
+        The rest of the complexity is hidden<br>
+        Now let's look at decrypting &rAarr;<br>
+    </aside>
+</section>
+
+<section>
+    AES decrypt<br>
+    <pre><code class="scala">
+given decrypt(using passphrase: Passphrase): Decrypt =
+    (cipherText: CipherText) =>
+    Try:
+      val IArray(manifest, salt, iv, bytes) = cipherText.split
+      val key = keygen(passphrase, Salt(salt))
+      val ivSpec = paramSpec(iv.mutable)
+      val decrypted = decrypt(bytes, key, ivSpec)
+
+      PlainText(decrypted, manifest)
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>the decryption first splits the cipher text into parts.</li>
+            <li>We need to do the same key stretching as we did in encrypt</li>
+            <li>and then call decrypt provided by the Symmetric trait</li>
+            <li>Using in code could look like&rarr;</li>
+        </ul>
+    </aside>
+</section>
+<section>
+    Example decrypt<br>
+    <pre><code class="scala">
+given phrase: Passphrase = Passphrase("correct horse")
+        
+enc.decrypted
+// ==> Success("secret")
+   </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>Here we must use the same passphrase as we encrypted with</li>
+            <li>Next we look at the Asymmetric trait&rarr;</li>
+        </ul>
+    </aside>
+</section>

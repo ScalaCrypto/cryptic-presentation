@@ -1,0 +1,59 @@
+<section>
+    <h3>Cipher Types</h3>
+    <aside class="notes">
+        <ul>
+            <li>Ciphers are either Symmetric or Asymmetric</li>
+            <li>But what is the difference between the two types? &rarr;</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <h3>Symmetric</h3>
+    <p class="fragment">Same key for encryption/decryption</p>
+    <p class="fragment">Fast and efficient</p>
+    <p class="fragment">Key distribution problem</p>
+    <aside class="notes">
+        <ul>
+            <li>Symmetric cryptos use the same key for both encryption and decryption &rarr;</li>
+            <li>They are fast and efficient &rarr;</li>
+            <li>But they have a key distribution problem &rarr;</li>
+            <li>How do we securely share the key with the other party?</li>
+            <li>For that we use an asymmetric crypto &rarr;</li>
+        </ul>
+    </aside>
+</section>
+<section>
+    <h3>Asymmetric</h3>
+    <p class="fragment">Private - public key pair</p>
+    <p class="fragment">Public key encrypts</p>
+    <p class="fragment">Private key decrypts</p>
+    <p class="fragment">Limited data</p>
+    <aside class="notes">
+        <ul>
+            <li>The asymmetric crypto solves the key distribution problem
+                by having a<br>
+                private - public key pair &rarr;</li>
+            <li>The public key is used for encryption &rarr;</li>
+            <li>And the private key for decryption &rarr;</li>
+            <li>A drawback is that you can only encrypt limited amount of data (a few hundred bytes) &rarr;</li>
+            <li>To solve this problem, we can use a hybrid scheme &rarr;</li>
+        </ul>
+    </aside>
+</section>
+
+<section>
+    <h3>Hybrid</h3>
+    <p class="fragment">Generate a symmetric key</p>
+    <p class="fragment">Encrypt payload using that symmetric key</p>
+    <p class="fragment">Encrypt the symmetric key with a public key</p>
+    <aside class="notes">
+        <ul>
+            <li>In a hybrid scheme, you generate a symmetric key &rarr;</li>
+            <li>You then encrypt the payload with that symmetric key &rarr;</li>
+            <li>Finally, you encrypt the symmetric key with a public key &rarr;</li>
+            <li>This way, you can encrypt large amounts of data efficiently</li>
+            <li>Now let's look at the cryptos provided by <b>Cryptic</b> &rarr;</li>
+        </ul>
+    </aside>
+</section>

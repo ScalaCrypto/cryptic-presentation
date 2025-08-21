@@ -1,0 +1,15 @@
+<section>
+    <h3>RSA Hybrid Cryptography</h3>
+    <pre><code class="scala">
+object RsaAes:
+  given encrypt(using publicKey: PublicKey): Encrypt = ...
+  given decrypt(using privateKey: PrivateKey): Decrypt = ...
+    </code></pre>
+    <aside class="notes">
+        <ul>
+            <li>We define the encrypt and decrypt methods in the RsaAes object &rarr;</li>
+            <li>using the private and public keys</li>
+            <li>implementing them could be like &rarr;</li>
+        </ul>
+    </aside>
+</section>

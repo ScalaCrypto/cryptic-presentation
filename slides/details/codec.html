@@ -1,0 +1,21 @@
+<section>
+    <h3>Codec</h3>
+    <pre><code class="scala">
+trait Codec[V]:
+  def encode(v: V): PlainText
+  def decode(pt: PlainText): Try[V]
+    </code></pre>
+    <div class="fragment">
+        <h5>Provided</h5>
+        <pre><code class="scala ">
+String, Array[Byte], Int, Long, Float, Double
+Option[? : Codec]
+        </code></pre>
+    </div>
+    <aside class="notes">
+        <ul>
+            <li>A codec is used to encode a type into bytes, and also for decoding the bytes back into a value again</li>
+            <li>&rarr; By default Cryptic provides codecs for primitive types and <b>Option</b></li>
+        </ul>
+    </aside>
+</section>
